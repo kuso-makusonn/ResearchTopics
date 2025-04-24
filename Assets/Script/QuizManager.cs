@@ -35,7 +35,7 @@ public class QuizManager : MonoBehaviour
     }
     void Update(){
         if (Input.GetKey(KeyCode.Escape)){
-            TitleManager.Change_Screen=0;
+            TitleManager.SceneChanger=true;
             SceneManager.LoadScene("TitleScene");
         }
     }

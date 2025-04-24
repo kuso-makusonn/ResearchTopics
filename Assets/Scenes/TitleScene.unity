@@ -1076,6 +1076,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title_image: {fileID: 76655934}
   buttons: {fileID: 1434190508}
-  button1: {fileID: 0}
-  button2: {fileID: 0}
-  Change_Screen: 0
+  button1: {fileID: 1670530633}
+  button2: {fileID: 1828859676}

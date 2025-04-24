@@ -11,11 +11,20 @@ public class TitleManager : MonoBehaviour
     [SerializeField]GameObject buttons;//ボタンの親
     [SerializeField]TextMeshProUGUI button1,button2;//各ボタンの文字
     public static int Change_Screen;//ボタン表示の管理
+    public static bool SceneChanger=false;
     // Start is called before the first frame update
     void Start()
     {
-        buttons.SetActive(false);
-        Change_Screen=0;
+        
+        if(SceneChanger==true){
+            Change_Screen=1;
+            buttons.SetActive(true);
+        }
+        else{
+            buttons.SetActive(false);
+            Change_Screen=0;
+        }
+        
     }  
 
     // Update is called once per frame
