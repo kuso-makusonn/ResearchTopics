@@ -46,7 +46,7 @@ public class TitleManager : MonoBehaviour
     }
     public void IsButton(bool TS){
         if(TS==true){
-            SceneManager.LoadScene("SimulationScene");//シミュレーションシーンに移行
+            SceneManager.LoadScene("SerectScene");//シミュレーションシーンに移行
         }
         if(TS==false){
             SceneManager.LoadScene("PCQuizScene");//パソコン版(仮)のクイズに移動
