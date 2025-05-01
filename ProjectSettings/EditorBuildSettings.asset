@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SimulationScene.unity
+    guid: 0df7928648f31dc4b863e71b1f9241d0
+  - enabled: 1
     path: Assets/Scenes/TitleScene.unity
     guid: 750adf328dd79b84789ce607d54bf73a
   - enabled: 1
@@ -15,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SumahoQuizScene.unity
     guid: a855b8e9c857f314988a15edd701f016
   - enabled: 1
-    path: Assets/Scenes/SimulationScene.unity
-    guid: 0df7928648f31dc4b863e71b1f9241d0
+    path: Assets/Scenes/SerectScene.unity
+    guid: b1c47bab42c2d3c48b7ce65e85962d78
+  - enabled: 1
+    path: Assets/Scenes/WebSimuScene.unity
+    guid: 6280e747395bef840a09e446481a4f6e
   m_configObjects: {}
