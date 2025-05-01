@@ -10,12 +10,13 @@ using System.Linq;
 
 public class QuizManager : MonoBehaviour
 {
-    [SerializeField]TextMeshProUGUI quiz,b1,b2,b3,b4,at;//テキスト
-    [SerializeField] GameObject anspanel;
+    [SerializeField]TextMeshProUGUI quizText,b1Text,b2Text,b3Text,b4Text,ansText;//テキスト
+    [SerializeField] GameObject rootQuiz,quiz,quizStartPanel,ansPanel,difficultySelection;
     TextAsset csvFile;// CSVファイル
     List<string[]> csvDatas = new List<string[]>(); // CSVの中身を入れるリスト;
-    int Ans=0;
-    int q = 1;
+    int difficulty;//難易度番号1~4　数字が小さいほうが簡単
+    int Ans=0;//回答番号
+    int q = 1;//問題番号
     public AudioClip sound1,sound2;//音1,音2
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -31,7 +32,8 @@ public class QuizManager : MonoBehaviour
             string line = reader.ReadLine(); // 一行ずつ読み込み
             csvDatas.Add(line.Split(',')); // , 区切りでリストに追加
         }
-        QASet();
+        difficultySelection.SetActive(true);//難易度選択画面表示
+        rootQuiz.SetActive(false);//クイズ画面隠す
     }
     void Update(){
         if (Input.GetKey(KeyCode.Escape)){
@@ -41,12 +43,15 @@ public class QuizManager : MonoBehaviour
     }
 
     void QASet(){//問いの文章と各選択肢を設定
-        quiz.text=csvDatas[q][1];
-        b1.text=csvDatas[q][2];
-        b2.text=csvDatas[q][3];
-        b3.text=csvDatas[q][4];
-        b4.text=csvDatas[q][5];
+        ansPanel.SetActive(false);
+        quizText.text=csvDatas[q][1];
+        b1Text.text=csvDatas[q][2];
+        b2Text.text=csvDatas[q][3];
+        b3Text.text=csvDatas[q][4];
+        b4Text.text=csvDatas[q][5];
     }
+
+    //回答ボタン関数
     public void A(){
         Ans=1;//ボタン1を押した反応
         CheckAnswer();
@@ -65,20 +70,55 @@ public class QuizManager : MonoBehaviour
     }
     public void CheckAnswer(){//政党判定
         if(Ans==int.Parse(csvDatas[q][6])){
-            at.text="正解だよ";
+            ansText.text="正解だよ";
             audioSource.PlayOneShot(sound1);//音１を鳴らす
         }
         else{
-            at.text="違うよ";
+            ansText.text="違うよ";
             audioSource.PlayOneShot(sound2);//音２を鳴らす
         }
         StartCoroutine(AnsPanels());
     }
     IEnumerator AnsPanels(){//正解不正解を表示
-        anspanel.SetActive(true);//パネルを表示
+        ansPanel.SetActive(true);//パネルを表示
         yield return new WaitForSeconds(2f);
-        anspanel.SetActive(false);//パネルを非表示
+        ansPanel.SetActive(false);//パネルを非表示
         q++;//カウントを増やす
         QASet();//クイズ・アンサーを設定
+    }
+
+    /// <summary>
+    /// 難易度選択ボタンの関数A~D
+    /// difficultyに難易度1~4 数字が小さいほうが簡単
+    /// ToQAで問題へ移行
+    /// </summary>
+    public void DfcButtonA(){
+        difficulty = 1;
+        ToQA();
+    }
+    public void DfcButtonB(){
+        difficulty = 2;
+        ToQA();
+    }
+    public void DfcButtonC(){
+        difficulty = 3;
+        ToQA();
+    }
+    public void DfcButtonD(){
+        difficulty = 4;
+        ToQA();
+    }
+    void ToQA(){
+        rootQuiz.SetActive(true);//クイズアクティブ
+        quiz.SetActive(false);//クイズ画面は隠す（スタート画面出すため）
+        difficultySelection.SetActive(false);//難易度選択画面隠す
+        StartCoroutine(QuizStart());
+    }
+    IEnumerator QuizStart(){
+        quizStartPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        quizStartPanel.SetActive(false);
+        quiz.SetActive(true);
+        QASet();//クイズ読み込み・表示
     }
 }
