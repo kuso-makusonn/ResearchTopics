@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool Mail=false;
+    public static bool Web = false;
     // Start is called before the first frame update
     void Start()
     {
