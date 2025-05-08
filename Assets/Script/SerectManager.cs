@@ -17,7 +17,6 @@ public class SerectManager : MonoBehaviour
         
     }
     public void Mail(){
-        GameManager.Mail=true;
-        SceneManager.LoadScene("SimulationScene");
+        SceneManager.LoadScene("MailScene");
     }
 }
