@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/QuizScenes/SumahoQuizScene.unity
     guid: a855b8e9c857f314988a15edd701f016
   - enabled: 1
-    path: Assets/Scenes/MailScene.unity
+    path: Assets/Scenes/SimulationScenes/MailScene.unity
     guid: 0df7928648f31dc4b863e71b1f9241d0
   - enabled: 1
     path: Assets/Scenes/SelectScene.unity
