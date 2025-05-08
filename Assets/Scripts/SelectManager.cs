@@ -14,7 +14,10 @@ public class SelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.Escape)){
+            TitleManager.SceneChanger=true;
+            SceneManager.LoadScene("TitleScene");
+        }
     }
     public void Mail(){
         SceneManager.LoadScene("MailScene");

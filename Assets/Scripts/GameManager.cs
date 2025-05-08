@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]GameObject mail,mailTextPanel,truePanal;
     [SerializeField]GameObject AnsPanel1;
-    [SerializeField]TextMeshProUGUI mailText,trueText;
+    [SerializeField]TextMeshProUGUI mailText,trueText,startText;
     [SerializeField]GameObject mailStartPanel;
     TextAsset csvFile;// CSVファイル
     bool TruePanals;
@@ -31,8 +32,6 @@ public class GameManager : MonoBehaviour
             string line = reader.ReadLine(); // 一行ずつ読み込み
             csvDatas.Add(line.Split(',')); // , 区切りでリストに追加
         }
-        TextChange();
-        TruePanals = true;
     }
 
     // Update is called once per frame
@@ -52,6 +51,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         mailStartPanel.SetActive(false);
         AnsPanel1.SetActive(true);
+        PoPMove.Reseter=false;
+        TextChange();
+        TruePanals = true;
     }
     public void MailPanelOn(){
         AnsPanel1.SetActive(false);
@@ -65,5 +67,15 @@ public class GameManager : MonoBehaviour
     public void onTruePanelS(){
         truePanal.SetActive(TruePanals);
         TruePanals = !TruePanals;
+    }
+    public void AnswerMail(string answer){
+        if(answer==csvDatas[q][4]){
+            startText.text="そのとーり";
+        }
+        else{
+            startText.text="それは違うぜ";
+        }
+        q+=1;
+        StartCoroutine(MailStart());
     }
 }
