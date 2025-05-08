@@ -19,4 +19,7 @@ public class SelectManager : MonoBehaviour
     public void Mail(){
         SceneManager.LoadScene("MailScene");
     }
+    public void Web(){
+        SceneManager.LoadScene("WebSimScene");
+    }
 }

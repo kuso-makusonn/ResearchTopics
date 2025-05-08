@@ -30,6 +30,14 @@ public class TitleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.touchSupported){//タッチ入力
+            buttons.SetActive(true);
+            Change_Screen+=1;
+        }
+        if(Input.GetMouseButton(0)){//タッチ入力
+            buttons.SetActive(true);
+            Change_Screen+=1;
+        }
         if(Input.GetKey(KeyCode.Return)){//Enterで表示
             buttons.SetActive(true);
             Change_Screen+=1;
@@ -46,7 +54,7 @@ public class TitleManager : MonoBehaviour
     }
     public void IsButton(bool TS){
         if(TS==true){
-            SceneManager.LoadScene("SerectScene");//シミュレーションシーンに移行
+            SceneManager.LoadScene("SelectScene");//シミュレーションシーンに移行
         }
         if(TS==false){
             SceneManager.LoadScene("PCQuizScene");//パソコン版(仮)のクイズに移動
