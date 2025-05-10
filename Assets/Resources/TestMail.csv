@@ -1,2 +1,4 @@
-Num,mail,アドレス,URL,Answer
+Num,mail,Address,URL,Answer
 1,件名: 【緊急】あなたのアカウントが停止されました！\n差出人: support@bank-secure-jp.com\n \nお客様各位\n\nいつもご利用いただきありがとうございます。\n最近、お客様のアカウントに異常なログインが検出されました。\n\nセキュリティ保護のため、アカウントを一時的に停止いたしました。\n確認のため、以下のリンクからログインをお願いいたします。\n\n⇒ http://secure-login-bank-jp.xyz/update \n\nこのリンクは24時間以内に有効です。\nご対応いただけない場合、アカウントが永久に削除される可能性があります。\n\nご不便をおかけし申し訳ございませんが、ご理解とご協力をお願いいたします。\n\nBank Secure サポートチーム,support@bank-secure-jp.com,https://secure-login-bank-jp.xyz/update,URL
+2,件名：【重要】Amazonアカウントの支払い方法に問題があります\n差出人： Amazonカスタマーサービス account-update@amazon-jp-support.com\n \nお客様各位\n \n平素よりAmazonをご利用いただき、誠にありがとうございます。弊社のシステムによる定期的なセキュリティチェックの結果、お客様のアカウントに登録されている支払い方法に関する問題が検出されました。\n \n現在、お客様のアカウントは一時的に制限されております。\n制限を解除するためには、以下のリンクよりお支払い情報の再確認をお願いいたします。\n \n▼アカウント確認ページ\nhttps://www.amazon.co.jp.verify-update-secure.com/login \n \nこの処理は安全であり、お客様の情報は暗号化されて送信されます。\n \n万が一、24時間以内に確認が行われない場合、アカウントは凍結される可能性がございます。\n \nお手数をおかけいたしますが、何卒よろしくお願い申し上げます。\n \nAmazonカスタマーサービス,amazon@customer-support.com,https://www.amazon.co.jp/login,Address
+

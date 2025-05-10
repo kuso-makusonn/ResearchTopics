@@ -297,7 +297,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 83529182}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 948734227}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: AnswerMail
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Trues
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &83529182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,7 +897,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 507212352}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 948734227}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: AnswerMail
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ress
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &507212352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1530,6 +1554,7 @@ MonoBehaviour:
   AnsPanel1: {fileID: 1582281115}
   mailText: {fileID: 1960989533}
   trueText: {fileID: 1498362211}
+  startText: {fileID: 937257419}
   mailStartPanel: {fileID: 1035984739}
 --- !u!1 &986578360
 GameObject:
@@ -1614,7 +1639,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 986578363}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 948734227}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: AnswerMail
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: String
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &986578363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1915,7 +1952,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u3053\u306E\u30E1\u30FC\u30EB\u306F\u672C\u7269\u304B\u306A\uFF1F"
+  m_text: "\u3053\u306E\u30E1\u30FC\u30EB\u306F\n\u3069\u3053\u304C\u9055\u3046\uFF1F"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
   m_sharedMaterial: {fileID: 88717815409546352, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
@@ -2140,6 +2177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: 0, y: 0, z: 0}
+  startPosition: {x: 590, y: 400, z: 0}
   speed: 200
 --- !u!1 &1256377724
 GameObject:
@@ -2224,7 +2262,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1256377727}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 948734227}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: AnswerMail
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: URL
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1256377727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2321,10 +2371,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No
+  m_text: "\u9055\u308F\u306A\u3044"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
+  m_sharedMaterial: {fileID: 88717815409546352, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2348,8 +2398,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3053,7 +3103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1582281116
 RectTransform:
   m_ObjectHideFlags: 0

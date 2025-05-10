@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PoPMove : MonoBehaviour
 {
     public Vector3 targetPosition; // 目標位置
+    public Vector3 startPosition; // 初めの位置
     public float speed = 200f;     // 移動速度（UIはピクセルベース）
 
     private RectTransform rectTransform;
+    public static bool Reseter=true;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,5 +36,12 @@ public class PoPMove : MonoBehaviour
             // 必要があればフラグなどで停止処理
             //Debug.Log("目的地に到達しました！");
         }
+        if(Reseter==false){
+            ResetPop();
+        }
+    }
+    public void ResetPop(){
+            rectTransform.position=startPosition;
+            Reseter = !Reseter;
     }
 }
