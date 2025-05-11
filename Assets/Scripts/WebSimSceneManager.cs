@@ -66,7 +66,7 @@ public class WebSimSceneManager : MonoBehaviour
                 notSafeSprits.Remove(webSprite);
             }
             webPage.sprite = webSprite;
-            contentTransform.sizeDelta = new Vector2(webWidth,200 + webWidth*(webSprite.rect.height/webSprite.rect.width) + 600);
+            contentTransform.sizeDelta = new Vector2(webWidth,200 + webWidth*(webSprite.rect.height/webSprite.rect.width) + 400);
             contentTransform.position = new Vector2(0,0);
             rootWebSim.SetActive(true);
             Debug.Log("ウェブページセット完了！");
