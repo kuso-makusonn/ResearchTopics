@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
         }
     }
     void TextChange(){
+        StartCoroutine(MailQuiz());
         mailText.text=csvDatas[q][1].Replace("\\n","\n");
         trueText.text="アドレス\n"+csvDatas[q][2]+"\nURL\n"+csvDatas[q][3];
     }
@@ -50,9 +51,15 @@ public class GameManager : MonoBehaviour
         mailStartPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         mailStartPanel.SetActive(false);
+        TextChange();
+    }
+    IEnumerator MailQuiz(){
+        mailStartPanel.SetActive(true);
+        startText.text="第"+q+"問目";
+        yield return new WaitForSeconds(1.5f);
+        mailStartPanel.SetActive(false);
         AnsPanel1.SetActive(true);
         PoPMove.Reseter=false;
-        TextChange();
         TruePanals = true;
     }
     public void MailPanelOn(){

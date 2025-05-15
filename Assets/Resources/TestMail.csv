@@ -1,4 +1,21 @@
 Num,mail,Address,URL,Answer
 1,件名: 【緊急】あなたのアカウントが停止されました！\n差出人: support@bank-secure-jp.com\n \nお客様各位\n\nいつもご利用いただきありがとうございます。\n最近、お客様のアカウントに異常なログインが検出されました。\n\nセキュリティ保護のため、アカウントを一時的に停止いたしました。\n確認のため、以下のリンクからログインをお願いいたします。\n\n⇒ http://secure-login-bank-jp.xyz/update \n\nこのリンクは24時間以内に有効です。\nご対応いただけない場合、アカウントが永久に削除される可能性があります。\n\nご不便をおかけし申し訳ございませんが、ご理解とご協力をお願いいたします。\n\nBank Secure サポートチーム,support@bank-secure-jp.com,https://secure-login-bank-jp.xyz/update,URL
-2,件名：【重要】Amazonアカウントの支払い方法に問題があります\n差出人： Amazonカスタマーサービス account-update@amazon-jp-support.com\n \nお客様各位\n \n平素よりAmazonをご利用いただき、誠にありがとうございます。弊社のシステムによる定期的なセキュリティチェックの結果、お客様のアカウントに登録されている支払い方法に関する問題が検出されました。\n \n現在、お客様のアカウントは一時的に制限されております。\n制限を解除するためには、以下のリンクよりお支払い情報の再確認をお願いいたします。\n \n▼アカウント確認ページ\nhttps://www.amazon.co.jp.verify-update-secure.com/login \n \nこの処理は安全であり、お客様の情報は暗号化されて送信されます。\n \n万が一、24時間以内に確認が行われない場合、アカウントは凍結される可能性がございます。\n \nお手数をおかけいたしますが、何卒よろしくお願い申し上げます。\n \nAmazonカスタマーサービス,amazon@customer-support.com,https://www.amazon.co.jp/login,Address
+2,件名：【重要】Amezonアカウントの支払い方法に問題があります\n差出人： Amezonカスタマーサービス account-update@amezon-jp-support.com\n \nお客様各位\n \n平素よりAmezonをご利用いただき、誠にありがとうございます。弊社のシステムによる定期的なセキュリティチェックの結果、お客様のアカウントに登録されている支払い方法に関する問題が検出されました。\n \n現在、お客様のアカウントは一時的に制限されております。\n制限を解除するためには、以下のリンクよりお支払い情報の再確認をお願いいたします。\n \n▼アカウント確認ページ\nhttps://www.amezon.co.jp.verify-update-secure.com/login \n \nこの処理は安全であり、お客様の情報は暗号化されて送信されます。\n \n万が一、24時間以内に確認が行われない場合、アカウントは凍結される可能性がございます。\n \nお手数をおかけいたしますが、何卒よろしくお願い申し上げます。\n \nAmezonカスタマーサービス,amezon@customer-support.com,https://www.amezon.co.jp/login,Address
+3,差出人：Apple Support security@appleid-alert.com\n件名：あなたのApple IDがセキュリティ上の理由でロックされました\nお客様各位\n\n不審なログイン試行が検出されましたため、Apple IDを一時的にロックいたしました。\nアカウントへのアクセスを再開するには、以下のリンクより本人確認をお願いいたします。\n\n→ https://appleid.reactivate-verify.com\n\n24時間以内に対応されない場合、アカウントは恒久的に無効化される可能性があります。\nご理解のほどよろしくお願いいたします。\n\nApple サポートチーム,Apple Support security@appleid-alert.com,https://appleid.reactivate-verify.com,Trues
+4,件名：【緊急通知】あなたのアカウントは凍結されました！！！\n差出人: support@bank-secure-jp.com\n\n親愛なるお客様様、\n\n我々は最近、あなたのバンクカードに不正アクセスがあることを検出しました。安全性を保障するために、直ちに以下のリンクから個人情報をご提供する義務があります：\n\n>>【https://suspicious-site.com/verify-now】<<\n\nもし24時間以内に対応しない場合、あなたのアカウントは永久に閉鎖することになりますのでご注意ください！\n\n信頼される銀行株式会社\nセキュリティーデパートメントチーム一同,support@bank-secure-jp.com,https://suspicious-site.ru/verify-now,Text
+5,件名：【重要】アカウント情報のご確認をお願いします\n\n送信元：support@oidpay.co.jp\n\nお客様へ\n\n平素よりOldPayをご利用いただき誠にありがとうございます。\nお客様のアカウントに不審なログインが確認されたため、念のためご確認をお願いしております。\n\n下記リンクよりご確認ください：\nhttps://www.oldpay.com/account/verify\n\n今後ともよろしくお願いいたします。\n\nOldPayカスタマーサポート,support@oldpay.co.jp,https://www.oldpay.com/account/verify,Address
+6,件名：【ご確認ください】アカウントに関する大切なお知らせ\n\n送信元：info@docomo.ne.jp\n\nお客様へ\n\n平素はドコモをご愛顧いただきまして誠に感謝しかありません。\nこの度、アカウントのご利用に関しておどろきの事態が発生しました。\n\n至急、下記リンクから手続きしてください。\nhttps://www.docomo.ne.jp/authenticate\n\nドコモカスタマーサポート,info@docomo.ne.jp,https://www.docomo.ne.jp/authenticate,Text
+7,件名：【最終警告】アカウント停止のお知らせ\n\n送信元：no-reply@mics0ft-support.com\n\nお客様へ\n\nマイクソフトアカウントに異常が検出されました。\n安全のため、下記リンクより情報をご確認ください。\n\nhttps://account.micsoft.com/security\n\nMicsoftアカウントチーム,no-reply@micsoft-support.com,https://account.micsoft.com/security,Address
+8,件名：【ご注意ください】アカウント不正アクセスのご連絡\n\n送信元：security@softbank.jp\n\nお客様へ\n\n平素よりソフトバンクをご利用いただき、誠にありがとうございます。\nお客様のアカウントに第三者による不正アクセスの兆候が確認されました。\n\n以下のリンクよりご確認いただけますようお願いいたします。\n\n→ https://softbank.jp/security-check/oniisann-nandeyanen\n\nご理解とご協力をお願いいたします。\n\nソフトバンクサポートセンター,security@softbank.jp, https://softbank.jp/security-check/,URL
+9,件名：【ご確認ください】哀天アカウント重要なお知らせ\n\n送信元：security@aiten-unko-love.jp\n\nお客様へ\n\nいつも哀天をご利用いただきありがとうございます。\nお客様のアカウントに不審なアクセスが確認されました。\nアカウント保護のため、以下のリンクよりご確認をお願いいたします。\n\n→ https://www.aiten.co.jp/account/verify\n\n今後とも哀天をよろしくお願いいたします。\n\n哀天カスタマーサポート,security@aiten.jp,https://www.aiten.co.jp/account/verify,Address
+10,件名：【大切なお知らせ】マイクソフトアカウントの確認\n\n送信元：security@micsushi-support.jp\n\nお客様へ\n\nマイクソフトアカウントに関して、重要なお知らせがございます。\n以下リンクよりアカウントをご確認ください。\n\n→ https://account.micsoft.com/security\n\nMicsoftカスタマーサポート,security@micsushi-support.jp,https://account.micsoft.com/security,Address
+
+
+
+
+
+
+
+
+
 

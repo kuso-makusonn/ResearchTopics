@@ -18,6 +18,7 @@ public class PoPMove : MonoBehaviour
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        
     }
 
     // Update is called once per frame
@@ -41,7 +42,7 @@ public class PoPMove : MonoBehaviour
         }
     }
     public void ResetPop(){
-            rectTransform.position=startPosition;
+            rectTransform.anchoredPosition=startPosition;
             Reseter = !Reseter;
     }
 }
