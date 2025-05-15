@@ -76,6 +76,9 @@ public class GameManager : MonoBehaviour
             startText.text="それは違うぜ";
         }
         q+=1;
+        if(TruePanals==false){
+            onTruePanelS();
+        }
         StartCoroutine(MailStart());
     }
 }
