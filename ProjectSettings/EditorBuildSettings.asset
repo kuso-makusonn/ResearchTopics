@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SimulationScenes/MailScene.unity
     guid: 465261af360727747b5a39e02813676c
+  - enabled: 1
+    path: Assets/Scenes/SimulationScenes/SNSSimScene.unity
+    guid: 1943ae4a509de204d8dfde3880e392c2
   m_configObjects: {}
