@@ -14,9 +14,13 @@ public class WebSimSceneManager : MonoBehaviour
     [SerializeField] Image webPage;//ページ画像のコンポーネント
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip correctSound,notCorrectSound;
-    Sprite webSprite;
-    List<Sprite> safeSprits,notSafeSprits;
-    const float webWidth = 1900;
+    string webLink;
+    const string rootWebLink = "https://sites.google.com/view/2025-meiden-j3a-j06/";
+    const int safeLinkCount = 1,notSafeLinkCount = 1;
+    List<string> safeLinks,notSafeLinks;
+    // Sprite webSprite;
+    // List<Sprite> safeSprits,notSafeSprits;
+    // const float webWidth = 1900;
     int qNum,score;
     bool isSafe,answer;
     // Start is called before the first frame update
@@ -41,14 +45,26 @@ public class WebSimSceneManager : MonoBehaviour
     }
     IEnumerator WebSimStart(){
         ClearScreen();
-        if(qNum == 1){
-            safeSprits = Resources.LoadAll<Sprite>("WebPage/Safe").ToList();
-            notSafeSprits = Resources.LoadAll<Sprite>("WebPage/NotSafe").ToList();
+        yield return null;
+        if (qNum == 1)
+        {
+            safeLinks = new List<string>();
+            notSafeLinks = new List<string>();
+            for (int i = 1; i <= safeLinkCount; i++)
+            {
+                safeLinks.Add(rootWebLink + "safe/" + i.ToString());
+            }
+            for (int i = 1; i <= notSafeLinkCount; i++)
+            {
+                notSafeLinks.Add(rootWebLink + "notsafe/" + i.ToString());
+            }
+            // safeSprits = Resources.LoadAll<Sprite>("WebPage/Safe").ToList();
+            // notSafeSprits = Resources.LoadAll<Sprite>("WebPage/NotSafe").ToList();
             webSimStartPanel.SetActive(true);
             yield return new WaitForSeconds(1.5f);
             webSimStartPanel.SetActive(false);
         }
-        if(safeSprits.Count > 0 && notSafeSprits.Count > 0){
+        if(safeLinks.Count > 0 && notSafeLinks.Count > 0){
             questionNumberText.text = qNum + "問目！";
             questionNumberPanel.SetActive(true);
             yield return new WaitForSeconds(1.5f);
@@ -57,18 +73,25 @@ public class WebSimSceneManager : MonoBehaviour
             if(Random.Range(0,2) == 0){
                 Debug.Log("安全な方");
                 isSafe = true;
-                webSprite = safeSprits[Random.Range(0,safeSprits.Count)];
-                safeSprits.Remove(webSprite);
+                webLink = safeLinks[Random.Range(0,safeLinks.Count)];
+                safeLinks.Remove(webLink);
+                // webSprite = safeSprits[Random.Range(0,safeSprits.Count)];
+                // safeSprits.Remove(webSprite);
             }else{
                 Debug.Log("危険な方");
                 isSafe = false;
-                webSprite = notSafeSprits[Random.Range(0,notSafeSprits.Count)];
-                notSafeSprits.Remove(webSprite);
+                webLink = notSafeLinks[Random.Range(0,notSafeLinks.Count)];
+                notSafeLinks.Remove(webLink);
+                // webSprite = notSafeSprits[Random.Range(0,notSafeSprits.Count)];
+                // notSafeSprits.Remove(webSprite);
             }
-            webPage.sprite = webSprite;
-            contentTransform.sizeDelta = new Vector2(webWidth,200 + webWidth*(webSprite.rect.height/webSprite.rect.width) + 400);
-            contentTransform.position = new Vector2(0,0);
-            rootWebSim.SetActive(true);
+            Application.OpenURL(webLink);
+            // webPage.sprite = webSprite;
+            // contentTransform.sizeDelta = new Vector2(webWidth,200 + webWidth*(webSprite.rect.height/webSprite.rect.width) + 400);
+            // contentTransform.position = new Vector2(0,0);
+
+            answerPanel.SetActive(true);
+            // rootWebSim.SetActive(true);
             Debug.Log("ウェブページセット完了！");
         }else{
             Debug.Log("データもうねえよ!");
@@ -92,7 +115,8 @@ public class WebSimSceneManager : MonoBehaviour
         answerPanel.SetActive(true);
     }
     public void ReturnWebPanelButton(){
-        answerPanel.SetActive(false);
+        Application.OpenURL(webLink);
+        // answerPanel.SetActive(false);
     }
     public void SafeButton(){
         answer = true;
