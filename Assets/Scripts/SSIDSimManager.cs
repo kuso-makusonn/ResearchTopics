@@ -18,7 +18,8 @@ public class SSIDSimManager : MonoBehaviour
     int Ans = 0;//回答番号
     int q = 1;//問題番号
     int score = 0, wrongNum = 0;
-    public AudioClip sound1, sound2;//音1,音2
+    const int maxWrong = 7;//n回間違えるとでゲームオーバー
+    public AudioClip correctSound, notCorrectSound;//音1,音2
     AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
@@ -34,8 +35,8 @@ public class SSIDSimManager : MonoBehaviour
             string line = reader.ReadLine(); // 一行ずつ読み込み
             csvData.Add(line.Split(',')); // , 区切りでリストに追加
         }
+        ClearScreen();
         difficultySelection.SetActive(true);//難易度選択画面表示
-        rootQuiz.SetActive(false);//クイズ画面隠す
     }
     void Update()
     {
@@ -45,10 +46,20 @@ public class SSIDSimManager : MonoBehaviour
             SceneManager.LoadScene("TitleScene");
         }
     }
-
-    void QASet()
-    {//問いの文章と各選択肢を設定
+    void ClearScreen()
+    {
+        rootQuiz.SetActive(false);
+        quiz.SetActive(false);
+        quizStartPanel.SetActive(false);
         ansPanel.SetActive(false);
+        difficultySelection.SetActive(false);
+    }
+    void QASet()
+    {
+        //問いの文章と各選択肢を設定
+        ClearScreen();
+        rootQuiz.SetActive(true);
+        quiz.SetActive(true);
         b1Text.text = csvData[q][0];
         b2Text.text = csvData[q][1];
         b3Text.text = csvData[q][2];
@@ -77,11 +88,12 @@ public class SSIDSimManager : MonoBehaviour
         CheckAnswer();
     }
     public void CheckAnswer()
-    {//政党判定
+    {
+        //正誤判定
         if (Ans == int.Parse(csvData[q][4]))
         {
             ansText.text = "正解だよ";
-            audioSource.PlayOneShot(sound1);//音１を鳴らす
+            audioSource.PlayOneShot(correctSound);//音１を鳴らす
             score += 100;
             wrongNum--;
             if (wrongNum < 0)
@@ -92,20 +104,32 @@ public class SSIDSimManager : MonoBehaviour
         else
         {
             ansText.text = "違うよ";
-            audioSource.PlayOneShot(sound2);//音２を鳴らす
+            audioSource.PlayOneShot(notCorrectSound);//音２を鳴らす
             wrongNum++;
+            if (wrongNum == 1)
+            {
+                StartCoroutine(ToDanger());
+            }
+            if (wrongNum >= maxWrong)
+            {
+                ClearScreen();
+                Debug.Log("GameOver");
+            }
         }
-        CheckWrong();
         ShowScore();
-        StartCoroutine(AnsPanels());
+        StartCoroutine(ShowAnsPanels());
     }
-    IEnumerator AnsPanels()
-    {//正解不正解を表示
+    IEnumerator ShowAnsPanels()
+    {
+        //正解不正解を表示
         ansPanel.SetActive(true);//パネルを表示
         yield return new WaitForSeconds(2f);
         ansPanel.SetActive(false);//パネルを非表示
-        q++;//カウントを増やす
-        QASet();//クイズ・アンサーを設定
+        if (wrongNum < maxWrong)
+        {
+            q++;//カウントを増やす
+            QASet();//クイズ・アンサーを設定
+        }
     }
 
     /// <summary>
@@ -116,37 +140,33 @@ public class SSIDSimManager : MonoBehaviour
     public void DfcButtonA()
     {
         difficulty = 1;
-        ToQA();
+        StartCoroutine(QuizStart());
     }
     public void DfcButtonB()
     {
         difficulty = 2;
-        ToQA();
+        StartCoroutine(QuizStart());
     }
     public void DfcButtonC()
     {
         difficulty = 3;
-        ToQA();
+        StartCoroutine(QuizStart());
     }
     public void DfcButtonD()
     {
         difficulty = 4;
-        ToQA();
-    }
-    void ToQA()
-    {
-        rootQuiz.SetActive(true);//クイズアクティブ
-        quiz.SetActive(false);//クイズ画面は隠す（スタート画面出すため）
-        difficultySelection.SetActive(false);//難易度選択画面隠す
         StartCoroutine(QuizStart());
     }
     IEnumerator QuizStart()
     {
+        ClearScreen();
+        rootQuiz.SetActive(true);
         quizStartPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         quizStartPanel.SetActive(false);
         quiz.SetActive(true);
         score = 0;
+        q = 1;
         wrongNum = 0;
         ShowScore();
         QASet();//クイズ読み込み・表示
@@ -155,68 +175,42 @@ public class SSIDSimManager : MonoBehaviour
     {
         scoreText.text = $"Score:{score}";
     }
-    void CheckWrong()
+    IEnumerator ToDanger()
     {
-        if (wrongNum > 0)
+        bool isIncreasing = true;
+        const float defaultR = 255f;
+        const float maxA = 100f;
+        const int changeNum = 4;//n回目から点滅開始
+        float rRate;
+        dangerPanel.SetActive(true);
+        while (wrongNum > 0)
         {
-            dangerPanel.SetActive(true);
-            StartCoroutine(InDanger());
-        }
-        else
-        {
-            dangerPanel.SetActive(false);
-        }
-        IEnumerator InDanger()
-        {
-            bool isIncreasing = true;
-            while (wrongNum > 0)
+            if (wrongNum < changeNum)
             {
-                float defaultR = 255f / 255f;
-                float maxA = 100f / 255f;
-                int changeNum = 3;
-                float rRate = 0.5f * (wrongNum-changeNum);
-                if (wrongNum <= changeNum)
+                dangerPanelImage.color = new Color(defaultR / 255f, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / (changeNum - 1) * wrongNum / 255f);
+            }
+            else
+            {
+                rRate = 2f * (wrongNum - (changeNum - 1));
+                if (isIncreasing)
                 {
-                    dangerPanelImage.color = new Color(defaultR, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / changeNum * wrongNum);
-                    // if (isIncreasing)
-                    // {
-                    //     dangerPanelImage.color = new Color(defaultR, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / changeNum * wrongNum);
-                    //     if (dangerPanelImage.color.r >= 1)
-                    //     {
-                    //         isIncreasing = false;
-                    //     }
-                    // }
-                    // else
-                    // {
-                    //     dangerPanelImage.color = new Color(defaultR, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / changeNum * wrongNum);
-                    //     if (dangerPanelImage.color.r <= 0)
-                    //     {
-                    //         isIncreasing = true;
-                    //     }
-                    // }
+                    dangerPanelImage.color = new Color(dangerPanelImage.color.r + rRate / 255f, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / 255f);
+                    if (dangerPanelImage.color.r >= 1)
+                    {
+                        isIncreasing = false;
+                    }
                 }
                 else
                 {
-                    if (isIncreasing)
+                    dangerPanelImage.color = new Color(dangerPanelImage.color.r - rRate / 255f, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA / 255f);
+                    if (dangerPanelImage.color.r <= 0)
                     {
-                        dangerPanelImage.color = new Color(dangerPanelImage.color.r + rRate / 255f, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA);
-                        if (dangerPanelImage.color.r >= 1)
-                        {
-                            isIncreasing = false;
-                        }
-                    }
-                    else
-                    {
-                        dangerPanelImage.color = new Color(dangerPanelImage.color.r - rRate / 255f, dangerPanelImage.color.g, dangerPanelImage.color.b, maxA);
-                        if (dangerPanelImage.color.r <= 0)
-                        {
-                            isIncreasing = true;
-                        }
+                        isIncreasing = true;
                     }
                 }
-                yield return null;
             }
-            dangerPanel.SetActive(false);
+            yield return null;
         }
+        dangerPanel.SetActive(false);
     }
 }

@@ -1101,12 +1101,12 @@ MonoBehaviour:
   scoreText: {fileID: 1837218339}
   rootQuiz: {fileID: 308579210}
   quiz: {fileID: 104675264}
-  quizStartPanel: {fileID: 701554561}
+  quizStartPanel: {fileID: 763323855}
   ansPanel: {fileID: 876608935}
   difficultySelection: {fileID: 224799093}
   dangerPanel: {fileID: 1780266612}
-  sound1: {fileID: 8300000, guid: 8e6151f9afbb12a409f7fba4ef6fdd0a, type: 3}
-  sound2: {fileID: 8300000, guid: f843b0c30cdd8684d8e9ae5398c39202, type: 3}
+  correctSound: {fileID: 8300000, guid: 8e6151f9afbb12a409f7fba4ef6fdd0a, type: 3}
+  notCorrectSound: {fileID: 8300000, guid: f843b0c30cdd8684d8e9ae5398c39202, type: 3}
 --- !u!82 &529340115
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1485,7 +1485,7 @@ GameObject:
   - component: {fileID: 701554564}
   - component: {fileID: 701554563}
   m_Layer: 5
-  m_Name: QuizStartPanel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
