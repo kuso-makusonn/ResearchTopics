@@ -1895,7 +1895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Null
+  m_text: "SSID\n\u8A50\u6B3A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
   m_sharedMaterial: {fileID: 88717815409546352, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
@@ -2119,7 +2119,7 @@ GameObject:
   - component: {fileID: 1556126750}
   - component: {fileID: 1556126749}
   m_Layer: 5
-  m_Name: Mail (1)
+  m_Name: SSID
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2191,8 +2191,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1857690344}
-        m_TargetAssemblyTypeName: SerectManager, Assembly-CSharp
-        m_MethodName: 
+        m_TargetAssemblyTypeName: SelectManager, Assembly-CSharp
+        m_MethodName: SSID
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

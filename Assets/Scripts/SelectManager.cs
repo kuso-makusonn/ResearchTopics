@@ -31,4 +31,8 @@ public class SelectManager : MonoBehaviour
     public void SNS(){
         SceneManager.LoadScene("SNSSimScene");
     }
+    public void SSID()
+    {
+        SceneManager.LoadScene("SSIDSimScene");
+    }
 }

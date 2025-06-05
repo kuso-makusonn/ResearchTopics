@@ -1492,7 +1492,7 @@ MonoBehaviour:
   difficultySelection: {fileID: 224799093}
   dangerPanel: {fileID: 1780266612}
   correctSound: {fileID: 8300000, guid: 8e6151f9afbb12a409f7fba4ef6fdd0a, type: 3}
-  notCorrectSound: {fileID: 8300000, guid: f843b0c30cdd8684d8e9ae5398c39202, type: 3}
+  wrongSound: {fileID: 8300000, guid: f843b0c30cdd8684d8e9ae5398c39202, type: 3}
 --- !u!82 &529340115
 AudioSource:
   m_ObjectHideFlags: 0
