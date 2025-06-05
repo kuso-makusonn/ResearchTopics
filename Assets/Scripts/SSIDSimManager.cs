@@ -10,7 +10,7 @@ using System.Linq;
 public class SSIDSimManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI b1Text, b2Text, b3Text, b4Text, ansText, scoreText;//テキスト
-    [SerializeField] GameObject rootQuiz, quiz, quizStartPanel, ansPanel, difficultySelection, dangerPanel;
+    [SerializeField] GameObject title, quiz, quizStartPanel, ansPanel, difficultySelection, dangerPanel;
     Image dangerPanelImage;
     TextAsset csvFile;// CSVファイル
     List<string[]> csvData = new List<string[]>(); // CSVの中身を入れるリスト;
@@ -36,7 +36,7 @@ public class SSIDSimManager : MonoBehaviour
             csvData.Add(line.Split(',')); // , 区切りでリストに追加
         }
         ClearScreen();
-        difficultySelection.SetActive(true);//難易度選択画面表示
+        title.SetActive(true);
     }
     void Update()
     {
@@ -48,17 +48,20 @@ public class SSIDSimManager : MonoBehaviour
     }
     void ClearScreen()
     {
-        rootQuiz.SetActive(false);
         quiz.SetActive(false);
         quizStartPanel.SetActive(false);
         ansPanel.SetActive(false);
         difficultySelection.SetActive(false);
     }
+    public void SSIDSimStart()
+    {
+        title.SetActive(false);
+        difficultySelection.SetActive(true);//難易度選択画面表示
+    }
     void QASet()
     {
         //問いの文章と各選択肢を設定
         ClearScreen();
-        rootQuiz.SetActive(true);
         quiz.SetActive(true);
         b1Text.text = csvData[q][0];
         b2Text.text = csvData[q][1];
@@ -160,7 +163,6 @@ public class SSIDSimManager : MonoBehaviour
     IEnumerator QuizStart()
     {
         ClearScreen();
-        rootQuiz.SetActive(true);
         quizStartPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         quizStartPanel.SetActive(false);

@@ -6,12 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine.WSA;
 //using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
     [SerializeField]TextMeshProUGUI quizText,b1Text,b2Text,b3Text,b4Text,ansText;//テキスト
-    [SerializeField] GameObject rootQuiz,quiz,quizStartPanel,ansPanel,difficultySelection;
+    [SerializeField] GameObject title, rootQuiz,quiz,quizStartPanel,ansPanel,difficultySelection;
     TextAsset csvFile;// CSVファイル
     List<string[]> csvDatas = new List<string[]>(); // CSVの中身を入れるリスト;
     List<int> quizNumbers = new List<int>();//クイズの問題番号を入れる箱
@@ -40,7 +41,7 @@ public class QuizManager : MonoBehaviour
         {
             quizNumbers.Add(i);
         }
-        difficultySelection.SetActive(true);//難易度選択画面表示
+        title.SetActive(true);
         rootQuiz.SetActive(false);//クイズ画面隠す
     }
     void Update(){
@@ -48,6 +49,11 @@ public class QuizManager : MonoBehaviour
             TitleManager.SceneChanger=true;
             SceneManager.LoadScene("TitleScene");
         }
+    }
+    public void QuizStartButton()
+    {
+        title.SetActive(false);
+        difficultySelection.SetActive(true);//難易度選択画面表示
     }
 
     void QASet()
