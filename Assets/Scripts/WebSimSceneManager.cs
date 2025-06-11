@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class WebSimSceneManager : MonoBehaviour
 {
-    [SerializeField] GameObject webSimStartPanel,questionNumberPanel,rootWebSim,answerPanel,resultPanel;
+    [SerializeField] GameObject title,webSimStartPanel,questionNumberPanel,rootWebSim,answerPanel,resultPanel;
     [SerializeField] RectTransform contentTransform;
     [SerializeField] TextMeshProUGUI questionNumberText,resultText;
     [SerializeField] Image webPage;//ページ画像のコンポーネント
@@ -28,7 +28,6 @@ public class WebSimSceneManager : MonoBehaviour
     {
         qNum = 1;
         score = 0;
-        StartCoroutine(WebSimStart());
     }
     void Update(){
         if (Input.GetKeyDown(KeyCode.Escape)){
@@ -42,6 +41,11 @@ public class WebSimSceneManager : MonoBehaviour
         questionNumberPanel.SetActive(false);
         answerPanel.SetActive(false);
         resultPanel.SetActive(false);
+    }
+    public void WebSimStartButton()
+    {
+        title.SetActive(false);
+        StartCoroutine(WebSimStart());
     }
     IEnumerator WebSimStart(){
         ClearScreen();

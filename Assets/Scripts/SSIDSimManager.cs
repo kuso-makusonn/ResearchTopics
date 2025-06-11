@@ -10,16 +10,19 @@ using System.Linq;
 public class SSIDSimManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI b1Text, b2Text, b3Text, b4Text, ansText, scoreText;//テキスト
-    [SerializeField] GameObject rootQuiz, quiz, quizStartPanel, ansPanel, difficultySelection, dangerPanel;
+    [SerializeField] GameObject title, quiz, quizStartPanel, ansPanel, difficultySelection, dangerPanel;
     Image dangerPanelImage;
     TextAsset csvFile;// CSVファイル
-    List<string[]> csvData = new List<string[]>(); // CSVの中身を入れるリスト;
+    List<List<string>> csvData = new List<List<string>>(); // CSVの中身を入れるリスト;
     int difficulty;//難易度番号1~4　数字が小さいほうが簡単
     int Ans = 0;//回答番号
+    int correctButtonNum;//解答番号
     int q = 1;//問題番号
+    int currentQuizIndex;
+    TextMeshProUGUI[] AnswerButtonTexts;
     int score = 0, wrongNum = 0;
     const int maxWrong = 7;//n回間違えるとでゲームオーバー
-    public AudioClip correctSound, notCorrectSound;//音1,音2
+    public AudioClip correctSound, wrongSound;//音1,音2
     AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
@@ -33,10 +36,12 @@ public class SSIDSimManager : MonoBehaviour
         while (reader.Peek() != -1) // reader.Peekが-1になるまで
         {
             string line = reader.ReadLine(); // 一行ずつ読み込み
-            csvData.Add(line.Split(',')); // , 区切りでリストに追加
+            csvData.Add(new List<string>(line.Split(','))); // , 区切りでリストに追加
         }
+        csvData.RemoveAt(0);
+        AnswerButtonTexts = new TextMeshProUGUI[] { b1Text, b2Text, b3Text, b4Text };
         ClearScreen();
-        difficultySelection.SetActive(true);//難易度選択画面表示
+        title.SetActive(true);
     }
     void Update()
     {
@@ -48,22 +53,42 @@ public class SSIDSimManager : MonoBehaviour
     }
     void ClearScreen()
     {
-        rootQuiz.SetActive(false);
         quiz.SetActive(false);
         quizStartPanel.SetActive(false);
         ansPanel.SetActive(false);
         difficultySelection.SetActive(false);
     }
+    public void SSIDSimStart()
+    {
+        title.SetActive(false);
+        difficultySelection.SetActive(true);//難易度選択画面表示
+    }
     void QASet()
     {
         //問いの文章と各選択肢を設定
         ClearScreen();
-        rootQuiz.SetActive(true);
-        quiz.SetActive(true);
-        b1Text.text = csvData[q][0];
-        b2Text.text = csvData[q][1];
-        b3Text.text = csvData[q][2];
-        b4Text.text = csvData[q][3];
+        if (csvData.Count > 0)
+        {
+            quiz.SetActive(true);
+            currentQuizIndex = Random.Range(0, csvData.Count);
+            Debug.Log($"{currentQuizIndex + 1}/{csvData.Count}");
+            string correctChoice = csvData[currentQuizIndex][int.Parse(csvData[currentQuizIndex][csvData[currentQuizIndex].Count - 1])];
+            for (int i = 0; i < AnswerButtonTexts.Length; i++)
+            {
+                int randomChoiceIndex = Random.Range(0, csvData[currentQuizIndex].Count - 1);
+                AnswerButtonTexts[i].text = csvData[currentQuizIndex][randomChoiceIndex];
+                if (csvData[currentQuizIndex][randomChoiceIndex] == correctChoice)
+                {
+                    correctButtonNum = i + 1;
+                }
+                csvData[currentQuizIndex].RemoveAt(randomChoiceIndex);
+            }
+            csvData.RemoveAt(currentQuizIndex);
+        }
+        else
+        {
+            Debug.Log("データもうねぇよ");
+        }
     }
 
     //回答ボタン関数
@@ -90,7 +115,7 @@ public class SSIDSimManager : MonoBehaviour
     public void CheckAnswer()
     {
         //正誤判定
-        if (Ans == int.Parse(csvData[q][4]))
+        if (Ans == correctButtonNum)
         {
             ansText.text = "正解だよ";
             audioSource.PlayOneShot(correctSound);//音１を鳴らす
@@ -104,7 +129,7 @@ public class SSIDSimManager : MonoBehaviour
         else
         {
             ansText.text = "違うよ";
-            audioSource.PlayOneShot(notCorrectSound);//音２を鳴らす
+            audioSource.PlayOneShot(wrongSound);//音２を鳴らす
             wrongNum++;
             if (wrongNum == 1)
             {
@@ -160,7 +185,6 @@ public class SSIDSimManager : MonoBehaviour
     IEnumerator QuizStart()
     {
         ClearScreen();
-        rootQuiz.SetActive(true);
         quizStartPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         quizStartPanel.SetActive(false);

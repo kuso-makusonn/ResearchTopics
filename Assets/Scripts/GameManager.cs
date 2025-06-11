@@ -10,7 +10,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]GameObject mail,mailTextPanel,truePanal;
+    [SerializeField]GameObject title,mail,mailTextPanel,truePanal;
     [SerializeField]GameObject AnsPanel1;
     [SerializeField]TextMeshProUGUI mailText,trueText,startText;
     [SerializeField]GameObject mailStartPanel;
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(MailStart());
         //mail.SetActive(true);
         csvFile = Resources.Load("TestMail") as TextAsset; // Resouces下のCSV読み込み
         StringReader reader = new StringReader(csvFile.text);
@@ -41,6 +40,11 @@ public class GameManager : MonoBehaviour
             TitleManager.SceneChanger=true;
             SceneManager.LoadScene("TitleScene");
         }
+    }
+    public void MailSimStart()
+    {
+        title.SetActive(false);
+        StartCoroutine(MailStart());
     }
     void TextChange(){
         StartCoroutine(MailQuiz());
