@@ -595,7 +595,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SSID\u30B7\u30DF\u30E5\u30EC\u30FC\u30B7\u30E7\u30F3"
+  m_text: "Web\u30B7\u30DF\u30E5\u30EC\u30FC\u30B7\u30E7\u30F3"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
   m_sharedMaterial: {fileID: 88717815409546352, guid: b4958c8bbbbb49f42a095fe747a4e6cf, type: 2}
@@ -1354,9 +1354,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SSIDSimManager, Assembly-CSharp
-        m_MethodName: SSIDSimStart
+      - m_Target: {fileID: 632737520}
+        m_TargetAssemblyTypeName: WebSimSceneManager, Assembly-CSharp
+        m_MethodName: WebSimStartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2026,7 +2026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee11ec1b43310484da9f9477312ddb2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 0}
+  title: {fileID: 341888772}
   webSimStartPanel: {fileID: 415777699}
   questionNumberPanel: {fileID: 326256071}
   rootWebSim: {fileID: 1282677843}

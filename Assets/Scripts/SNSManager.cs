@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class SNSManager : MonoBehaviour
@@ -31,9 +32,14 @@ public class SNSManager : MonoBehaviour
     void Update()
     {
         scoreplant.text = "スコア：" + score.ToString();
-        resultscotxt.text ="スコア：" + score.ToString();
-        if (Input.GetKey(KeyCode.Return)){
+        resultscotxt.text = "スコア：" + score.ToString();
+        if (Input.GetKey(KeyCode.Return))
+        {
             ResultScore();//結果発表
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            TitleManager.SceneChanger=true;
+            SceneManager.LoadScene("TitleScene");
         }
     }
     void SNSChecker()

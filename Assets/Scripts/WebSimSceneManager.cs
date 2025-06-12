@@ -44,12 +44,13 @@ public class WebSimSceneManager : MonoBehaviour
     }
     public void WebSimStartButton()
     {
+        Debug.Log("AAA");
         title.SetActive(false);
         StartCoroutine(WebSimStart());
     }
     IEnumerator WebSimStart(){
         ClearScreen();
-        yield return null;
+        //yield return null;
         if (qNum == 1)
         {
             safeLinks = new List<string>();
