@@ -28,6 +28,7 @@ public class WebSimSceneManager : MonoBehaviour
     {
         qNum = 1;
         score = 0;
+        title.SetActive(true);
     }
     void Update(){
         if (Input.GetKeyDown(KeyCode.Escape)){
@@ -44,7 +45,6 @@ public class WebSimSceneManager : MonoBehaviour
     }
     public void WebSimStartButton()
     {
-        Debug.Log("AAA");
         title.SetActive(false);
         StartCoroutine(WebSimStart());
     }

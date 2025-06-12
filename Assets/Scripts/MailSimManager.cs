@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class MailSimManager : MonoBehaviour
 {
     [SerializeField]GameObject title,mail,mailTextPanel,truePanal;
     [SerializeField]GameObject AnsPanel1;
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //mail.SetActive(true);
-        csvFile = Resources.Load("TestMail") as TextAsset; // Resouces下のCSV読み込み
+        csvFile = Resources.Load("CsvFiles/TestMail") as TextAsset; // Resouces下のCSV読み込み
         StringReader reader = new StringReader(csvFile.text);
         // , で分割しつつ一行ずつ読み込み
         // リストに追加していく

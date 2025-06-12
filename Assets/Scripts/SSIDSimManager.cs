@@ -29,7 +29,7 @@ public class SSIDSimManager : MonoBehaviour
     {
         dangerPanelImage = dangerPanel.GetComponent<Image>();
         audioSource = GetComponent<AudioSource>();//音のComponentを取得
-        csvFile = Resources.Load("課題研究-SSID") as TextAsset; // Resources下のCSV読み込み
+        csvFile = Resources.Load("CsvFiles/課題研究-SSID") as TextAsset; // Resources下のCSV読み込み
         StringReader reader = new StringReader(csvFile.text);
         // , で分割しつつ一行ずつ読み込み
         // リストに追加していく

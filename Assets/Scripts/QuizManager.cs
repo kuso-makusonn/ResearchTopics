@@ -28,7 +28,7 @@ public class QuizManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();//音のComponentを取得
         //csvFile = Resources.Load("課題研究-クイズ") as TextAsset; // Resouces下のCSV読み込み,クイズを追加できるモノがある
-        csvFile = Resources.Load("課題研究-クイズ_1") as TextAsset; // Resouces下のCSV読み込み,クイズのみ
+        csvFile = Resources.Load("CsvFiles/課題研究-クイズ_1") as TextAsset; // Resouces下のCSV読み込み,クイズのみ
         StringReader reader = new StringReader(csvFile.text);
         // , で分割しつつ一行ずつ読み込み
         // リストに追加していく
