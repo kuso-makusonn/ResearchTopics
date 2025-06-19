@@ -18,7 +18,7 @@ public class QuizManager : MonoBehaviour
     List<int> quizNumbers = new List<int>();//クイズの問題番号を入れる箱
     List<int> quizAnsNumber = new List<int> { 2, 3, 4, 5 };
     int difficulty;//難易度番号1~4　数字が小さいほうが簡単
-    int quizEndNumder;
+    public int quizEndNumder;
     int Ans = 0;//回答番号
     int q = 1;//問題番号
     int ans1, ans2, ans3, ans4 = 0;
@@ -42,9 +42,10 @@ public class QuizManager : MonoBehaviour
             string line = reader.ReadLine(); // 一行ずつ読み込み
             csvDatas.Add(line.Split(',')); // , 区切りでリストに追加
         }
-        for (int i = 1; i <= csvDatas.Count; i++)//クイズの問題のリスト
+        for (int i = 0; i < csvDatas.Count; i++)//クイズの問題のリスト
         {
             quizNumbers.Add(i);
+            //Debug.Log(i);
         }
         title.SetActive(true);
         rootQuiz.SetActive(false);//クイズ画面隠す
@@ -70,8 +71,9 @@ public class QuizManager : MonoBehaviour
         {
             quizCount += 1;//クイズの問題数を1増やす
             //問いの文章と各選択肢を設定
-            int question = Random.Range(1, quizNumbers.Count);//問題のランダム化
+            int question = Random.Range(1, quizNumbers.Count-1);//問題のランダム化
             q = quizNumbers[question];
+            Debug.Log(q);
             // Fisher-Yates Shuffleでシャッフル
             for (int i = 0; i < quizAnsNumber.Count; i++)
             {
@@ -91,6 +93,11 @@ public class QuizManager : MonoBehaviour
             b3Text.text = csvDatas[q][ans3];
             b4Text.text = csvDatas[q][ans4];
             quizNumbers.RemoveAt(question);//出た問題をかぶらないようにする
+        }
+        else
+        {
+            TitleManager.SceneChanger = true;
+            SceneManager.LoadScene("TitleScene");
         }
     }
 
@@ -135,7 +142,7 @@ public class QuizManager : MonoBehaviour
         ansPanel.SetActive(true);//パネルを表示
         yield return new WaitForSeconds(2f);
         ansPanel.SetActive(false);//パネルを非表示
-        q++;//カウントを増やす
+        //q++;//カウントを増やす
         QASet();//クイズ・アンサーを設定
     }
 

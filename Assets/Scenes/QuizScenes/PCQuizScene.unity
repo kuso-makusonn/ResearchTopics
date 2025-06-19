@@ -2626,6 +2626,7 @@ MonoBehaviour:
   quizStartPanel: {fileID: 1368883076}
   ansPanel: {fileID: 767687461}
   difficultySelection: {fileID: 1954195663}
+  quizEndNumder: 10
   sound1: {fileID: 8300000, guid: 8e6151f9afbb12a409f7fba4ef6fdd0a, type: 3}
   sound2: {fileID: 8300000, guid: f843b0c30cdd8684d8e9ae5398c39202, type: 3}
 --- !u!4 &1214541232
