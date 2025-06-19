@@ -23,6 +23,7 @@ public class WebSimSceneManager : MonoBehaviour
     // const float webWidth = 1900;
     int qNum,score;
     bool isSafe,answer;
+    const int maxQuizNum = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +70,7 @@ public class WebSimSceneManager : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             webSimStartPanel.SetActive(false);
         }
-        if(safeLinks.Count > 0 && notSafeLinks.Count > 0){
+        if(safeLinks.Count > 0 && notSafeLinks.Count > 0 && qNum <= maxQuizNum){
             questionNumberText.text = qNum + "問目！";
             questionNumberPanel.SetActive(true);
             yield return new WaitForSeconds(1.5f);
@@ -90,7 +91,8 @@ public class WebSimSceneManager : MonoBehaviour
                 // webSprite = notSafeSprits[Random.Range(0,notSafeSprits.Count)];
                 // notSafeSprits.Remove(webSprite);
             }
-            Application.OpenURL(webLink);
+            // Application.OpenURL(webLink);
+            Debug.Log(webLink);
             // webPage.sprite = webSprite;
             // contentTransform.sizeDelta = new Vector2(webWidth,200 + webWidth*(webSprite.rect.height/webSprite.rect.width) + 400);
             // contentTransform.position = new Vector2(0,0);
@@ -100,19 +102,27 @@ public class WebSimSceneManager : MonoBehaviour
             Debug.Log("ウェブページセット完了！");
         }else{
             Debug.Log("データもうねえよ!");
-            if(qNum > 1){
-                resultPanel.SetActive(true);
-                resultText.text = "終了！";
-                yield return new WaitForSeconds(1.5f);
-                resultText.text = $"{score}問正解！\n正答率{(int)((float)score/(qNum-1)*100)}%";
-                yield return new WaitForSeconds(3f);
-                resultPanel.SetActive(false);
-                SceneManager.LoadScene("SelectScene");
-            }else{
+            if (qNum > 1)
+            {
+                // resultPanel.SetActive(true);
+                // resultText.text = "終了！";
+                // yield return new WaitForSeconds(1.5f);
+                // resultText.text = $"{score}問正解！\n正答率{(int)((float)score/(qNum-1)*100)}%";
+                // yield return new WaitForSeconds(3f);
+                // resultPanel.SetActive(false);
+                // SceneManager.LoadScene("SelectScene");
+                ResultManager.sceneName = ResultManager.SceneName.WebSimScene;
+                ResultManager.answeredNum = qNum - 1;
+                ResultManager.correctNum = score;
+                ResultManager.score = score * 100;
+                SceneManager.LoadScene("ResultScene");
+            }
+            else
+            {
                 Debug.Log("まだ一問もできてねぇよ！");
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;  // プレイモード終了
-                #endif
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;  // プレイモード終了
+#endif
             }
         }
     }

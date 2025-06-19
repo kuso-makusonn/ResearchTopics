@@ -24,6 +24,7 @@ public class SSIDSimManager : MonoBehaviour
     const int maxWrong = 7;//n回間違えるとでゲームオーバー
     public AudioClip correctSound, wrongSound;//音1,音2
     AudioSource audioSource;
+    const int maxQuizNum = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +68,7 @@ public class SSIDSimManager : MonoBehaviour
     {
         //問いの文章と各選択肢を設定
         ClearScreen();
-        if (csvData.Count > 0)
+        if (csvData.Count > 0 && q <= maxQuizNum)
         {
             quiz.SetActive(true);
             currentQuizIndex = Random.Range(0, csvData.Count);
@@ -87,7 +88,21 @@ public class SSIDSimManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("データもうねぇよ");
+            if (q > 1)
+            {
+                ResultManager.sceneName = ResultManager.SceneName.SSIDSimScene;
+                ResultManager.answeredNum = q - 1;
+                ResultManager.correctNum = score/100;
+                ResultManager.score = score;
+                SceneManager.LoadScene("ResultScene");
+            }
+            else
+            {
+                Debug.Log("まだ一問もできてねぇよ！");
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;  // プレイモード終了
+#endif
+            }
         }
     }
 
