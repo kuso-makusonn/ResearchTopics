@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SimulationScenes/SSIDSimScene.unity
     guid: 8c2a19e5f2c4358408d41536fba02fd2
+  - enabled: 1
+    path: Assets/Scenes/ResultScene.unity
+    guid: fc52694b41a589149a391b89bbecfdbe
   m_configObjects: {}
