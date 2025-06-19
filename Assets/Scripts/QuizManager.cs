@@ -45,7 +45,6 @@ public class QuizManager : MonoBehaviour
         for (int i = 0; i < csvDatas.Count; i++)//クイズの問題のリスト
         {
             quizNumbers.Add(i);
-            //Debug.Log(i);
         }
         title.SetActive(true);
         rootQuiz.SetActive(false);//クイズ画面隠す
@@ -67,13 +66,12 @@ public class QuizManager : MonoBehaviour
 
     void QASet()
     {
-        if (quizCount < quizEndNumder)
+        if (quizCount < quizEndNumder)//現在の問題数が最大問題数以上になってないときに動く
         {
             quizCount += 1;//クイズの問題数を1増やす
             //問いの文章と各選択肢を設定
             int question = Random.Range(1, quizNumbers.Count-1);//問題のランダム化
             q = quizNumbers[question];
-            Debug.Log(q);
             // Fisher-Yates Shuffleでシャッフル
             for (int i = 0; i < quizAnsNumber.Count; i++)
             {
@@ -95,9 +93,12 @@ public class QuizManager : MonoBehaviour
             quizNumbers.RemoveAt(question);//出た問題をかぶらないようにする
         }
         else
-        {
-            TitleManager.SceneChanger = true;
-            SceneManager.LoadScene("TitleScene");
+        {//終わり
+            /*ResultManager.sceneName = ResultManager.SceneName.QuizScene;
+            ResultManager.answeredNum = quizCount;
+            ResultManager.correctNum = score / 100;
+            ResultManager.score = score;
+            SceneManager.LoadScene("ResultScene");*/
         }
     }
 
