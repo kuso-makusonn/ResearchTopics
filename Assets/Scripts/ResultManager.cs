@@ -33,6 +33,7 @@ public class ResultManager : MonoBehaviour
         {
             maxScoreDict[sceneName] = score;
         }
+        Debug.Log(sceneName+answeredNum.ToString()+correctNum.ToString()+score.ToString());
     }
 
     // Update is called once per frame

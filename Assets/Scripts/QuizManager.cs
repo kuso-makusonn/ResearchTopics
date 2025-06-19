@@ -94,11 +94,11 @@ public class QuizManager : MonoBehaviour
         }
         else
         {//終わり
-            /*ResultManager.sceneName = ResultManager.SceneName.QuizScene;
+            ResultManager.sceneName = ResultManager.SceneName.QuizScene;
             ResultManager.answeredNum = quizCount;
             ResultManager.correctNum = score / 100;
             ResultManager.score = score;
-            SceneManager.LoadScene("ResultScene");*/
+            SceneManager.LoadScene("ResultScene");
         }
     }
 
