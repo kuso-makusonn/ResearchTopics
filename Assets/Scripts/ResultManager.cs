@@ -68,7 +68,7 @@ public class ResultManager : MonoBehaviour
             {SceneName.SNSSimScene, SNSHighScoreTextObject},
             {SceneName.SSIDSimScene, SSIDHighScoreTextObject},
         };
-        importHighScore();
+        ImportHighScore();
     }
     void ShowHighScoreTexts()
     {
@@ -79,7 +79,7 @@ public class ResultManager : MonoBehaviour
         }
         totalScoreText.text = highScoreDict.Values.Sum().ToString();
     }
-    void importHighScore()
+    void ImportHighScore()
     {
         foreach (SceneName name in System.Enum.GetValues(typeof(SceneName)))
         {
@@ -126,9 +126,10 @@ public class ResultManager : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(2f);
         }
         statusPanel.SetActive(false);
+        TitleManager.SceneChanger = true;
         SceneManager.LoadScene("TitleScene");
     }
     void ShowHighScoreHighlight(bool isHighLight)
