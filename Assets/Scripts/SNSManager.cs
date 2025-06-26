@@ -16,6 +16,7 @@ public class SNSManager : MonoBehaviour
     public Sprite newImage1, newImage2;//仮画像の１と２
     Image image;//シミュの画像をいれる奴
     int AA = 0;//イラストの順番の仮置き
+    public int MaxAA = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,15 +45,21 @@ public class SNSManager : MonoBehaviour
     }
     void SNSChecker()
     {
-        if (AA % 2 == 0)
+        if (AA < MaxAA)
         {
-            image.sprite = newImage1;
-            trueanswer = false;
+            if (AA % 2 == 0)
+            {
+                image.sprite = newImage1;
+                trueanswer = false;
+            }
+            else if (AA % 2 == 1)
+            {
+                image.sprite = newImage2;
+                trueanswer = true;
+            }
         }
-        else if (AA % 2 == 1)
-        {
-            image.sprite = newImage2;
-            trueanswer = true;
+        else {
+            ResultScore();//結果発表
         }
         AA++;
         resultanstxt.text = "そりゃ駄目だぜ、\nキョウダイ";
@@ -82,9 +89,14 @@ public class SNSManager : MonoBehaviour
     }
     void ResultScore()//結果発表
     {
-        resultsco.SetActive(true);
+        ResultManager.sceneName = ResultManager.SceneName.SNSSimScene;
+        ResultManager.answeredNum = MaxAA;
+        ResultManager.correctNum = score / 100;
+        ResultManager.score = score;
+        SceneManager.LoadScene("ResultScene");
+        /*resultsco.SetActive(true);
         sample.SetActive(false);
         resultans.SetActive(false);
-        setumei.SetActive(false);
+        setumei.SetActive(false);*/
     }
 }

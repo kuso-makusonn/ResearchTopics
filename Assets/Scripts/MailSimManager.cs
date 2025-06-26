@@ -17,6 +17,8 @@ public class MailSimManager : MonoBehaviour
     TextAsset csvFile;// CSVファイル
     bool TruePanals;
     int q = 1;
+    public int maxmail = 10;
+    int score = 0;
     List<string[]> csvDatas = new List<string[]>(); // CSVの中身を入れるリスト;
     // Start is called before the first frame update
     void Start()
@@ -57,14 +59,25 @@ public class MailSimManager : MonoBehaviour
         mailStartPanel.SetActive(false);
         TextChange();
     }
-    IEnumerator MailQuiz(){
-        mailStartPanel.SetActive(true);
-        startText.text="第"+q+"問目";
-        yield return new WaitForSeconds(1.5f);
-        mailStartPanel.SetActive(false);
-        AnsPanel1.SetActive(true);
-        PoPMove.Reseter=false;
-        TruePanals = true;
+    IEnumerator MailQuiz()
+    {
+        if (q <= maxmail)
+        {
+            mailStartPanel.SetActive(true);
+            startText.text = "第" + q + "問目";
+            yield return new WaitForSeconds(1.5f);
+            mailStartPanel.SetActive(false);
+            AnsPanel1.SetActive(true);
+            PoPMove.Reseter = false;
+            TruePanals = true;
+        }
+        else{
+            ResultManager.sceneName = ResultManager.SceneName.MailSimScene;
+            ResultManager.answeredNum = maxmail;
+            ResultManager.correctNum = score / 100;
+            ResultManager.score = score;
+            SceneManager.LoadScene("ResultScene");
+        }
     }
     public void MailPanelOn(){
         AnsPanel1.SetActive(false);
@@ -80,11 +93,14 @@ public class MailSimManager : MonoBehaviour
         TruePanals = !TruePanals;
     }
     public void AnswerMail(string answer){
-        if(answer==csvDatas[q][4]){
-            startText.text="そのとーり";
+        if (answer == csvDatas[q][4])
+        {
+            startText.text = "そのとーり";
+            score += 100;
         }
-        else{
-            startText.text="それは違うぜ";
+        else
+        {
+            startText.text = "それは違うぜ";
         }
         q+=1;
         if(TruePanals==false){
