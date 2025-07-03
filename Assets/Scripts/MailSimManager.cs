@@ -12,7 +12,7 @@ public class MailSimManager : MonoBehaviour
 {
     [SerializeField]GameObject title,mail,mailTextPanel,truePanal;
     [SerializeField]GameObject AnsPanel1;
-    [SerializeField]TextMeshProUGUI mailText,trueText,startText;
+    [SerializeField]TextMeshProUGUI mailText,trueText,startText,scoreText;
     [SerializeField]GameObject mailStartPanel;
     TextAsset csvFile;// CSVファイル
     bool TruePanals;
@@ -33,15 +33,18 @@ public class MailSimManager : MonoBehaviour
             string line = reader.ReadLine(); // 一行ずつ読み込み
             csvDatas.Add(line.Split(',')); // , 区切りでリストに追加
         }
+        title.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Escape)){
-            TitleManager.SceneChanger=true;
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            TitleManager.SceneChanger = true;
             SceneManager.LoadScene("TitleScene");
         }
+        scoreText.text = "スコア：" + score.ToString(); ;
     }
     public void MailSimStart()
     {
