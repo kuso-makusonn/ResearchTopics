@@ -1,0 +1,13 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "ItemEffects/#SCRIPTNAME#", fileName = "#SCRIPTNAME#")]
+public class #SCRIPTNAME# : ItemEffect
+{
+    // 必要な変数を追加
+
+    public override void ApplyEffect(ItemEffectManager itemEffectManager)
+    {
+        // 効果処理
+        itemEffectManager.#SCRIPTNAME#(/*変数を渡す*/);
+    }
+}
