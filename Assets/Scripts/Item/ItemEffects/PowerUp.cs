@@ -4,11 +4,12 @@ using UnityEngine;
 public class PowerUp : ItemEffect
 {
     // 必要な変数を追加
-    int amount;
+    public float boostMultiplier;
+    public float duration;
 
     public override void ApplyEffect(ItemEffectManager itemEffectManager)
     {
         // 効果処理
-        itemEffectManager.PowerUp(amount);
+        itemEffectManager.StartCoroutine(itemEffectManager.BoostAttack(boostMultiplier, duration));
     }
 }

@@ -309,11 +309,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 83592153}
-  - component: {fileID: 83592154}
-  - component: {fileID: 83592155}
   - component: {fileID: 83592156}
   - component: {fileID: 83592157}
+  - component: {fileID: 83592154}
   - component: {fileID: 83592158}
+  - component: {fileID: 83592155}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -394,11 +394,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec837cdb168f1643a9f83626fbc1061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemEffectManager: {fileID: 0}
+  ItemEffectManager: {fileID: 83592158}
   shop: {fileID: 203866023}
   itemArea: {fileID: 851696941}
   itemPrefab: {fileID: 5346304144429214677, guid: 09321f082a9da9d4e87ffa0e830b16a1, type: 3}
-  layoutGroup: {fileID: 851696944}
 --- !u!114 &83592158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fbf43b9bac29c48bf9b6731ddc39f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDataManager: {fileID: 0}
+  gameDataManager: {fileID: 83592155}
 --- !u!1 &156640521
 GameObject:
   m_ObjectHideFlags: 0
@@ -3328,18 +3327,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1686422612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3b5101da590f2846862dee0bf0cf80c, type: 3}
+  m_Script: {fileID: 11500000, guid: df5382cd8ae72a04785b950becf16399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDataManager: {fileID: 0}
-  moveSpeed: 10
-  maxX: 10
-  minX: -10
-  bulletPrefab: {fileID: 4854190653034981485, guid: bd1084614ebd4b642905dba75a216ae3, type: 3}
-  bulletInterval: 0.2
-  bulletPower: 1
-  bulletTimer: 0
-  isShooting: 0
+  gameDataManager: {fileID: 83592155}
+  defaultBulletPrefab: {fileID: 4854190653034981485, guid: bd1084614ebd4b642905dba75a216ae3, type: 3}
 --- !u!1 &1947503760
 GameObject:
   m_ObjectHideFlags: 0

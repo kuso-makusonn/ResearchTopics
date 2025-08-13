@@ -10,6 +10,8 @@ public class EnemySpawner : MonoBehaviour
     [Header("生成間隔の範囲")]
     public float minInterval = 1f;
     public float maxInterval = 3f;
+    public float minX = -9f;
+    public float maxX = 9f;
 
     private float spawnTimer = 0f;
     private float nextSpawnTime;
@@ -41,8 +43,8 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        float randomX = Random.Range(-10f, 10f);
+        float randomX = Random.Range(minX, maxX);
         Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyManager>().gameDataManager = gameDataManager;
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyManager>().SetGameDataManager(gameDataManager);
     }
 }

@@ -1,12 +1,20 @@
-using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText, moneyText;
+    public List<PlayerData> players { get; private set; } = new();
     public int score { get; private set; }
     public int money { get; private set; }
+
+    public int CreateNewPlayerData()
+    {
+        PlayerData player = new();
+        players.Add(player);
+        return players.Count - 1;
+    }
     public void ResetScore()
     {
         score = 0;
@@ -33,9 +41,5 @@ public class GameDataManager : MonoBehaviour
     }
     public void Heal(int amount)
     {
-    }
-    public IEnumerator BoostAttack(float boostMultiplier, float duration)
-    {
-        yield return null;
     }
 }

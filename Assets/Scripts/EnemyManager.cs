@@ -6,7 +6,7 @@ public class EnemyManager : MonoBehaviour
     public float moveSpeed = 100f;
     public int hp = 3;
     public float minZ;
-    public GameDataManager gameDataManager;
+    private GameDataManager gameDataManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +25,10 @@ public class EnemyManager : MonoBehaviour
             Destroy(gameObject);
             GameManager.GameOver();
         }
+    }
+    public void SetGameDataManager(GameDataManager _gameDataManager)
+    {
+        gameDataManager = _gameDataManager;
     }
 
     private void OnTriggerEnter(Collider other)

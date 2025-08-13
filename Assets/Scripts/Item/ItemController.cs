@@ -10,11 +10,14 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] GameObject highlight;
     ItemEffect itemEffect;
     ItemEffectManager itemEffectManager;
+    int price;
+
     public void Init(ItemEntity itemEntity, ItemEffectManager _itemEffectManager)
     {
         itemNameText.text = itemEntity.itemName;
         itemImage.sprite = itemEntity.itemImage;
-        priceText.text = "価格:" + itemEntity.price + "円";
+        price = itemEntity.price;
+        priceText.text = "価格:" + price + "円";
         itemEffectText.text = itemEntity.effectText;
         itemEffect = itemEntity.itemEffect;
         highlight.SetActive(false);
@@ -36,7 +39,6 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void ItemClickButton()
     {
-        Debug.Log("おぅ、飲み行こ飲み行こ");
-        itemEffect.ApplyEffect(itemEffectManager);
+        itemEffect.PurchaseItem(itemEffectManager, price);
     }
 }

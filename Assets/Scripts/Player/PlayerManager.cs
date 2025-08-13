@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    GameDataManager gameDataManager;
-    void GetStatus()
+    PlayerData playerData;
+    [SerializeField] GameDataManager gameDataManager;
+    [SerializeField] GameObject defaultBulletPrefab;
+
+    private bool isShooting;
+    private float bulletTimer;
+    private int playerIndex;
+
+    void Start()
     {
-        moveSpeed = gameDataManager.pMoveSpeed;
-        maxX = gameDataManager.pMaxX;
-        minX = gameDataManager.pMinX;
-        bulletPrefab = gameDataManager.pBulletPrefab;
-        bulletInterval = gameDataManager.pBulletInterval;
-        bulletPower = gameDataManager.pBulletPower;
+        playerIndex = gameDataManager.CreateNewPlayerData();
+        playerData = gameDataManager.players[playerIndex];
+        playerData.bulletPrefab = defaultBulletPrefab;
     }
     void Update()
     {
@@ -19,20 +23,20 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetKey(KeyCode.A)
         || Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.left * playerData.moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.D)
         || Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.right * playerData.moveSpeed * Time.deltaTime);
         }
-        if (transform.position.x > maxX)
+        if (transform.position.x > playerData.maxX)
         {
-            transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
+            transform.position = new Vector3(playerData.maxX, transform.position.y, transform.position.z);
         }
-        if (transform.position.x < minX)
+        if (transform.position.x < playerData.minX)
         {
-            transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+            transform.position = new Vector3(playerData.minX, transform.position.y, transform.position.z);
         }
 
         // スペースキーが押されているかを確認
@@ -51,7 +55,7 @@ public class PlayerManager : MonoBehaviour
         if (isShooting)
         {
             bulletTimer += Time.deltaTime;
-            if (bulletTimer >= bulletInterval)
+            if (bulletTimer >= playerData.bulletInterval)
             {
                 Shoot();
                 bulletTimer = 0f;
@@ -62,6 +66,6 @@ public class PlayerManager : MonoBehaviour
     void Shoot()
     {
         // 弾をプレイヤーの位置に、回転ゼロで生成
-        Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Instantiate(playerData.bulletPrefab, transform.position, Quaternion.identity);
     }
 }

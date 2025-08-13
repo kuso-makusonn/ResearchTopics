@@ -16,4 +16,5 @@ MonoBehaviour:
   itemName: Joshin
   itemImage: {fileID: 21300000, guid: dd230e07613a4a94ebad5f2ac3cf66bd, type: 3}
   price: 9999999
-  effect: "\u98F2\u307F\u306B\u884C\u304F"
+  effectText: 
+  itemEffect: {fileID: 11400000, guid: 25ea14fb1e98cf54190e6b73a4fb7546, type: 2}
