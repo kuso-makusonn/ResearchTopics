@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator GameStart()
     {
-        yield return Game.SendGameStart(PlayerPrefs.GetString("user_id"));
+        yield return null;
+        // yield return Game.SendGameStart(PlayerPrefs.GetString("user_id"));
         screen = Screen.battle;
     }
     public static void GameOver()
