@@ -5,6 +5,7 @@ public class PlayerManager : MonoBehaviour
     PlayerData playerData;
     [SerializeField] GameDataManager gameDataManager;
     [SerializeField] GameObject defaultBulletPrefab;
+    public float shootingHeight;
 
     private bool isShooting;
     private float bulletTimer;
@@ -66,6 +67,6 @@ public class PlayerManager : MonoBehaviour
     void Shoot()
     {
         // 弾をプレイヤーの位置に、回転ゼロで生成
-        Instantiate(playerData.bulletPrefab, transform.position, Quaternion.identity);
+        Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0,shootingHeight,0), Quaternion.identity);
     }
 }
