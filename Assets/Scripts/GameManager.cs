@@ -25,17 +25,16 @@ public class GameManager : MonoBehaviour
         nameText.text = PlayerPrefs.GetString("user_name");
         gameDataManager.ResetScore();
         ToBattleButton();
-        StartCoroutine(GameStart());
+        GameStart();
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    IEnumerator GameStart()
+    async void GameStart()
     {
-        yield return null;
-        // yield return Game.SendGameStart(PlayerPrefs.GetString("user_id"));
+        // await Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
         screen = Screen.battle;
     }
     public static void GameOver()

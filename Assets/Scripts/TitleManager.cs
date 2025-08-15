@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,10 +18,10 @@ public class TitleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
     void ToTitle()
     {
+        //タイトル用に画面を整理する
         exitTitlePanel.SetActive(true);
         nameInputField.SetActive(false);
         nameObject.SetActive(false);
@@ -69,16 +70,16 @@ public class TitleManager : MonoBehaviour
     }
     public void DecideNameButton()
     {
-        StartCoroutine(DecideName());
-    }
-
-    public IEnumerator DecideName()
-    {
         if (string.IsNullOrWhiteSpace(nameInputText.text)
         || nameInputText.text.Length > 15)
-            yield break;
+            return;
         Debug.Log(nameInputText.text);
-        yield return User.SendNameCoroutine(nameInputText.text);
+        DecideName();
+    }
+
+    async void DecideName()
+    {
+        await Supabase.SendUserData(nameInputText.text);
         ToStartScreen();
     }
 }

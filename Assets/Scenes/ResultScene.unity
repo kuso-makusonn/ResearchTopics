@@ -854,7 +854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d98d399147eb447945869bff989d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameover: {fileID: 179173897}
+  gameOver: {fileID: 179173897}
   result: {fileID: 1055589734}
   scoreText: {fileID: 874302084}
   nameText: {fileID: 360403082}

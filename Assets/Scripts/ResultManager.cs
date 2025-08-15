@@ -1,43 +1,43 @@
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ResultManager : MonoBehaviour
 {
-    [SerializeField] GameObject gameover, result;
+    [SerializeField] GameObject gameOver, result;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI nameText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         nameText.text = PlayerPrefs.GetString("user_name");
-        StartCoroutine(YMD());
+        YMD();
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    IEnumerator YMD()
+    async void YMD()
     {
-        // yield return Score.SendGameResult(PlayerPrefs.GetString("game_id"), GameManager.lastScore);
-        yield return GameOver();
-        yield return ShowResult();
+        // await Supabase.SendGameResult(PlayerPrefs.GetString("game_id"), GameManager.lastScore);
+        await GameOver();
+        await ShowResult();
         SceneManager.LoadScene("TitleScene");
     }
-    IEnumerator GameOver()
+    async Task GameOver()
     {
-        gameover.SetActive(true);
+        gameOver.SetActive(true);
         result.SetActive(false);
-        yield return new WaitForSeconds(3f);
-        yield return ShowResult();
+        await Task.Delay(3000);//3000ミリ秒待つ
     }
-    IEnumerator ShowResult()
+    async Task ShowResult()
     {
         result.SetActive(true);
-        gameover.SetActive(false);
+        gameOver.SetActive(false);
         scoreText.text = "Score:" + GameManager.lastScore.ToString();
-        yield return new WaitForSeconds(3f);
+        await Task.Delay(3000);//3000ミリ秒待つ
     }
 }
