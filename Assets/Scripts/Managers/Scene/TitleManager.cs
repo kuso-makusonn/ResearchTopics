@@ -70,9 +70,7 @@ public class TitleManager : MonoBehaviour
     }
     public void DecideNameButton()
     {
-        if (string.IsNullOrWhiteSpace(nameInputText.text)
-        || nameInputText.text.Length > 15)
-            return;
+        if (string.IsNullOrWhiteSpace(nameInputText.text)) return;
         Debug.Log(nameInputText.text);
         DecideName();
     }
