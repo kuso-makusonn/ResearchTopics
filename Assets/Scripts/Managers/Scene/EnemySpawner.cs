@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner instance;
     [Header("敵のプレハブ")]
     public GameObject enemyPrefab;
     public float spawnZ;
@@ -14,8 +16,13 @@ public class EnemySpawner : MonoBehaviour
 
     private float spawnTimer = 0f;
     private float nextSpawnTime;
-    [SerializeField] GameDataManager gameDataManager;
+    public List<EnemyData> enemies = new();
 
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this);
+    }
     void Start()
     {
         // 最初の生成時間を決定
@@ -24,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        if (!(GameManager.screen == GameManager.Screen.battle)) return;
+        if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         spawnTimer += Time.deltaTime;
 
         if (spawnTimer >= nextSpawnTime)
@@ -44,6 +51,13 @@ public class EnemySpawner : MonoBehaviour
     {
         float randomX = Random.Range(minX, maxX);
         Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity).GetComponent<EnemyManager>().SetGameDataManager(gameDataManager);
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+    }
+    public int CreateNewEnemyData()
+    {
+        EnemyData enemy = new();
+        enemy.InitData();
+        enemies.Add(enemy);
+        return enemies.Count - 1;
     }
 }

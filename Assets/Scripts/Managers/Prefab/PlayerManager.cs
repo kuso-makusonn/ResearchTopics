@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     PlayerData playerData;
-    [SerializeField] GameDataManager gameDataManager;
     [SerializeField] GameObject defaultBulletPrefab;
     public float shootingHeight;
 
@@ -13,13 +12,13 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        playerIndex = gameDataManager.CreateNewPlayerData();
-        playerData = gameDataManager.players[playerIndex];
+        playerIndex = GameDataManager.instance.CreateNewPlayerData();
+        playerData = GameDataManager.instance.players[playerIndex];
         playerData.bulletPrefab = defaultBulletPrefab;
     }
     void Update()
     {
-        if (!(GameManager.screen == GameManager.Screen.battle)) return;
+        if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         // プレイヤーをX軸に移動
         if (Input.GetKey(KeyCode.A)
         || Input.GetKey(KeyCode.LeftArrow))

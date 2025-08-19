@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] ItemEffectManager ItemEffectManager;
     [SerializeField] GameObject shop, itemArea, itemPrefab;
     List<ItemController> itemList = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,7 +14,7 @@ public class ShopManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!(GameManager.screen == GameManager.Screen.shop)) return;
+        if (!(GameDataManager.instance.screen == GameDataManager.Screen.shop)) return;
     }
     public void EnterShop()
     {
@@ -34,7 +33,7 @@ public class ShopManager : MonoBehaviour
             foreach (ItemEntity itemEntity in allItemEntities)
             {
                 ItemController item = Instantiate(itemPrefab, itemArea.transform).GetComponent<ItemController>();
-                item.Init(itemEntity, ItemEffectManager);
+                item.Init(itemEntity);
                 itemList.Add(item);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);

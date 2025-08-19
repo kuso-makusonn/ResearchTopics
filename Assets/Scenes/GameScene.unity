@@ -346,7 +346,6 @@ GameObject:
   - component: {fileID: 83592153}
   - component: {fileID: 83592156}
   - component: {fileID: 83592154}
-  - component: {fileID: 83592158}
   - component: {fileID: 83592155}
   m_Layer: 0
   m_Name: GameManager
@@ -388,7 +387,6 @@ MonoBehaviour:
   maxInterval: 2
   minX: -9
   maxX: 9
-  gameDataManager: {fileID: 83592155}
 --- !u!114 &83592155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 659473116}
   moneyText: {fileID: 953139777}
+  screen: 0
 --- !u!114 &83592156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,19 +417,6 @@ MonoBehaviour:
   battle: {fileID: 347439407}
   shopManager: {fileID: 203866025}
   nameText: {fileID: 748481883}
---- !u!114 &83592158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83592151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fbf43b9bac29c48bf9b6731ddc39f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameDataManager: {fileID: 83592155}
 --- !u!1 &84434735
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec837cdb168f1643a9f83626fbc1061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemEffectManager: {fileID: 83592158}
   shop: {fileID: 203866023}
   itemArea: {fileID: 851696941}
   itemPrefab: {fileID: 5346304144429214677, guid: 09321f082a9da9d4e87ffa0e830b16a1, type: 3}
@@ -5149,7 +5134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02b5bdca484b6284fadaeac49a9600e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDataManager: {fileID: 83592155}
   defaultBulletPrefab: {fileID: 4854190653034981485, guid: bd1084614ebd4b642905dba75a216ae3, type: 3}
   shootingHeight: 1.5
 --- !u!1 &1723484488

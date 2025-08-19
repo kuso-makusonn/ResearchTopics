@@ -9,10 +9,9 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText;
     [SerializeField] GameObject highlight;
     ItemEffect itemEffect;
-    ItemEffectManager itemEffectManager;
     int price;
 
-    public void Init(ItemEntity itemEntity, ItemEffectManager _itemEffectManager)
+    public void Init(ItemEntity itemEntity)
     {
         itemNameText.text = itemEntity.itemName;
         itemImage.sprite = itemEntity.itemImage;
@@ -21,7 +20,6 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         itemEffectText.text = itemEntity.effectText;
         itemEffect = itemEntity.itemEffect;
         highlight.SetActive(false);
-        itemEffectManager = _itemEffectManager;
     }
     public void HighlightItem(bool isHighlight)
     {
@@ -31,14 +29,12 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         highlight.SetActive(true);
     }
-
-    // カーソルが対象UIの上から離れた時に呼ばれる
     public void OnPointerExit(PointerEventData eventData)
     {
         highlight.SetActive(false);
     }
     public void ItemClickButton()
     {
-        itemEffect.PurchaseItem(itemEffectManager, price);
+        itemEffect.PurchaseItem(price);
     }
 }

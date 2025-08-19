@@ -16,7 +16,7 @@ public class BulletManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!(GameManager.screen == GameManager.Screen.battle)) return;
+        if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         if (transform.position.z > maxZ)
         {

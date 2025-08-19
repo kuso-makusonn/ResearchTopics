@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,24 +6,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject battle;
-    private static GameDataManager gameDataManager;
     [SerializeField] ShopManager shopManager;
     [SerializeField] TextMeshProUGUI nameText;
-    public enum Screen
-    {
-        battle,
-        shop,
-        other
-    }
-    public static Screen screen;
     public static int lastScore;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        screen = Screen.other;
-        gameDataManager = GetComponent<GameDataManager>();
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
         nameText.text = PlayerPrefs.GetString("user_name");
-        gameDataManager.ResetScore();
+        GameDataManager.instance.ResetScore();
         ToBattleButton();
         GameStart();
     }
@@ -34,24 +25,25 @@ public class GameManager : MonoBehaviour
     }
     async void GameStart()
     {
+        await Task.Delay(1);
         // await Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
-        screen = Screen.battle;
+        GameDataManager.instance.screen = GameDataManager.Screen.battle;
     }
     public static void GameOver()
     {
-        screen = Screen.other;
-        lastScore = gameDataManager.score;
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
+        lastScore = GameDataManager.instance.score;
         SceneManager.LoadScene("ResultScene");
     }
     public void ToShopButton()
     {
-        screen = Screen.shop;
+        GameDataManager.instance.screen = GameDataManager.Screen.shop;
         battle.SetActive(false);
         shopManager.EnterShop();
     }
     public void ToBattleButton()
     {
-        screen = Screen.battle;
+        GameDataManager.instance.screen = GameDataManager.Screen.battle;
         shopManager.ExitShop();
         battle.SetActive(true);
     }

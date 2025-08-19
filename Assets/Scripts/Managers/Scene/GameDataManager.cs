@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class GameDataManager : MonoBehaviour
 {
+    public static GameDataManager instance;
     [SerializeField] TextMeshProUGUI scoreText, moneyText;
     public List<PlayerData> players { get; private set; } = new();
     public int score { get; private set; }
     public int money { get; private set; }
-
+    public enum Screen
+    {
+        battle,
+        shop,
+        other
+    }
+    public Screen screen;
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this);
+    }
     public int CreateNewPlayerData()
     {
         PlayerData player = new();
+        player.InitData();
         players.Add(player);
         return players.Count - 1;
     }
