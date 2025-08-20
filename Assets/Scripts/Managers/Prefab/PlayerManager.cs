@@ -10,6 +10,10 @@ public class PlayerManager : MonoBehaviour
     private float bulletTimer;
     private int playerIndex;
 
+    public Camera mainCamera;       // 照準に使うカメラ（通常はMain Camera）
+    public LayerMask aimLayer;      // 照準を当てる対象のレイヤー（例：目に見えないPlane）
+    Quaternion onlyY;
+
     void Start()
     {
         playerIndex = GameDataManager.instance.CreateNewPlayerData();
@@ -39,9 +43,28 @@ public class PlayerManager : MonoBehaviour
             transform.position = new Vector3(playerData.minX, transform.position.y, transform.position.z);
         }
 
+        // マウス位置からワールド空間へレイを飛ばす
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        // レイキャストで「照準面」に当たったかチェック
+        if (Physics.Raycast(ray, out hit, 1000f, aimLayer))
+        {
+            Vector3 targetPoint = hit.point; // 当たった座標が狙うポイント
+
+            // ターゲット方向を計算
+            Vector3 dir = (targetPoint - transform.position).normalized;
+
+            // LookRotationで方向をQuaternionに変換
+            Quaternion lookRot = Quaternion.LookRotation(dir);
+
+            // Y軸だけ残して、XとZを無視
+            onlyY = Quaternion.Euler(0, lookRot.eulerAngles.y, 0);
+        }
+
         // スペースキーが押されているかを確認
         if (Input.GetKey(KeyCode.Space)
-        || Input.GetKey(KeyCode.W))
+        || Input.GetKey(KeyCode.W)
+        || Input.GetMouseButton(0))
         {
             isShooting = true;
         }
@@ -57,7 +80,8 @@ public class PlayerManager : MonoBehaviour
             bulletTimer += Time.deltaTime;
             if (bulletTimer >= playerData.bulletInterval)
             {
-                Shoot();
+                //Shoot();
+                GoShoot();
                 bulletTimer = 0f;
             }
         }
@@ -66,6 +90,11 @@ public class PlayerManager : MonoBehaviour
     void Shoot()
     {
         // 弾をプレイヤーの位置に、回転ゼロで生成
-        Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0,shootingHeight,0), Quaternion.identity);
+        Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0, shootingHeight, 0), Quaternion.identity);
+    }
+    void GoShoot()
+    {
+        // 弾を生成（水平だけ向いた状態で発射）
+        Instantiate(playerData.bulletPrefab, transform.position, onlyY);
     }
 }

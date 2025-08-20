@@ -3435,9 +3435,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02b5bdca484b6284fadaeac49a9600e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDataManager: {fileID: 0}
   defaultBulletPrefab: {fileID: 4854190653034981485, guid: bd1084614ebd4b642905dba75a216ae3, type: 3}
   shootingHeight: 1.5
+  mainCamera: {fileID: 6656565600011572513}
+  aimLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &8964563456980043028
 GameObject:
   m_ObjectHideFlags: 0
