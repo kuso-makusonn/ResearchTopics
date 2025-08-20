@@ -335,8 +335,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
-  m_sharedMaterial: {fileID: 4110351202066912323, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
+  m_sharedMaterial: {fileID: 4110351202066912323, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -471,8 +471,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Score:0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
+  m_sharedMaterial: {fileID: 4110351202066912323, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 386.65
+  m_fontSize: 394.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -607,8 +607,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: GameOver
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
-  m_sharedMaterial: {fileID: 4110351202066912323, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
+  m_sharedMaterial: {fileID: 4110351202066912323, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -699,7 +699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1055589735
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1103,8 +1103,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: OmaeHaZAKO!!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1b9bd8980f18a7d4d89478c17d52b977, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
+  m_sharedMaterial: {fileID: 4110351202066912323, guid: 9e9707e4b47f8a44494be0d8aa72fb2a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 234.8
+  m_fontSize: 219.05
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
