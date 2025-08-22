@@ -15,6 +15,7 @@ public class GameDataManager : MonoBehaviour
         shop,
         other
     }
+    public bool isAttacking = false;
     public Screen screen;
     private void Awake()
     {

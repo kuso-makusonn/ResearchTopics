@@ -4,18 +4,15 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] GameObject shop, itemArea, itemPrefab;
-    List<ItemController> itemList = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static ShopManager instance;
+    private void Awake()
     {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (!(GameDataManager.instance.screen == GameDataManager.Screen.shop)) return;
-    }
+    [SerializeField] GameObject shop, itemArea, itemPrefab;
+    List<ItemController> itemList = new();
     public void EnterShop()
     {
         shop.SetActive(true);
