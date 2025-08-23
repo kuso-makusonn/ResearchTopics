@@ -8,71 +8,60 @@ using UnityEngine;
 public class SimulationAttackManager : MonoBehaviour
 {
     public static SimulationAttackManager instance;
-    private List<Func<Task>> attacks = new List<Func<Task>>();
+    private List<Action> attacks = new();
     private void Awake()
     {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
 
         // attacks.Add(Phishing);
-        // attacks.Add(Bot);
-        attacks.Add(Ransomware);
+        attacks.Add(Bot);
+        attacks.Add(RansomwareStart);
     }
 
-    [SerializeField] GameObject simulationAttacks, success, fail;
-    [SerializeField] TextMeshProUGUI successDescription, failDescription;
-    public CancellationTokenSource attackCTS = new();
+    [SerializeField] GameObject simulationAttacks, success, fail, countdown;
+    [SerializeField] TextMeshProUGUI successDescription, failDescription, countdownText;
+    public bool canAttack = false;
+    private bool isAttacking = false;
+    private float attackTimer;
+    private float nextAttackTime;
     private bool isSuccess;
     private GameDataManager.Screen lastScreen;
 
-    private void OnDestroy()
+    private void Start()
     {
-        if (attackCTS != null && !attackCTS.IsCancellationRequested)
-        {
-            attackCTS.Cancel();
-        }
+        SetNextAttackTime();
     }
-    public async void SetNextAttackTime()
+    void Update()
     {
-        // simulationAttacks.SetActive(false);
-        int nextAttackTime = UnityEngine.Random.Range(MS(1.5f), MS(2f));
-        await RunRandomAttack(nextAttackTime);
-    }
-    private int MS(float minutes)
-    {
-        return (int)(minutes * 60 * 1000);
-    }
-    private async Task RunRandomAttack(int waitMS)
-    {
-        attackCTS = new();
-        try
-        {
-            Debug.Log("Wait a minute...");
+        if (!canAttack) return;
+        if (isAttacking) return;
+        if (GameDataManager.instance.screen != GameDataManager.Screen.battle) return;
 
-            // await DelayAttack(waitMS);
-            await DelayAttack(10000, GameDataManager.Screen.battle);
+        // ゲームが動いている間のみカウントアップ
+        attackTimer += Time.deltaTime;
 
-            Debug.Log("Attack!");
-            GameDataManager.instance.isAttacking = true;
-            isSuccess = false;
-            await attacks[UnityEngine.Random.Range(0, attacks.Count)]();
-            ShowResult();
-        }
-        catch (OperationCanceledException)
+        if (attackTimer >= nextAttackTime)
         {
-            Debug.Log("Attack was canceled");
-            // SetNextAttackTime();
+            RunRandomAttack();
         }
-        finally
-        {
-            Debug.Log("Finish!");
-            GameDataManager.instance.isAttacking = false;
-            attackCTS.Dispose();
-        }
+    }
+    private void SetNextAttackTime()
+    {
+        nextAttackTime = UnityEngine.Random.Range(10, 20);
+        attackTimer = 0f;
+        isAttacking = false;
+        simulationAttacks.SetActive(false);
+    }
+    private void RunRandomAttack()
+    {
+        isAttacking = true;
+        simulationAttacks.SetActive(true);
+        isSuccess = false;
+        attacks[UnityEngine.Random.Range(0, attacks.Count)]();
     }
     private void ShowResult()
     {
-        lastScreen = GameDataManager.instance.screen;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         if (isSuccess)
         {
@@ -87,20 +76,26 @@ public class SimulationAttackManager : MonoBehaviour
     {
         success.SetActive(false);
         fail.SetActive(false);
-        GameDataManager.instance.screen = lastScreen;
-        SetNextAttackTime();
+        _=ReturnBattle();
     }
-    private async Task DelayAttack(int delay, GameDataManager.Screen waitScreen)
+    private async Task ReturnBattle()
     {
-        int elapsed = 0;
-        const int interval = 100;
-        while (elapsed < delay)
+        try
         {
-            await Task.Delay(interval, attackCTS.Token);
-            if (GameDataManager.instance.screen == waitScreen)
+            countdown.SetActive(true);
+            for (int i = 3; i > 0; i--)
             {
-                elapsed += interval;
+                countdownText.text = i.ToString();
+                await Task.Delay(1000);
             }
+            countdownText.text = "GO!";
+            await Task.Delay(1000);
+        }
+        finally
+        {
+            countdown.SetActive(false);
+            GameDataManager.instance.screen = lastScreen;
+            SetNextAttackTime();
         }
     }
 
@@ -112,7 +107,7 @@ public class SimulationAttackManager : MonoBehaviour
     //フィッシング
     [Header("フィッシング")]
     [SerializeField] GameObject phishing;
-    private async Task Phishing()
+    private void Phishing()
     {
     }
 
@@ -120,64 +115,62 @@ public class SimulationAttackManager : MonoBehaviour
     //ボット
     [Header("ボット")]
     [SerializeField] GameObject bot;
-    private async Task Bot()
+    CancellationTokenSource botCTS;
+    private void Bot()
     {
     }
 
     //ランサムウェア
     [Header("ランサムウェア")]
     [SerializeField] GameObject ransomware;
-    [SerializeField] TextMeshProUGUI timer, money;
-    private bool ransomwareEnded;
-    private async Task Ransomware()
+    [SerializeField] TextMeshProUGUI timerText, money;
+    CancellationTokenSource ransomwareTimerCTS;
+    private void RansomwareStart()
     {
         lastScreen = GameDataManager.instance.screen;
-        ransomwareEnded = false;
-        try
-        {
-            GameDataManager.instance.screen = GameDataManager.Screen.other;
-            ransomware.SetActive(true);
-            await TimerStart();
-        }
-        finally
-        {
-            ransomware.SetActive(false);
-            GameDataManager.instance.screen = lastScreen;
-        }
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
+        ransomware.SetActive(true);
+        ransomwareTimerCTS = new();
+        _ = TimerStart(ransomwareTimerCTS);
+    }
+    private void RansomwareFinish()
+    {
+        ransomwareTimerCTS.Cancel();
+        ransomwareTimerCTS.Dispose();
+        ransomwareTimerCTS = null;
+        ransomware.SetActive(false);
+        ShowResult();
     }
     public void Pay()
     {
         Debug.Log("払っちゃうんだ！？");
         isSuccess = false;
-        ransomwareEnded = true;
+        RansomwareFinish();
     }
     public void WiFi()
     {
         Debug.Log("ネット接続を切ります");
         isSuccess = true;
-        ransomwareEnded = true;
+        RansomwareFinish();
     }
     public void TurnOff()
     {
         Debug.Log("電源を落とします");
         isSuccess = false;
-        ransomwareEnded = true;
+        RansomwareFinish();
     }
-    private async Task TimerStart()
+    private async Task TimerStart(CancellationTokenSource cts)
     {
         int seconds = 60;
-        timer.text = TimerText(seconds);
-        while (seconds > 0 && !ransomwareEnded)
+        timerText.text = TimerText(seconds);
+        while (seconds > 0)
         {
-            await DelayAttack(1000, GameDataManager.Screen.other);
+            await Task.Delay(1000, cts.Token);
             seconds--;
-            timer.text = TimerText(seconds);
+            timerText.text = TimerText(seconds);
         }
-        if (!ransomwareEnded)
-        {
-            isSuccess = false;
-            ransomwareEnded = true;
-        }
+        isSuccess = false;
+        RansomwareFinish();
     }
     private string TimerText(int seconds)
     {

@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public EnemyData enemyData;
+    [SerializeField] Animator animator;
     private int enemyIndex;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,7 +16,12 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
+        if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle))
+        {
+            animator.speed = 0f;
+            return;
+        }
+        animator.speed = 1f;
         transform.Translate(Vector3.back * enemyData.moveSpeed * Time.deltaTime);
         if (transform.position.z < enemyData.minZ)
         {

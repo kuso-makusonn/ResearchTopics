@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject battle;
-    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] GameObject battle, menu, countdown;
+    [SerializeField] TextMeshProUGUI nameText, countdownText;
     public static int lastScore;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,25 +24,54 @@ public class GameManager : MonoBehaviour
         await Task.Delay(1);
         // await Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
         GameDataManager.instance.ResetScore();
-        SimulationAttackManager.instance.SetNextAttackTime();
+        SimulationAttackManager.instance.canAttack = true;
         ToBattleButton();
     }
     public static void GameOver()
     {
         lastScore = GameDataManager.instance.score;
-        SimulationAttackManager.instance.attackCTS.Cancel();
         SceneManager.LoadScene("ResultScene");
     }
     public void ToShopButton()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.shop;
-        battle.SetActive(false);
+        menu.SetActive(false);
         ShopManager.instance.EnterShop();
     }
-    public void ToBattleButton()
+    public async void ToBattleButton()
     {
+        menu.SetActive(false);
+        await CountDown();
         GameDataManager.instance.screen = GameDataManager.Screen.battle;
-        ShopManager.instance.ExitShop();
         battle.SetActive(true);
+    }
+    public void MenuButton()
+    {
+        GameDataManager.instance.screen = GameDataManager.Screen.menu;
+        menu.SetActive(true);
+    }
+    public void ReturnToMenu()
+    {
+        GameDataManager.instance.screen = GameDataManager.Screen.menu;
+        menu.SetActive(true);
+        ShopManager.instance.ExitShop();
+    }
+    public async Task CountDown()
+    {
+        try
+        {
+            countdown.SetActive(true);
+            for (int i = 3; i > 0; i--)
+            {
+                countdownText.text = i.ToString();
+                await Task.Delay(1000);
+            }
+            countdownText.text = "GO!";
+            await Task.Delay(1000);
+        }
+        finally
+        {
+            countdown.SetActive(false);
+        }
     }
 }

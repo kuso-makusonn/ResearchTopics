@@ -13,6 +13,7 @@ public class GameDataManager : MonoBehaviour
     {
         battle,
         shop,
+        menu,
         other
     }
     public bool isAttacking = false;
