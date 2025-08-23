@@ -428,7 +428,7 @@ MonoBehaviour:
   scoreText: {fileID: 659473116}
   moneyText: {fileID: 953139777}
   isAttacking: 0
-  screen: 0
+  screen: 3
 --- !u!114 &83592156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1359,7 +1359,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &347439408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1393,7 +1393,7 @@ GameObject:
   - component: {fileID: 351132023}
   m_Layer: 0
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1987,7 +1987,7 @@ GameObject:
   - component: {fileID: 582154627}
   m_Layer: 0
   m_Name: Static
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2296,7 +2296,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 637214356}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 83592159}
+        m_TargetAssemblyTypeName: SimulationAttackManager, Assembly-CSharp
+        m_MethodName: VirusBaster
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &637214356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2918,7 +2930,7 @@ GameObject:
   - component: {fileID: 720194145}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7079,7 +7091,7 @@ GameObject:
   - component: {fileID: 1968533616}
   m_Layer: 0
   m_Name: Right
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7259,7 +7271,7 @@ GameObject:
   - component: {fileID: 2058931241}
   m_Layer: 0
   m_Name: Walls
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

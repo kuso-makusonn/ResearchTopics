@@ -25,7 +25,6 @@ public class SimulationAttackManager : MonoBehaviour
     private bool isAttacking = false;
     private float attackTimer;
     private float nextAttackTime;
-    private bool isSuccess;
     private GameDataManager.Screen lastScreen;
 
     private void Start()
@@ -57,10 +56,9 @@ public class SimulationAttackManager : MonoBehaviour
     {
         isAttacking = true;
         simulationAttacks.SetActive(true);
-        isSuccess = false;
         attacks[UnityEngine.Random.Range(0, attacks.Count)]();
     }
-    private void ShowResult()
+    private void ShowResult(bool isSuccess)
     {
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         if (isSuccess)
@@ -76,7 +74,15 @@ public class SimulationAttackManager : MonoBehaviour
     {
         success.SetActive(false);
         fail.SetActive(false);
-        _=ReturnBattle();
+        if (lastScreen == GameDataManager.Screen.battle)
+        {
+            _ = ReturnBattle();
+        }
+        else
+        {
+            GameDataManager.instance.screen = lastScreen;
+            SetNextAttackTime();
+        }
     }
     private async Task ReturnBattle()
     {
@@ -96,6 +102,21 @@ public class SimulationAttackManager : MonoBehaviour
             countdown.SetActive(false);
             GameDataManager.instance.screen = lastScreen;
             SetNextAttackTime();
+        }
+    }
+    private async Task DelayAttack(int duration, CancellationTokenSource cts)
+    {
+        float timer = 0;
+        const int interval = 100;
+        while (timer < duration)
+        {
+            bool last = GameDataManager.instance.screen == GameDataManager.Screen.battle;
+            await Task.Delay(interval, cts.Token);
+            bool now = GameDataManager.instance.screen == GameDataManager.Screen.battle;
+            if (last && now)
+            {
+                timer += interval;
+            }
         }
     }
 
@@ -118,6 +139,37 @@ public class SimulationAttackManager : MonoBehaviour
     CancellationTokenSource botCTS;
     private void Bot()
     {
+        botCTS = new();
+        _ = BotEffect(botCTS);
+    }
+    private async Task BotEffect(CancellationTokenSource cts)
+    {
+        float times = 2f;
+        try
+        {
+            GameDataManager.instance.players[0].bulletInterval *= times;
+            await DelayAttack(10000, cts);
+            BotEnd(false);
+        }
+        finally
+        {
+            GameDataManager.instance.players[0].bulletInterval *= 1/times;
+        }
+    }
+    private void BotEnd(bool isSuccess)
+    {
+        botCTS.Cancel();
+        botCTS.Dispose();
+        botCTS = null;
+        lastScreen = GameDataManager.instance.screen;
+        ShowResult(isSuccess);
+    }
+    public void VirusBaster()
+    {
+        if (botCTS != null)
+        {
+            BotEnd(true);
+        }
     }
 
     //ランサムウェア
@@ -133,31 +185,29 @@ public class SimulationAttackManager : MonoBehaviour
         ransomwareTimerCTS = new();
         _ = TimerStart(ransomwareTimerCTS);
     }
-    private void RansomwareFinish()
+    private void RansomwareEnd(bool isSuccess)
     {
         ransomwareTimerCTS.Cancel();
         ransomwareTimerCTS.Dispose();
         ransomwareTimerCTS = null;
         ransomware.SetActive(false);
-        ShowResult();
+        ShowResult(isSuccess);
     }
     public void Pay()
     {
         Debug.Log("払っちゃうんだ！？");
-        isSuccess = false;
-        RansomwareFinish();
+        GameDataManager.instance.MoneyUp(-10000);
+        RansomwareEnd(false);
     }
     public void WiFi()
     {
         Debug.Log("ネット接続を切ります");
-        isSuccess = true;
-        RansomwareFinish();
+        RansomwareEnd(true);
     }
     public void TurnOff()
     {
         Debug.Log("電源を落とします");
-        isSuccess = false;
-        RansomwareFinish();
+        RansomwareEnd(false);
     }
     private async Task TimerStart(CancellationTokenSource cts)
     {
@@ -169,8 +219,7 @@ public class SimulationAttackManager : MonoBehaviour
             seconds--;
             timerText.text = TimerText(seconds);
         }
-        isSuccess = false;
-        RansomwareFinish();
+        RansomwareEnd(false);
     }
     private string TimerText(int seconds)
     {

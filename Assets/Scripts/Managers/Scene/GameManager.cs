@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         // await Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
         GameDataManager.instance.ResetScore();
         SimulationAttackManager.instance.canAttack = true;
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
         ToBattleButton();
     }
     public static void GameOver()
