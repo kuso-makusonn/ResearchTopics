@@ -1,7 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -76,7 +75,7 @@ public class SimulationAttackManager : MonoBehaviour
         fail.SetActive(false);
         if (lastScreen == GameDataManager.Screen.battle)
         {
-            _ = ReturnBattle();
+            StartCoroutine(ReturnBattle());
         }
         else
         {
@@ -84,38 +83,32 @@ public class SimulationAttackManager : MonoBehaviour
             SetNextAttackTime();
         }
     }
-    private async Task ReturnBattle()
+    private IEnumerator ReturnBattle()
     {
-        try
+        countdown.SetActive(true);
+        for (int i = 3; i > 0; i--)
         {
-            countdown.SetActive(true);
-            for (int i = 3; i > 0; i--)
-            {
-                countdownText.text = i.ToString();
-                await Task.Delay(1000);
-            }
-            countdownText.text = "GO!";
-            await Task.Delay(1000);
+            countdownText.text = i.ToString();
+            yield return new WaitForSecondsRealtime(1f);
         }
-        finally
-        {
-            countdown.SetActive(false);
-            GameDataManager.instance.screen = lastScreen;
-            SetNextAttackTime();
-        }
+        countdownText.text = "GO!";
+        yield return new WaitForSecondsRealtime(1f);
+
+        countdown.SetActive(false);
+        GameDataManager.instance.screen = lastScreen;
+        SetNextAttackTime();
     }
-    private async Task DelayAttack(int duration, CancellationTokenSource cts)
+    private IEnumerator WaitAttack(float duration)
     {
         float timer = 0;
-        const int interval = 100;
         while (timer < duration)
         {
             bool last = GameDataManager.instance.screen == GameDataManager.Screen.battle;
-            await Task.Delay(interval, cts.Token);
+            yield return null;
             bool now = GameDataManager.instance.screen == GameDataManager.Screen.battle;
             if (last && now)
             {
-                timer += interval;
+                timer += Time.deltaTime;
             }
         }
     }
@@ -136,60 +129,44 @@ public class SimulationAttackManager : MonoBehaviour
     //ボット
     [Header("ボット")]
     [SerializeField] GameObject bot;
-    CancellationTokenSource botCTS;
+    private Coroutine botEffectCoroutine;
     private void Bot()
     {
-        botCTS = new();
-        _ = BotEffect(botCTS);
+        botEffectCoroutine = StartCoroutine(BotEffect());
     }
-    private async Task BotEffect(CancellationTokenSource cts)
+    private IEnumerator BotEffect()
     {
-        float times = 2f;
-        try
-        {
-            GameDataManager.instance.players[0].bulletInterval *= times;
-            await DelayAttack(10000, cts);
-            BotEnd(false);
-        }
-        finally
-        {
-            GameDataManager.instance.players[0].bulletInterval *= 1/times;
-        }
+        GameDataManager.instance.players[0].bulletInterval *= 2f;
+        yield return WaitAttack(10);
+        BotEnd(false);
     }
     private void BotEnd(bool isSuccess)
     {
-        botCTS.Cancel();
-        botCTS.Dispose();
-        botCTS = null;
+        StopCoroutine(botEffectCoroutine);
+        GameDataManager.instance.players[0].bulletInterval *= 1 / 2f;
         lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
     public void VirusBaster()
     {
-        if (botCTS != null)
-        {
-            BotEnd(true);
-        }
+        BotEnd(true);
     }
 
     //ランサムウェア
     [Header("ランサムウェア")]
     [SerializeField] GameObject ransomware;
     [SerializeField] TextMeshProUGUI timerText, money;
-    CancellationTokenSource ransomwareTimerCTS;
+    private Coroutine timerCoroutine;
     private void RansomwareStart()
     {
         lastScreen = GameDataManager.instance.screen;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         ransomware.SetActive(true);
-        ransomwareTimerCTS = new();
-        _ = TimerStart(ransomwareTimerCTS);
+        timerCoroutine = StartCoroutine(TimerStart());
     }
     private void RansomwareEnd(bool isSuccess)
     {
-        ransomwareTimerCTS.Cancel();
-        ransomwareTimerCTS.Dispose();
-        ransomwareTimerCTS = null;
+        StopCoroutine(timerCoroutine);
         ransomware.SetActive(false);
         ShowResult(isSuccess);
     }
@@ -209,13 +186,13 @@ public class SimulationAttackManager : MonoBehaviour
         Debug.Log("電源を落とします");
         RansomwareEnd(false);
     }
-    private async Task TimerStart(CancellationTokenSource cts)
+    private IEnumerator TimerStart()
     {
         int seconds = 60;
         timerText.text = TimerText(seconds);
         while (seconds > 0)
         {
-            await Task.Delay(1000, cts.Token);
+            yield return new WaitForSecondsRealtime(1f);
             seconds--;
             timerText.text = TimerText(seconds);
         }

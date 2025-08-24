@@ -72,12 +72,13 @@ public class TitleManager : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(nameInputText.text)) return;
         Debug.Log(nameInputText.text);
-        DecideName();
+        StartCoroutine(DecideName());
     }
 
-    async void DecideName()
+    IEnumerator DecideName()
     {
-        await Supabase.SendUserData(nameInputText.text);
+        var sendDataTask = Supabase.SendUserData(nameInputText.text);
+        yield return new WaitUntil(() => sendDataTask.IsCompleted);
         ToStartScreen();
     }
 }

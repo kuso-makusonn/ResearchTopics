@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -12,17 +13,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         nameText.text = PlayerPrefs.GetString("user_name");
-        GameStart();
+        StartCoroutine(GameStart());
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    async void GameStart()
+    IEnumerator GameStart()
     {
-        await Task.Delay(1);
-        // await Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
+        yield return null;
+        // var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
+        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
         GameDataManager.instance.ResetScore();
         SimulationAttackManager.instance.canAttack = true;
         GameDataManager.instance.screen = GameDataManager.Screen.other;

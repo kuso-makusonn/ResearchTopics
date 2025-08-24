@@ -4,6 +4,7 @@ public class PlayerManager : MonoBehaviour
 {
     PlayerData playerData;
     [SerializeField] GameObject defaultBulletPrefab;
+    [SerializeField] Animator animator;
     public float shootingHeight;
 
     private bool isShooting;
@@ -82,6 +83,7 @@ public class PlayerManager : MonoBehaviour
             {
                 //Shoot();
                 GoShoot();
+                animator.SetTrigger("ShootTrigger");
                 bulletTimer = 0f;
             }
         }

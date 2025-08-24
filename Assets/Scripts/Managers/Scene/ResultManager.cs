@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,31 +12,32 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
         nameText.text = PlayerPrefs.GetString("user_name");
-        YMD();
+        StartCoroutine(YMD());
     }
 
     // Update is called once per frame
     void Update()
     {
     }
-    async void YMD()
+    IEnumerator YMD()
     {
-        // await Supabase.SendGameResult(PlayerPrefs.GetString("game_id"), GameManager.lastScore);
-        await GameOver();
-        await ShowResult();
+        // var sendDataTask =  Supabase.SendGameResult(PlayerPrefs.GetString("game_id"), GameManager.lastScore);
+        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        yield return GameOver();
+        yield return ShowResult();
         SceneManager.LoadScene("TitleScene");
     }
-    async Task GameOver()
+    IEnumerator GameOver()
     {
         gameOver.SetActive(true);
         result.SetActive(false);
-        await Task.Delay(3000);//3000ミリ秒待つ
+        yield return new WaitForSecondsRealtime(3f);//3000ミリ秒待つ
     }
-    async Task ShowResult()
+    IEnumerator ShowResult()
     {
         result.SetActive(true);
         gameOver.SetActive(false);
         scoreText.text = "Score:" + GameManager.lastScore.ToString();
-        await Task.Delay(3000);//3000ミリ秒待つ
+        yield return new WaitForSecondsRealtime(3f);;//3000ミリ秒待つ
     }
 }
