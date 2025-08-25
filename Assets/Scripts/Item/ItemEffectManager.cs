@@ -20,19 +20,20 @@ public static class ItemEffectManager
 
     public static void CancelAllEffect()
     {
+        if (ctsLists == null) return;
         foreach (List<CancellationTokenSource> ctsList in ctsLists)
         {
-            foreach (CancellationTokenSource cts in ctsList)
-            {
-                cts.Cancel();
-            }
+            CancelEffect(ctsList);
         }
     }
     public static void CancelEffect(List<CancellationTokenSource> ctsList)
     {
+        if (ctsList == null) return;
         foreach (CancellationTokenSource cts in ctsList)
         {
             cts.Cancel();
+            cts.Dispose();
+            ctsList.Remove(cts);
         }
     }
     public static async Task ItemUsingDelay(float duration, CancellationTokenSource cts)

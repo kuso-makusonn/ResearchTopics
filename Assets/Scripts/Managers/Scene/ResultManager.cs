@@ -37,7 +37,7 @@ public class ResultManager : MonoBehaviour
     {
         result.SetActive(true);
         gameOver.SetActive(false);
-        scoreText.text = "Score:" + GameManager.lastScore.ToString();
+        scoreText.text = "Score:" + GameManager.instance.lastScore.ToString();
         yield return new WaitForSecondsRealtime(3f);;//3000ミリ秒待つ
     }
 }

@@ -6,9 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this);
+    }
+
+
     [SerializeField] GameObject battle, menu, countdown;
     [SerializeField] TextMeshProUGUI nameText, countdownText;
-    public static int lastScore;
+    public int lastScore;
+    private Coroutine countdownCoroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,12 +36,14 @@ public class GameManager : MonoBehaviour
         // yield return new WaitUntil(() => sendDataTask.IsCompleted);
         GameDataManager.instance.ResetScore();
         SimulationAttackManager.instance.canAttack = true;
+        MailManager.instance.canSendMail = true;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         ToBattleButton();
     }
-    public static void GameOver()
+    public void GameOver()
     {
         lastScore = GameDataManager.instance.score;
+        ItemEffectManager.CancelAllEffect();
         SceneManager.LoadScene("ResultScene");
     }
     public void ToShopButton()
@@ -41,40 +52,45 @@ public class GameManager : MonoBehaviour
         menu.SetActive(false);
         ShopManager.instance.EnterShop();
     }
-    public async void ToBattleButton()
+    public void ToBattleButton()
     {
         menu.SetActive(false);
-        await CountDown();
-        GameDataManager.instance.screen = GameDataManager.Screen.battle;
-        battle.SetActive(true);
+        countdownCoroutine = StartCoroutine(CountDown());
     }
     public void MenuButton()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.menu;
         menu.SetActive(true);
+        if (countdownCoroutine == null) return;
+        StopCoroutine(countdownCoroutine);
+        countdown.SetActive(false);
     }
     public void ReturnToMenu()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.menu;
         menu.SetActive(true);
+        MailManager.instance.ExitMail();
         ShopManager.instance.ExitShop();
     }
-    public async Task CountDown()
+    public IEnumerator CountDown()
     {
-        try
+        countdown.SetActive(true);
+        for (int i = 3; i > 0; i--)
         {
-            countdown.SetActive(true);
-            for (int i = 3; i > 0; i--)
-            {
-                countdownText.text = i.ToString();
-                await Task.Delay(1000);
-            }
-            countdownText.text = "GO!";
-            await Task.Delay(1000);
+            countdownText.text = i.ToString();
+            yield return new WaitForSecondsRealtime(1f);
         }
-        finally
-        {
-            countdown.SetActive(false);
-        }
+        countdownText.text = "GO!";
+        yield return new WaitForSecondsRealtime(1f);
+
+        countdown.SetActive(false);
+        GameDataManager.instance.screen = GameDataManager.Screen.battle;
+        battle.SetActive(true);
+    }
+    public void MailButton()
+    {
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
+        menu.SetActive(false);
+        MailManager.instance.ShowMailList();
     }
 }

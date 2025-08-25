@@ -10,6 +10,10 @@ public class ShopManager : MonoBehaviour
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
     }
+    private void OnApplicationQuit()
+    {
+        ItemEffectManager.CancelAllEffect();
+    }
 
     [SerializeField] GameObject shop, itemArea, itemPrefab;
     List<ItemController> itemList = new();

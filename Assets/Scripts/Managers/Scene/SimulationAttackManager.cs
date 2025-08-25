@@ -13,9 +13,9 @@ public class SimulationAttackManager : MonoBehaviour
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
 
-        // attacks.Add(Phishing);
+        attacks.Add(Phishing);
         attacks.Add(Bot);
-        attacks.Add(RansomwareStart);
+        attacks.Add(Ransomware);
     }
 
     [SerializeField] GameObject simulationAttacks, success, fail, countdown;
@@ -46,7 +46,7 @@ public class SimulationAttackManager : MonoBehaviour
     }
     private void SetNextAttackTime()
     {
-        nextAttackTime = UnityEngine.Random.Range(10, 20);
+        nextAttackTime = UnityEngine.Random.Range(60, 90);
         attackTimer = 0f;
         isAttacking = false;
         simulationAttacks.SetActive(false);
@@ -75,7 +75,7 @@ public class SimulationAttackManager : MonoBehaviour
         fail.SetActive(false);
         if (lastScreen == GameDataManager.Screen.battle)
         {
-            StartCoroutine(ReturnBattle());
+            countdownCoroutine = StartCoroutine(ReturnBattle());
         }
         else
         {
@@ -83,6 +83,7 @@ public class SimulationAttackManager : MonoBehaviour
             SetNextAttackTime();
         }
     }
+    private Coroutine countdownCoroutine;
     private IEnumerator ReturnBattle()
     {
         countdown.SetActive(true);
@@ -95,7 +96,18 @@ public class SimulationAttackManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
 
         countdown.SetActive(false);
-        GameDataManager.instance.screen = lastScreen;
+        GameDataManager.instance.screen = GameDataManager.Screen.battle;
+        SetNextAttackTime();
+    }
+    public void ToMenuWhenCountDown()
+    {
+        StopCountDown();
+        countdown.SetActive(false);
+        GameManager.instance.MenuButton();
+    }
+    private void StopCountDown()
+    {
+        StopCoroutine(countdownCoroutine);
         SetNextAttackTime();
     }
     private IEnumerator WaitAttack(float duration)
@@ -121,8 +133,19 @@ public class SimulationAttackManager : MonoBehaviour
     //フィッシング
     [Header("フィッシング")]
     [SerializeField] GameObject phishing;
+    private Coroutine phishingCoroutine;
     private void Phishing()
     {
+        phishingCoroutine = StartCoroutine(PhishingMail());
+    }
+    private IEnumerator PhishingMail()
+    {
+        yield return null;
+    }
+    private void PhishingEnd(bool isSuccess)
+    {
+        StopCoroutine(phishingCoroutine);
+        ShowResult(isSuccess);
     }
 
 
@@ -149,7 +172,10 @@ public class SimulationAttackManager : MonoBehaviour
     }
     public void VirusBaster()
     {
-        BotEnd(true);
+        if (botEffectCoroutine != null)
+        {
+            BotEnd(true);
+        }
     }
 
     //ランサムウェア
@@ -157,7 +183,7 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject ransomware;
     [SerializeField] TextMeshProUGUI timerText, money;
     private Coroutine timerCoroutine;
-    private void RansomwareStart()
+    private void Ransomware()
     {
         lastScreen = GameDataManager.instance.screen;
         GameDataManager.instance.screen = GameDataManager.Screen.other;

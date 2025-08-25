@@ -27,7 +27,7 @@ public class EnemyManager : MonoBehaviour
         {
             Debug.Log("GameOver");
             Destroy(gameObject);
-            GameManager.GameOver();
+            GameManager.instance.GameOver();
         }
     }
 
