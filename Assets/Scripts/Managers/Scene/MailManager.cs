@@ -14,19 +14,26 @@ public class MailManager : MonoBehaviour
 
 
     [SerializeField] GameObject mail, mailListObj, mailArea, mailPrefab, sendedMail, mailDetail;
-    [SerializeField] TextMeshProUGUI titleText, senderText, mainText;
-    [SerializeField] RectTransform mailDetailRectTransform;
-    List<MailEntity> mailList = new();
+    [SerializeField] ScrollRect mailListScrollRect;
+    [SerializeField] RectTransform mailDetailContent, mailDetailBackground, title, sender, main, linkButton, link;
+    [SerializeField] TextMeshProUGUI titleText, senderText, mainText, linkText;
+    public List<MailEntity> mailList = new();
     public MailEntity[] allMailEntities;
+    public MailEntity[] allPhishingMailEntities;
     public bool canSendMail;
     private bool isSendingMail;
     private float sendMailTimer;
     private float nextSendMailTime;
+    public bool isPhishingMailAttacking;
 
     private void Start()
     {
         allMailEntities = Resources.LoadAll<MailEntity>("Mails/MailEntities");
+        allPhishingMailEntities = Resources.LoadAll<MailEntity>("Mails/PhishingMailEntities");
         SetNextSendMailTime();
+        NewMail(0);
+        isPhishingMailAttacking = true;
+        NewPhishingMail(0);
     }
     private void Update()
     {
@@ -39,7 +46,7 @@ public class MailManager : MonoBehaviour
 
         if (sendMailTimer >= nextSendMailTime)
         {
-            SendNewMail();
+            SendNewMail(isPhishingMailAttacking);
         }
     }
     private void SetNextSendMailTime()
@@ -53,6 +60,9 @@ public class MailManager : MonoBehaviour
     {
         GameManager.instance.MenuButton();
         GameManager.instance.MailButton();
+        mailListScrollRect.verticalNormalizedPosition = 1f;
+        ShowMailDetail(mailList[mailList.Count - 1]);
+
         SetNextSendMailTime();
     }
     public void ShowMailList()
@@ -75,12 +85,6 @@ public class MailManager : MonoBehaviour
                 MailController newMailController = Instantiate(mailPrefab, mailArea.transform).GetComponent<MailController>();
                 newMailController.Init(mailList[i]);
             }
-            RectTransform rect = mailArea.transform as RectTransform;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            rect.anchoredPosition = new Vector2(
-                rect.anchoredPosition.x,
-                -rect.rect.height / 2
-            );
         }
     }
     public void ExitMail()
@@ -96,6 +100,17 @@ public class MailManager : MonoBehaviour
         }
         mailList.Add(allMailEntities[index]);
     }
+    private void NewPhishingMail(int index)
+    {
+        if (!isPhishingMailAttacking) return;
+        if (index < 0 || index > allPhishingMailEntities.Length - 1)
+        {
+            Debug.Log("そんなメールは無えょ！");
+            return;
+        }
+        isPhishingMailAttacking = false;
+        mailList.Add(allPhishingMailEntities[index]);
+    }
     public void DeleteMail(int index)
     {
         if (index < 0 || index > mailList.Count - 1)
@@ -105,26 +120,56 @@ public class MailManager : MonoBehaviour
         }
         mailList.RemoveAt(index);
     }
-    private void SendNewMail()
+    private void SendNewMail(bool isPhishing)
     {
         sendedMail.SetActive(true);
         isSendingMail = true;
-        NewMail(UnityEngine.Random.Range(0, mailList.Count - 1));
+        if (isPhishing)
+        {
+            NewPhishingMail(UnityEngine.Random.Range(0, allPhishingMailEntities.Length - 1));
+        }
+        else
+        {
+            NewMail(UnityEngine.Random.Range(0, allMailEntities.Length - 1));
+        }
     }
     public void ShowMailDetail(MailEntity mailEntity)
     {
+        mailListObj.SetActive(false);
+        mailDetail.SetActive(true);
         titleText.text = mailEntity.title;
         senderText.text = $"From:{mailEntity.sender}";
         mainText.text = mailEntity.main;
+        linkText.text = mailEntity.link;
 
-        RectTransform rect = mailDetailRectTransform;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-        rect.anchoredPosition = new Vector2(
-            rect.anchoredPosition.x,
-            -rect.rect.height / 2
-        );
+        title.sizeDelta = new Vector2(title.sizeDelta.x, titleText.preferredHeight);
+        sender.sizeDelta = new Vector2(sender.sizeDelta.x, senderText.preferredHeight);
+        main.sizeDelta = new Vector2(main.sizeDelta.x, mainText.preferredHeight);
+        link.sizeDelta = new Vector2(link.sizeDelta.x, linkText.preferredHeight);
+        linkButton.sizeDelta = new Vector2(linkButton.sizeDelta.x, linkText.preferredHeight);
 
-        mailListObj.SetActive(false);
-        mailDetail.SetActive(true);
+        float top = 20f;
+        float bottom = 20f;
+        float spacing = 20f;
+
+        float currentY = top;
+        for (int i = 0; i < mailDetailBackground.childCount; i++)
+        {
+            RectTransform rt = mailDetailBackground.GetChild(i).GetComponent<RectTransform>();
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, -currentY);
+            float height = rt.sizeDelta.y;
+            currentY += height + spacing;
+        }
+
+        float totalHeight = currentY - spacing + bottom;
+        mailDetailBackground.sizeDelta = new Vector2(mailDetailBackground.sizeDelta.x, totalHeight);
+
+        mailDetailContent.sizeDelta = new Vector2(mailDetailBackground.sizeDelta.x, totalHeight);
+    }
+    public void LinkButton()
+    {
+    }
+    public void WarningButton()
+    {
     }
 }

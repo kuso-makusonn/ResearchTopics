@@ -14,8 +14,8 @@ public class SimulationAttackManager : MonoBehaviour
         else if (instance != this) Destroy(this);
 
         attacks.Add(Phishing);
-        attacks.Add(Bot);
-        attacks.Add(Ransomware);
+        // attacks.Add(Bot);
+        // attacks.Add(Ransomware);
     }
 
     [SerializeField] GameObject simulationAttacks, success, fail, countdown;
@@ -46,7 +46,7 @@ public class SimulationAttackManager : MonoBehaviour
     }
     private void SetNextAttackTime()
     {
-        nextAttackTime = UnityEngine.Random.Range(60, 90);
+        nextAttackTime = UnityEngine.Random.Range(10,20);
         attackTimer = 0f;
         isAttacking = false;
         simulationAttacks.SetActive(false);
@@ -133,18 +133,12 @@ public class SimulationAttackManager : MonoBehaviour
     //フィッシング
     [Header("フィッシング")]
     [SerializeField] GameObject phishing;
-    private Coroutine phishingCoroutine;
     private void Phishing()
     {
-        phishingCoroutine = StartCoroutine(PhishingMail());
+        MailManager.instance.isPhishingMailAttacking = true;
     }
-    private IEnumerator PhishingMail()
+    public void PhishingEnd(bool isSuccess)
     {
-        yield return null;
-    }
-    private void PhishingEnd(bool isSuccess)
-    {
-        StopCoroutine(phishingCoroutine);
         ShowResult(isSuccess);
     }
 

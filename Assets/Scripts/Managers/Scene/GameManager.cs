@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         // var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
         // yield return new WaitUntil(() => sendDataTask.IsCompleted);
         GameDataManager.instance.ResetScore();
+        // EnemySpawner.instance.canSpawn = true;
         SimulationAttackManager.instance.canAttack = true;
         MailManager.instance.canSendMail = true;
         GameDataManager.instance.screen = GameDataManager.Screen.other;

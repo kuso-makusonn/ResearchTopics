@@ -17,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
     private float spawnTimer = 0f;
     private float nextSpawnTime;
     public List<EnemyData> enemies = new();
+    public bool canSpawn;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        if (!canSpawn) return;
         if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         spawnTimer += Time.deltaTime;
 
