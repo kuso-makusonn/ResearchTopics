@@ -21,8 +21,10 @@ public class ResultManager : MonoBehaviour
     }
     IEnumerator YMD()
     {
-        // var sendDataTask =  Supabase.SendGameResult(PlayerPrefs.GetString("game_id"), GameManager.lastScore);
-        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        float play_time = 0f;
+        var sendDataTask =  Supabase.SendGameResult(PlayerPrefs.GetString("now_game_id"), GameManager.instance.lastScore, play_time);
+        yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        PlayerPrefs.DeleteKey("now_game_id");
         yield return GameOver();
         yield return ShowResult();
         SceneManager.LoadScene("TitleScene");

@@ -31,9 +31,9 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator GameStart()
     {
-        yield return null;
-        // var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
-        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        // yield return null;
+        var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
+        yield return new WaitUntil(() => sendDataTask.IsCompleted);
         GameDataManager.instance.ResetScore();
         // EnemySpawner.instance.canSpawn = true;
         SimulationAttackManager.instance.canAttack = true;

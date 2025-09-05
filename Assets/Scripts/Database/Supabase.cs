@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 //データベース登録用クラス
 public static class Supabase
 {
-    private static string rootURL = "https://database-test.apisubdomain.workers.dev";
+    private static string rootURL = "https://researchtopics-database-api.apisubdomain.workers.dev";
     private static async Task<string> PostJson(string address, string json)
     {
         using (UnityWebRequest request = new UnityWebRequest(rootURL + address, "POST"))
@@ -40,97 +40,84 @@ public static class Supabase
         }
     }
 
-    public static async Task SendUserData(string userName)
+    public static async Task SendUserData(string user_name, string age_group, string gender, bool initially_interested)
     {
         string address = "/api/post/database/users";
-        UserData gameData = new UserData { user_name = userName };
+        UserData gameData = new(user_name, age_group, gender, initially_interested);
         string postJson = JsonUtility.ToJson(gameData);
         string resJson = await PostJson(address, postJson);
         if (resJson == null) return;
-        UserResponse user = JsonUtility.FromJson<UserResponse>(resJson);
-
-        if (user.user_name == userName)
-        {
-            PlayerPrefs.SetString("user_name", user.user_name);
-            PlayerPrefs.SetString("user_id", user.user_id);
-            PlayerPrefs.Save(); // 明示的に保存（省略可）
-
-            Debug.Log("ユーザーデータ保存完了");
-        }
-        else
-        {
-            Debug.LogError("レスポンスが正しくありません");
-        }
+        UserResponse[] user = JsonHelper.FromJson<UserResponse>(resJson);
+        PlayerPrefs.SetString("user_name", user_name);
+        PlayerPrefs.SetString("user_id", user[0].user_id);
+        PlayerPrefs.Save(); // 明示的に保存（省略可）
+        Debug.Log("ユーザーデータ保存完了");
     }
     // JSONに変換するためのクラス
     [System.Serializable]
     private class UserData
     {
         public string user_name;
+        public string age_group;
+        public string gender;
+        public bool initially_interested;
+        public UserData(string _user_name, string _age_group, string _gender, bool _initially_interested)
+        {
+            user_name = _user_name;
+            age_group = _age_group;
+            gender = _gender;
+            initially_interested = _initially_interested;
+        }
     }
 
     [System.Serializable]
     private class UserResponse
     {
         public string user_id;
-        public string user_name;
     }
 
-    public static async Task SendGameStart(string userId)
+    public static async Task SendGameStart(string user_id)
     {
         string address = "/api/post/database/games";
-        GameData gameData = new GameData { user_id = userId };
+        GameData gameData = new(user_id);
         string postJson = JsonUtility.ToJson(gameData);
         string resJson = await PostJson(address, postJson);
         if (resJson == null) return;
-        GameResponse game = JsonUtility.FromJson<GameResponse>(resJson);
-
-        if (game.user_id == userId)
-        {
-            PlayerPrefs.SetString("game_id", game.game_id);
-            PlayerPrefs.Save(); // 明示的に保存（省略可）
-
-            Debug.Log("ゲーム開始データ保存完了");
-        }
-        else
-        {
-            Debug.LogError("レスポンスが正しくありません");
-        }
+        GameResponse[] game = JsonHelper.FromJson<GameResponse>(resJson);
+        PlayerPrefs.SetString("now_game_id", game[0].game_id);
+        PlayerPrefs.Save(); // 明示的に保存（省略可）
+        Debug.Log("ゲームID保存完了");
     }
     // JSONに変換するためのクラス
     [System.Serializable]
     private class GameData
     {
         public string user_id;
+        public GameData(string _user_id)
+        {
+            user_id = _user_id;
+        }
     }
 
     [System.Serializable]
     private class GameResponse
     {
         public string game_id;
-        public string user_id;
     }
 
-    public static async Task SendGameResult(string gameId, int score)
+    public static async Task SendGameResult(string game_id, int score, float play_time)
     {
         string address = "/api/post/database/scores";
-        ResultData gameData = new ResultData { game_id = gameId };
+        ResultData gameData = new(game_id, score, play_time);
         string postJson = JsonUtility.ToJson(gameData);
         string resJson = await PostJson(address, postJson);
         if (resJson == null) return;
-        ResultResponse gameResult = JsonUtility.FromJson<ResultResponse>(resJson);
-
-        if (gameResult.game_id == gameId
-        && gameResult.score == score)
+        ResultResponse[] gameResult = JsonHelper.FromJson<ResultResponse>(resJson);
+        if (!PlayerPrefs.HasKey("HighScore") || gameResult[0].score > PlayerPrefs.GetInt("HighScore"))
         {
-            // PlayerPrefs.SetInt("score", gameResult.score);
-            // PlayerPrefs.Save(); // 明示的に保存（省略可）
-
-            Debug.Log("リザルトデータ保存完了");
-        }
-        else
-        {
-            Debug.LogError("レスポンスが正しくありません");
+            PlayerPrefs.SetInt("HighScore", gameResult[0].score);
+            PlayerPrefs.Save(); // 明示的に保存（省略可）
+            Debug.Log("ハイスコア更新！");
         }
     }
 
@@ -140,12 +127,68 @@ public static class Supabase
     {
         public string game_id;
         public int score;
+        public float play_time;
+        public ResultData(string _game_id, int _score, float _play_time)
+        {
+            game_id = _game_id;
+            score = _score;
+            play_time = _play_time;
+        }
     }
 
     [System.Serializable]
     private class ResultResponse
     {
+        public int score;
+    }
+
+    public static async Task SendAttackLog(string game_id, string attack_id, bool handled, float response_time)
+    {
+        string address = "/api/post/database/attack_attempts";
+        AttackLog gameData = new(game_id, attack_id, handled, response_time);
+        string postJson = JsonUtility.ToJson(gameData);
+        _ = await PostJson(address, postJson);
+    }
+    [System.Serializable]
+    private class AttackLog
+    {
         public string game_id;
+        public string attack_id;
+        public bool handled;
+        public float response_time;
+        public AttackLog(string _game_id, string _attack_id, bool _handled, float _response_time)
+        {
+            game_id = _game_id;
+            attack_id = _attack_id;
+            handled = _handled;
+            response_time = _response_time;
+        }
+    }
+
+    public static async Task<RankItem[]> GetScoreRank()
+    {
+        string address = "/api/get/database/rank";
+        using (UnityWebRequest request = UnityWebRequest.Get(rootURL + address))
+        {
+            var operation = request.SendWebRequest();
+
+            while (!operation.isDone)
+                await Task.Yield(); // 非同期で待つ
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("API Error: " + request.error);
+                return null;
+            }
+
+            string json = request.downloadHandler.text;
+            return JsonHelper.FromJson<RankItem>(json);
+        }
+    }
+    [System.Serializable]
+    public class RankItem
+    {
+        public string user_name;
         public int score;
     }
 }
