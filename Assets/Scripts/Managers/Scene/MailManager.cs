@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,7 @@ public class MailManager : MonoBehaviour
     private float sendMailTimer;
     private float nextSendMailTime;
     public bool isPhishingMailAttacking;
+    private MailEntity nowMailDetailEntity;
 
     private void Start()
     {
@@ -71,6 +73,7 @@ public class MailManager : MonoBehaviour
 
         mailListObj.SetActive(true);
         mailDetail.SetActive(false);
+        nowMailDetailEntity = null;
         mail.SetActive(true);
         SetMails();
 
@@ -98,7 +101,9 @@ public class MailManager : MonoBehaviour
             Debug.Log("そんなメールは無えょ！");
             return;
         }
-        mailList.Add(allMailEntities[index]);
+        MailEntity mailEntity = Instantiate(allMailEntities[index]);
+        mailEntity.isPhishing = false;
+        mailList.Add(mailEntity);
     }
     private void NewPhishingMail(int index)
     {
@@ -109,7 +114,9 @@ public class MailManager : MonoBehaviour
             return;
         }
         isPhishingMailAttacking = false;
-        mailList.Add(allPhishingMailEntities[index]);
+        MailEntity mailEntity = Instantiate(allPhishingMailEntities[index]);
+        mailEntity.isPhishing = true;
+        mailList.Add(mailEntity);
     }
     public void DeleteMail(int index)
     {
@@ -135,6 +142,7 @@ public class MailManager : MonoBehaviour
     }
     public void ShowMailDetail(MailEntity mailEntity)
     {
+        nowMailDetailEntity = mailEntity;
         mailListObj.SetActive(false);
         mailDetail.SetActive(true);
         titleText.text = mailEntity.title;
@@ -171,5 +179,41 @@ public class MailManager : MonoBehaviour
     }
     public void WarningButton()
     {
+        if (nowMailDetailEntity == null) return;
+        if (nowMailDetailEntity.isPhishing)
+        {
+            SimulationAttackManager.instance.PhishingEnd(true);
+            nowMailDetailEntity.isDark = true;
+            ShowMailList();
+        }
+        else if (!nowMailDetailEntity.isPhishing)
+        {
+            Debug.Log("これは正当なメールです");
+        }
+        else
+        {
+            Debug.Log("メールが見つかりません");
+        }
+    }
+    public void ReturnMenu()
+    {
+        GameManager.instance.ReturnToMenu();
+    }
+    public void ExitMailDetail()
+    {
+        if (nowMailDetailEntity == null) return;
+        if (nowMailDetailEntity.isPhishing)
+        {
+            SimulationAttackManager.instance.PhishingEnd(false);
+            nowMailDetailEntity.isDark = true;
+        }
+        else if (!nowMailDetailEntity.isPhishing)
+        {
+        }
+        else
+        {
+            Debug.Log("メールが見つかりません");
+        }
+        ShowMailList();
     }
 }

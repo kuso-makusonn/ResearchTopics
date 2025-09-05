@@ -9,6 +9,7 @@ public class GameDataManager : MonoBehaviour
     public List<PlayerData> players { get; private set; } = new();
     public int score { get; private set; }
     public int money { get; private set; }
+    public int canVirusBusterCount;
     public enum Screen
     {
         battle,

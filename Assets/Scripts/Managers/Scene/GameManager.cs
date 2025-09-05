@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         // EnemySpawner.instance.canSpawn = true;
         SimulationAttackManager.instance.canAttack = true;
         MailManager.instance.canSendMail = true;
+        GameDataManager.instance.canVirusBusterCount = 5;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         ToBattleButton();
     }
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour
         menu.SetActive(true);
         MailManager.instance.ExitMail();
         ShopManager.instance.ExitShop();
+        SimulationAttackManager.instance.ExitVirusBusterScreen();
     }
     public IEnumerator CountDown()
     {
@@ -93,5 +95,11 @@ public class GameManager : MonoBehaviour
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         menu.SetActive(false);
         MailManager.instance.ShowMailList();
+    }
+    public void ToVirusBusterScreen()
+    {
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
+        menu.SetActive(false);
+        SimulationAttackManager.instance.EnterVirusBusterScreen();
     }
 }

@@ -14,8 +14,8 @@ public class SimulationAttackManager : MonoBehaviour
         else if (instance != this) Destroy(this);
 
         attacks.Add(Phishing);
-        // attacks.Add(Bot);
-        // attacks.Add(Ransomware);
+        attacks.Add(Bot);
+        attacks.Add(Ransomware);
     }
 
     [SerializeField] GameObject simulationAttacks, success, fail, countdown;
@@ -49,12 +49,12 @@ public class SimulationAttackManager : MonoBehaviour
         nextAttackTime = UnityEngine.Random.Range(10,20);
         attackTimer = 0f;
         isAttacking = false;
-        simulationAttacks.SetActive(false);
+        // simulationAttacks.SetActive(false);
     }
     private void RunRandomAttack()
     {
         isAttacking = true;
-        simulationAttacks.SetActive(true);
+        // simulationAttacks.SetActive(true);
         attacks[UnityEngine.Random.Range(0, attacks.Count)]();
     }
     private void ShowResult(bool isSuccess)
@@ -139,14 +139,16 @@ public class SimulationAttackManager : MonoBehaviour
     }
     public void PhishingEnd(bool isSuccess)
     {
+        lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
 
 
     //ボット
     [Header("ボット")]
-    [SerializeField] GameObject bot;
+    [SerializeField] GameObject bot,virusBusterScreen;
     private Coroutine botEffectCoroutine;
+    [SerializeField] TextMeshProUGUI canVirusBusterCountText;
     private void Bot()
     {
         botEffectCoroutine = StartCoroutine(BotEffect());
@@ -164,12 +166,33 @@ public class SimulationAttackManager : MonoBehaviour
         lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
-    public void VirusBaster()
+    public void EnterVirusBusterScreen()
     {
+        virusBusterScreen.SetActive(true);
+        canVirusBusterCountText.text = $"残り可能回数：{GameDataManager.instance.canVirusBusterCount}";
+    }
+    public void ExitVirusBusterScreen()
+    {
+        virusBusterScreen.SetActive(false);
+    }
+    public void VirusBuster()
+    {
+        if (GameDataManager.instance.canVirusBusterCount < 1)
+        {
+            Debug.Log("もうできないよ！");
+            return;
+        }
         if (botEffectCoroutine != null)
         {
+            Debug.Log("Virus Buster!");
             BotEnd(true);
         }
+        else
+        {
+            Debug.Log("ウイルスを検出できませんでした");
+        }
+        GameDataManager.instance.canVirusBusterCount--;
+        canVirusBusterCountText.text = $"残り可能回数：{GameDataManager.instance.canVirusBusterCount}";
     }
 
     //ランサムウェア
