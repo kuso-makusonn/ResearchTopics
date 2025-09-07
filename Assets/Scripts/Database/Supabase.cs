@@ -48,8 +48,11 @@ public static class Supabase
         string resJson = await PostJson(address, postJson);
         if (resJson == null) return;
         UserResponse[] user = JsonHelper.FromJson<UserResponse>(resJson);
-        PlayerPrefs.SetString("user_name", user_name);
         PlayerPrefs.SetString("user_id", user[0].user_id);
+        PlayerPrefs.SetString("user_name", user_name);
+        PlayerPrefs.SetString("Age_Group", age_group);
+        PlayerPrefs.SetString("Gender", gender);
+        PlayerPrefs.SetString("Initially_Interested", initially_interested.ToString());
         PlayerPrefs.Save(); // 明示的に保存（省略可）
         Debug.Log("ユーザーデータ保存完了");
     }
