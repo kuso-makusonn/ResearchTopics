@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject battle, menu, countdown;
     [SerializeField] TextMeshProUGUI nameText, countdownText;
     public int lastScore;
+    public float play_time;
     private Coroutine countdownCoroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,15 +29,20 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        play_time += Time.deltaTime;
     }
     IEnumerator GameStart()
     {
         yield return null;
-        // var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
-        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        // if (PlayerPrefs.HasKey("user_id"))
+        // {
+        //     var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
+        //     yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        // }
 
         GameDataManager.instance.ResetScore();
-        // EnemySpawner.instance.canSpawn = true;
+        play_time = 0f;
+        EnemySpawner.instance.canSpawn = true;
         SimulationAttackManager.instance.canAttack = true;
         MailManager.instance.canSendMail = true;
         GameDataManager.instance.canVirusBusterCount = 5;

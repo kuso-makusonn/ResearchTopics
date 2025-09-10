@@ -16,4 +16,7 @@ MonoBehaviour:
   sender: Joshin
   main: "\u304A\u3045\u3001\u98F2\u307F\u884C\u3053\u98F2\u307F\u884C\u3053"
   link: https://www.Joshin.B
-  isDark: 0
+  discountItems:
+  - itemEntity: {fileID: 11400000, guid: e839dc3a5c3649540a76f50149cdb58d, type: 2}
+    discount: 10
+    maxPurchaseCount: 1

@@ -8,33 +8,46 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText;
     [SerializeField] GameObject highlight;
-    ItemEffect itemEffect;
-    int price;
+    public ItemModel itemModel;
 
-    public void Init(ItemEntity itemEntity)
+    public void Init(ItemModel _itemModel)
     {
-        itemNameText.text = itemEntity.itemName;
-        itemImage.sprite = itemEntity.itemImage;
-        price = itemEntity.price;
-        priceText.text = "価格:" + price + "円";
-        itemEffectText.text = itemEntity.effectText;
-        itemEffect = itemEntity.itemEffect;
-        highlight.SetActive(false);
+        itemModel = _itemModel;
+        Show();
+    }
+    public void Show()
+    {
+        itemNameText.text = itemModel.itemName;
+        itemImage.sprite = itemModel.itemImage;
+        priceText.text = "価格:" + Price() + "円";
+        highlight.SetActive(itemModel.isHighlight);
+    }
+    private int Price()
+    {
+        return itemModel.price * (100 - itemModel.discount);
     }
     public void HighlightItem(bool isHighlight)
     {
+        itemModel.isHighlight = isHighlight;
         highlight.SetActive(isHighlight);
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        highlight.SetActive(true);
+        HighlightItem(true);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        highlight.SetActive(false);
+        HighlightItem(false);
     }
     public void ItemClickButton()
     {
-        itemEffect.PurchaseItem(price);
+        itemModel.purchaseCount++;
+        if (itemModel.maxPurchaseCount > 0
+        && itemModel.purchaseCount >= itemModel.maxPurchaseCount)
+        {
+            ShopManager.instance.RemoveItem(itemModel);
+            Destroy(gameObject);
+        }
+        itemModel.itemEffect.PurchaseItem(Price());
     }
 }

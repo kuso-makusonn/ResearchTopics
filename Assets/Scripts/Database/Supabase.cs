@@ -50,9 +50,9 @@ public static class Supabase
         UserResponse[] user = JsonHelper.FromJson<UserResponse>(resJson);
         PlayerPrefs.SetString("user_id", user[0].user_id);
         PlayerPrefs.SetString("user_name", user_name);
-        PlayerPrefs.SetString("Age_Group", age_group);
-        PlayerPrefs.SetString("Gender", gender);
-        PlayerPrefs.SetString("Initially_Interested", initially_interested.ToString());
+        PlayerPrefs.SetString("age_group", age_group);
+        PlayerPrefs.SetString("gender", gender);
+        PlayerPrefs.SetString("initially_interested", initially_interested.ToString());
         PlayerPrefs.Save(); // 明示的に保存（省略可）
         Debug.Log("ユーザーデータ保存完了");
     }
@@ -116,9 +116,9 @@ public static class Supabase
         string resJson = await PostJson(address, postJson);
         if (resJson == null) return;
         ResultResponse[] gameResult = JsonHelper.FromJson<ResultResponse>(resJson);
-        if (!PlayerPrefs.HasKey("HighScore") || gameResult[0].score > PlayerPrefs.GetInt("HighScore"))
+        if (!PlayerPrefs.HasKey("high_score") || gameResult[0].score > PlayerPrefs.GetInt("HighScore"))
         {
-            PlayerPrefs.SetInt("HighScore", gameResult[0].score);
+            PlayerPrefs.SetInt("high_score", gameResult[0].score);
             PlayerPrefs.Save(); // 明示的に保存（省略可）
             Debug.Log("ハイスコア更新！");
         }
@@ -147,7 +147,7 @@ public static class Supabase
 
     public static async Task SendAttackLog(string game_id, string attack_id, bool handled, float response_time)
     {
-        string address = "/api/post/database/attack_attempts";
+        string address = "/api/post/database/attacks";
         AttackLog gameData = new(game_id, attack_id, handled, response_time);
         string postJson = JsonUtility.ToJson(gameData);
         _ = await PostJson(address, postJson);

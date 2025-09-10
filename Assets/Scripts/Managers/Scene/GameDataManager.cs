@@ -55,7 +55,4 @@ public class GameDataManager : MonoBehaviour
     {
         moneyText.text = "所持金:" + money.ToString() + "円";
     }
-    public void Heal(int amount)
-    {
-    }
 }

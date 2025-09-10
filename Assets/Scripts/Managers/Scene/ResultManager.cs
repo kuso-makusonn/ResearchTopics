@@ -21,9 +21,13 @@ public class ResultManager : MonoBehaviour
     }
     IEnumerator YMD()
     {
-        // float play_time = 0f;
-        // var sendDataTask =  Supabase.SendGameResult(PlayerPrefs.GetString("now_game_id"), GameManager.instance.lastScore, play_time);
-        // yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        if (PlayerPrefs.HasKey("now_game_id"))
+        {
+            var sendDataTask = Supabase.SendGameResult(PlayerPrefs.GetString("now_game_id"),
+            GameManager.instance.lastScore,
+            GameManager.instance.play_time);
+            yield return new WaitUntil(() => sendDataTask.IsCompleted);
+        }
 
         PlayerPrefs.DeleteKey("now_game_id");
         yield return GameOver();

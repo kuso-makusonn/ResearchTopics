@@ -5,22 +5,21 @@ public class MailController : MonoBehaviour
 {
     [SerializeField] GameObject dark;
     [SerializeField] TextMeshProUGUI titleText, senderText, mainText;
-    public MailEntity mailEntity;
-    public void Init(MailEntity _mailEntity)
+    public MailModel mailModel;
+    public void Init(MailModel _mailModel)
     {
-        mailEntity = _mailEntity;
+        mailModel = _mailModel;
         ShowMail();
     }
     public void ShowMail()
     {
-        if (mailEntity == null) return;
-        titleText.text = mailEntity.title;
-        senderText.text = $"From:{mailEntity.sender}";
-        mainText.text = mailEntity.main;
-        dark.SetActive(mailEntity.isDark ? true : false);
+        titleText.text = mailModel.title;
+        senderText.text = $"From:{mailModel.sender}";
+        mainText.text = mailModel.main;
+        dark.SetActive(mailModel.isDark ? true : false);
     }
     public void SelectMailButton()
     {
-        MailManager.instance.ShowMailDetail(mailEntity);
+        MailManager.instance.ShowMailDetail(mailModel);
     }
 }

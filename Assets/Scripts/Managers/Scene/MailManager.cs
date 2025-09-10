@@ -18,7 +18,7 @@ public class MailManager : MonoBehaviour
     [SerializeField] ScrollRect mailListScrollRect;
     [SerializeField] RectTransform mailDetailContent, mailDetailBackground, title, sender, main, linkButton, link;
     [SerializeField] TextMeshProUGUI titleText, senderText, mainText, linkText;
-    public List<MailEntity> mailList = new();
+    public List<MailModel> mailList = new();
     public MailEntity[] allMailEntities;
     public MailEntity[] allPhishingMailEntities;
     public bool canSendMail;
@@ -26,7 +26,7 @@ public class MailManager : MonoBehaviour
     private float sendMailTimer;
     private float nextSendMailTime;
     public bool isPhishingMailAttacking;
-    private MailEntity nowMailDetailEntity;
+    private MailModel nowMailDetailModel;
 
     private void Start()
     {
@@ -73,7 +73,7 @@ public class MailManager : MonoBehaviour
 
         mailListObj.SetActive(true);
         mailDetail.SetActive(false);
-        nowMailDetailEntity = null;
+        nowMailDetailModel = null;
         mail.SetActive(true);
         SetMails();
 
@@ -102,8 +102,9 @@ public class MailManager : MonoBehaviour
             return;
         }
         MailEntity mailEntity = Instantiate(allMailEntities[index]);
-        mailEntity.isPhishing = false;
-        mailList.Add(mailEntity);
+        MailModel mailModel = new(mailEntity);
+        mailModel.isPhishing = false;
+        mailList.Add(mailModel);
     }
     private void NewPhishingMail(int index)
     {
@@ -115,8 +116,9 @@ public class MailManager : MonoBehaviour
         }
         isPhishingMailAttacking = false;
         MailEntity mailEntity = Instantiate(allPhishingMailEntities[index]);
-        mailEntity.isPhishing = true;
-        mailList.Add(mailEntity);
+        MailModel mailModel = new(mailEntity);
+        mailModel.isPhishing = true;
+        mailList.Add(mailModel);
     }
     public void DeleteMail(int index)
     {
@@ -140,15 +142,19 @@ public class MailManager : MonoBehaviour
             NewMail(UnityEngine.Random.Range(0, allMailEntities.Length - 1));
         }
     }
-    public void ShowMailDetail(MailEntity mailEntity)
+    public void ShowMailDetail(MailModel mailModel)
     {
-        nowMailDetailEntity = mailEntity;
+        if (mailModel.isPhishing)
+        {
+            SimulationAttackManager.instance.StartResponseTime();
+        }
+        nowMailDetailModel = mailModel;
         mailListObj.SetActive(false);
         mailDetail.SetActive(true);
-        titleText.text = mailEntity.title;
-        senderText.text = $"From:{mailEntity.sender}";
-        mainText.text = mailEntity.main;
-        linkText.text = mailEntity.link;
+        titleText.text = mailModel.title;
+        senderText.text = $"From:{mailModel.sender}";
+        mainText.text = mailModel.main;
+        linkText.text = mailModel.link;
 
         title.sizeDelta = new Vector2(title.sizeDelta.x, titleText.preferredHeight);
         sender.sizeDelta = new Vector2(sender.sizeDelta.x, senderText.preferredHeight);
@@ -176,17 +182,38 @@ public class MailManager : MonoBehaviour
     }
     public void LinkButton()
     {
+        if (nowMailDetailModel == null) return;
+        if (nowMailDetailModel.isPhishing)
+        {
+            SimulationAttackManager.instance.PhishingEnd(false);
+            nowMailDetailModel.isDark = true;
+            ShowMailList();
+        }
+        else
+        {
+            foreach (MailModel.DiscountItemTemplate item in nowMailDetailModel.discountItems)
+            {
+                ItemModel itemModel = new(item.itemEntity);
+                itemModel.discount = item.discount;
+                itemModel.maxPurchaseCount = item.maxPurchaseCount;
+
+                ShopManager.instance.AddItem(itemModel);
+            }
+            ShowMailList();
+            ReturnMenu();
+            GameManager.instance.ToShopButton();
+        }
     }
     public void WarningButton()
     {
-        if (nowMailDetailEntity == null) return;
-        if (nowMailDetailEntity.isPhishing)
+        if (nowMailDetailModel == null) return;
+        if (nowMailDetailModel.isPhishing)
         {
             SimulationAttackManager.instance.PhishingEnd(true);
-            nowMailDetailEntity.isDark = true;
+            nowMailDetailModel.isDark = true;
             ShowMailList();
         }
-        else if (!nowMailDetailEntity.isPhishing)
+        else if (!nowMailDetailModel.isPhishing)
         {
             Debug.Log("これは正当なメールです");
         }
@@ -201,13 +228,13 @@ public class MailManager : MonoBehaviour
     }
     public void ExitMailDetail()
     {
-        if (nowMailDetailEntity == null) return;
-        if (nowMailDetailEntity.isPhishing)
+        if (nowMailDetailModel == null) return;
+        if (nowMailDetailModel.isPhishing)
         {
             SimulationAttackManager.instance.PhishingEnd(false);
-            nowMailDetailEntity.isDark = true;
+            nowMailDetailModel.isDark = true;
         }
-        else if (!nowMailDetailEntity.isPhishing)
+        else if (!nowMailDetailModel.isPhishing)
         {
         }
         else

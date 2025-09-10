@@ -17,14 +17,29 @@ public class SimulationAttackManager : MonoBehaviour
         attacks.Add(Bot);
         attacks.Add(Ransomware);
     }
+    public enum State
+    {
+        notAttacking,
+        phishing,
+        bot,
+        ransomware
+    }
+    private Dictionary<string, string> attack_id = new()
+    {
+        {"phishing","ph_v1.0"},
+        {"bot","bo_v1.0"},
+        {"ransomware","ra_v1.0"}
+    };
 
     [SerializeField] GameObject simulationAttacks, success, fail, countdown;
     [SerializeField] TextMeshProUGUI successDescription, failDescription, countdownText;
     public bool canAttack = false;
-    private bool isAttacking = false;
     private float attackTimer;
     private float nextAttackTime;
     private GameDataManager.Screen lastScreen;
+    public State nowState = State.notAttacking;
+    private bool isResponseTime = false;
+    public float response_time;
 
     private void Start()
     {
@@ -33,7 +48,14 @@ public class SimulationAttackManager : MonoBehaviour
     void Update()
     {
         if (!canAttack) return;
-        if (isAttacking) return;
+        if (nowState != State.notAttacking)
+        {
+            if (isResponseTime)
+            {
+                response_time += Time.deltaTime;
+            }
+            return;
+        }
         if (GameDataManager.instance.screen != GameDataManager.Screen.battle) return;
 
         // ゲームが動いている間のみカウントアップ
@@ -46,20 +68,33 @@ public class SimulationAttackManager : MonoBehaviour
     }
     private void SetNextAttackTime()
     {
-        nextAttackTime = UnityEngine.Random.Range(10,20);
+        nextAttackTime = UnityEngine.Random.Range(10, 20);
         attackTimer = 0f;
-        isAttacking = false;
+        nowState = State.notAttacking;
+        isResponseTime = false;
         // simulationAttacks.SetActive(false);
     }
     private void RunRandomAttack()
     {
-        isAttacking = true;
         // simulationAttacks.SetActive(true);
         attacks[UnityEngine.Random.Range(0, attacks.Count)]();
     }
     private void ShowResult(bool isSuccess)
     {
         GameDataManager.instance.screen = GameDataManager.Screen.other;
+
+        //擬似攻撃ログデータ送信
+        // if (PlayerPrefs.HasKey("now_game_id")
+        // && nowState != State.notAttacking
+        // && isResponseTime
+        // && canAttack)
+        // {
+        //     _ = Supabase.SendAttackLog(PlayerPrefs.GetString("now_game_id"),
+        //     attack_id[nowState.ToString()],
+        //     isSuccess,
+        //     response_time);
+        // }
+
         if (isSuccess)
         {
             success.SetActive(true);
@@ -124,6 +159,11 @@ public class SimulationAttackManager : MonoBehaviour
             }
         }
     }
+    public void StartResponseTime()
+    {
+        response_time = 0f;
+        isResponseTime = true;
+    }
 
 
     //
@@ -135,6 +175,7 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject phishing;
     private void Phishing()
     {
+        nowState = State.phishing;
         MailManager.instance.isPhishingMailAttacking = true;
     }
     public void PhishingEnd(bool isSuccess)
@@ -146,15 +187,17 @@ public class SimulationAttackManager : MonoBehaviour
 
     //ボット
     [Header("ボット")]
-    [SerializeField] GameObject bot,virusBusterScreen;
+    [SerializeField] GameObject bot, virusBusterScreen;
     private Coroutine botEffectCoroutine;
     [SerializeField] TextMeshProUGUI canVirusBusterCountText;
     private void Bot()
     {
+        nowState = State.bot;
         botEffectCoroutine = StartCoroutine(BotEffect());
     }
     private IEnumerator BotEffect()
     {
+        StartResponseTime();
         GameDataManager.instance.players[0].bulletInterval *= 2f;
         yield return WaitAttack(10);
         BotEnd(false);
@@ -202,6 +245,8 @@ public class SimulationAttackManager : MonoBehaviour
     private Coroutine timerCoroutine;
     private void Ransomware()
     {
+        nowState = State.ransomware;
+        StartResponseTime();
         lastScreen = GameDataManager.instance.screen;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
         ransomware.SetActive(true);

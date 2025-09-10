@@ -9,6 +9,8 @@ public class ShopManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
+
+        allItemEntities = Resources.LoadAll<ItemEntity>("Items/ItemEntities");
     }
     private void OnApplicationQuit()
     {
@@ -16,11 +18,27 @@ public class ShopManager : MonoBehaviour
     }
 
     [SerializeField] GameObject shop, itemArea, itemPrefab;
-    List<ItemController> itemList = new();
+    [SerializeField] List<ItemModel> itemList = new();
+    ItemEntity[] allItemEntities;
+
+    private void Start()
+    {
+        foreach (ItemEntity itemEntity in allItemEntities)
+        {
+            itemList.Add(new(itemEntity));
+        }
+    }
+    public void AddItem(ItemModel itemModel)
+    {
+        itemList.Add(itemModel);
+    }
+    public void RemoveItem(ItemModel itemModel)
+    {
+        itemList.Remove(itemModel);
+    }
     public void EnterShop()
     {
         shop.SetActive(true);
-        itemList = new();
         SetItems();
 
         void SetItems()
@@ -30,12 +48,10 @@ public class ShopManager : MonoBehaviour
             {
                 Destroy(itemArea.transform.GetChild(i).gameObject);
             }
-            ItemEntity[] allItemEntities = Resources.LoadAll<ItemEntity>("Items/ItemEntities");
-            foreach (ItemEntity itemEntity in allItemEntities)
+            for (int i = itemList.Count - 1; i >= 0; i--)
             {
                 ItemController item = Instantiate(itemPrefab, itemArea.transform).GetComponent<ItemController>();
-                item.Init(itemEntity);
-                itemList.Add(item);
+                item.Init(itemList[i]);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
             itemArea.transform.position = new Vector3(
@@ -47,7 +63,6 @@ public class ShopManager : MonoBehaviour
     }
     public void ExitShop()
     {
-        itemList = null;
         shop.SetActive(false);
     }
 }
