@@ -5,7 +5,10 @@ public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner instance;
     [Header("敵のプレハブ")]
-    public GameObject enemyPrefab;
+    public EnemyManager enemyPrefab;
+    public EnemyManager enemyPrefab2;
+    public EnemyManager enemyPrefab3;
+    //public EnemyManager bossPrefab1;
     public float spawnZ;
 
     [Header("生成間隔の範囲")]
@@ -16,7 +19,9 @@ public class EnemySpawner : MonoBehaviour
 
     private float spawnTimer = 0f;
     private float nextSpawnTime;
-    public List<EnemyData> enemies = new();
+    public List<EnemyEntity> enemies = new();
+    public EnemyEntity[] allEnemyEntities;
+    public EnemyEntity[] allBossEntities;
 
     private void Awake()
     {
@@ -27,6 +32,9 @@ public class EnemySpawner : MonoBehaviour
     {
         // 最初の生成時間を決定
         SetNextSpawnTime();
+        allEnemyEntities = Resources.LoadAll<EnemyEntity>("Enemy/EnemyEntities");
+        allBossEntities = Resources.LoadAll<EnemyEntity>("Enemy/BossEntities");
+        Debug.Log(allEnemyEntities.Length);
     }
 
     void Update()
@@ -36,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnTimer >= nextSpawnTime)
         {
-            SpawnEnemy();
+            SpawnEnemy(Random.Range(1,allEnemyEntities.Length + 1));
             SetNextSpawnTime();
             spawnTimer = 0f;
         }
@@ -47,16 +55,32 @@ public class EnemySpawner : MonoBehaviour
         nextSpawnTime = Random.Range(minInterval, maxInterval);
     }
 
-    void SpawnEnemy()
+    void SpawnEnemy(int id)
     {
         float randomX = Random.Range(minX, maxX);
-        Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        if (id == 1)
+        {
+            Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
+            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            //enemyPrefab.id = id;
+        }
+        else if (id == 2)
+        {
+            Vector3 spawnPosition = new Vector3(randomX, 1f, spawnZ);
+            Instantiate(enemyPrefab2, spawnPosition, Quaternion.identity);
+            //enemyPrefab2.id = id;
+        }
+        else if (id == 3)
+        {
+            Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
+            Instantiate(enemyPrefab3, spawnPosition, Quaternion.identity);
+            //enemyPrefab3.id = id;
+        }
+        
     }
-    public int CreateNewEnemyData()
+    public int CreateNewEnemyData(int id)
     {
-        EnemyData enemy = new();
-        enemy.InitData();
+        EnemyEntity enemy = Resources.Load<EnemyEntity>("Enemy/EnemyEntities/Enemy" + id);
         enemies.Add(enemy);
         return enemies.Count - 1;
     }
