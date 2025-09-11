@@ -81,14 +81,19 @@ public class PlayerManager : MonoBehaviour
             bulletTimer += Time.deltaTime;
             if (bulletTimer >= playerData.bulletInterval)
             {
-                //Shoot();
-                GoShoot();
+                Shoot();
+                //GoShoot();
                 animator.SetTrigger("ShootTrigger");
                 bulletTimer = 0f;
             }
         }
     }
 
+    void Shoot()
+    {
+        // 弾をプレイヤーの位置に、回転ゼロで生成
+        Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0, shootingHeight, 0), Quaternion.identity);
+    }
     void GoShoot()
     {
         // 弾を生成（水平だけ向いた状態で発射）

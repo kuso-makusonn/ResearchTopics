@@ -1,16 +1,28 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
 
 public class EnemyManager : MonoBehaviour
 {
-    public EnemyData enemyData;
+    public int id;
+    public EnemyEntity enemyData;
     [SerializeField] Animator animator;
     private int enemyIndex;
+    public int hp;
+    public bool isBoss;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        enemyIndex = EnemySpawner.instance.CreateNewEnemyData();
+        if(isBoss == false){
+            enemyIndex = EnemySpawner.instance.CreateNewEnemyData(id);
+        }
+        else{
+            enemyIndex = EnemySpawner.instance.CreateNewBossData(id);
+        }
         enemyData = EnemySpawner.instance.enemies[enemyIndex];
+        hp = enemyData.hp;
     }
 
     // Update is called once per frame
@@ -35,12 +47,18 @@ public class EnemyManager : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
-            enemyData.hp--;
-            if (enemyData.hp <= 0)
+            hp--;
+            if (hp <= 0)
             {
                 Destroy(gameObject);
-                GameDataManager.instance.ScoreUp(1);
-                GameDataManager.instance.MoneyUp(100);
+                if(isBoss == false){
+                    GameDataManager.instance.ScoreUp(1);
+                    GameDataManager.instance.MoneyUp(100);
+                }
+                else{
+                    GameDataManager.instance.ScoreUp(1);
+                    GameDataManager.instance.MoneyUp(1500);
+                }
             }
         }
     }
