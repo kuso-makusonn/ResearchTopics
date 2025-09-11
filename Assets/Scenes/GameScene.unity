@@ -519,13 +519,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aae33fbb453c4242a90a1b69039ec9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 19231649789752700, guid: 0aac1b5f0f449c84ea0580a229bfb560, type: 3}
+  enemyPrefab: {fileID: -3692394582757853343, guid: 0aac1b5f0f449c84ea0580a229bfb560, type: 3}
+  enemyPrefab2: {fileID: 50799386360647113, guid: e4e1c8e6379b68b4290bbb5387da195f, type: 3}
+  enemyPrefab3: {fileID: 7487019771346387294, guid: f2cae569d28fad7489e04dd112e7858a, type: 3}
+  bossPrefab1: {fileID: 5484024939061088064, guid: baad9c675ea866f4f9ef1356e4dbdd75, type: 3}
   spawnZ: 50
   minInterval: 1
   maxInterval: 2
   minX: -9
   maxX: 9
   canSpawn: 0
+  enemies: []
+  allEnemyEntities: []
+  allBossEntities: []
 --- !u!114 &83592155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +567,7 @@ MonoBehaviour:
   nameText: {fileID: 748481883}
   countdownText: {fileID: 286235983}
   lastScore: 0
+  play_time: 0
 --- !u!114 &83592158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,6 +583,7 @@ MonoBehaviour:
   shop: {fileID: 203866023}
   itemArea: {fileID: 851696941}
   itemPrefab: {fileID: 5346304144429214677, guid: 09321f082a9da9d4e87ffa0e830b16a1, type: 3}
+  itemList: []
 --- !u!114 &83592159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +604,8 @@ MonoBehaviour:
   failDescription: {fileID: 1572459718}
   countdownText: {fileID: 1883873809}
   canAttack: 0
+  nowState: 0
+  response_time: 0
   phishing: {fileID: 45389909}
   bot: {fileID: 1400334671}
   virusBusterScreen: {fileID: 1181381875}

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image itemImage;
-    [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText;
-    [SerializeField] GameObject highlight;
+    [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText, discountPriceText, canPurchaseCountText, DiscountEffectText;
+    [SerializeField] GameObject highlight, discountPanel, textArea, discountTextArea;
     public ItemModel itemModel;
 
     public void Init(ItemModel _itemModel)
@@ -19,7 +19,21 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         itemNameText.text = itemModel.itemName;
         itemImage.sprite = itemModel.itemImage;
-        priceText.text = "価格:" + Price() + "円";
+        if (itemModel.discount == 0)
+        {
+            discountPanel.SetActive(false);
+            discountTextArea.SetActive(false);
+            textArea.SetActive(true);
+            priceText.text = "価格:" + Price() + "円";
+        }
+        else
+        {
+            discountPanel.SetActive(true);
+            discountTextArea.SetActive(true);
+            textArea.SetActive(false);
+            discountPriceText.text = $"価格:<s>{itemModel.price}円</s> {Price()}円";
+            canPurchaseCountText.text = $"セール中!残り{itemModel.maxPurchaseCount - itemModel.purchaseCount}回";
+        }
         highlight.SetActive(itemModel.isHighlight);
     }
     private int Price()
