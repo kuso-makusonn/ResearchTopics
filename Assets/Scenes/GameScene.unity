@@ -537,6 +537,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: -3692394582757853343, guid: 0aac1b5f0f449c84ea0580a229bfb560, type: 3}
   enemyPrefab2: {fileID: 50799386360647113, guid: e4e1c8e6379b68b4290bbb5387da195f, type: 3}
   enemyPrefab3: {fileID: 7487019771346387294, guid: f2cae569d28fad7489e04dd112e7858a, type: 3}
+  bossPrefab1: {fileID: 5484024939061088064, guid: baad9c675ea866f4f9ef1356e4dbdd75, type: 3}
   spawnZ: 50
   minInterval: 1
   maxInterval: 2
@@ -544,6 +545,7 @@ MonoBehaviour:
   maxX: 9
   enemies: []
   allEnemyEntities: []
+  allBossEntities: []
 --- !u!114 &83592155
 MonoBehaviour:
   m_ObjectHideFlags: 0

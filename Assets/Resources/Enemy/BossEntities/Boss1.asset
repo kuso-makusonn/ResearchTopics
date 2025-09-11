@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a621bb8c06e6d914c8bef04e25976d10, type: 3}
   m_Name: Boss1
   m_EditorClassIdentifier: 
-  moveSpeed: 0
-  hp: 0
-  minZ: 0
+  moveSpeed: 7
+  hp: 20
+  minZ: -5

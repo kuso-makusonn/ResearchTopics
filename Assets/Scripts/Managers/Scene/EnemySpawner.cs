@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public EnemyManager enemyPrefab;
     public EnemyManager enemyPrefab2;
     public EnemyManager enemyPrefab3;
-    //public EnemyManager bossPrefab1;
+    public EnemyManager bossPrefab1;
     public float spawnZ;
 
     [Header("生成間隔の範囲")]
@@ -44,7 +44,13 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnTimer >= nextSpawnTime)
         {
-            SpawnEnemy(Random.Range(1,allEnemyEntities.Length + 1));
+            if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0){
+                SpawnBoss(1);
+            }
+            else{
+                SpawnEnemy(Random.Range(1,allEnemyEntities.Length + 1));
+            }
+            
             SetNextSpawnTime();
             spawnTimer = 0f;
         }
@@ -78,9 +84,25 @@ public class EnemySpawner : MonoBehaviour
         }
         
     }
+    void SpawnBoss(int id)
+    {
+        float randomX = Random.Range(minX, maxX);
+        if (id == 1)
+        {
+            Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
+            Instantiate(bossPrefab1, spawnPosition, Quaternion.identity);
+        }
+        
+    }
     public int CreateNewEnemyData(int id)
     {
         EnemyEntity enemy = Resources.Load<EnemyEntity>("Enemy/EnemyEntities/Enemy" + id);
+        enemies.Add(enemy);
+        return enemies.Count - 1;
+    }
+    public int CreateNewBossData(int id)
+    {
+        EnemyEntity enemy = Resources.Load<EnemyEntity>("Enemy/BossEntities/Boss" + id);
         enemies.Add(enemy);
         return enemies.Count - 1;
     }

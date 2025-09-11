@@ -10,11 +10,17 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] Animator animator;
     private int enemyIndex;
     public int hp;
+    public bool isBoss;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        enemyIndex = EnemySpawner.instance.CreateNewEnemyData(id);
+        if(isBoss == false){
+            enemyIndex = EnemySpawner.instance.CreateNewEnemyData(id);
+        }
+        else{
+            enemyIndex = EnemySpawner.instance.CreateNewBossData(id);
+        }
         enemyData = EnemySpawner.instance.enemies[enemyIndex];
         hp = enemyData.hp;
     }
@@ -45,8 +51,14 @@ public class EnemyManager : MonoBehaviour
             if (hp <= 0)
             {
                 Destroy(gameObject);
-                GameDataManager.instance.ScoreUp(1);
-                GameDataManager.instance.MoneyUp(100);
+                if(isBoss == false){
+                    GameDataManager.instance.ScoreUp(1);
+                    GameDataManager.instance.MoneyUp(100);
+                }
+                else{
+                    GameDataManager.instance.ScoreUp(1);
+                    GameDataManager.instance.MoneyUp(1500);
+                }
             }
         }
     }
