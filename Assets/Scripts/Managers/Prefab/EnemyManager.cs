@@ -58,6 +58,7 @@ public class EnemyManager : MonoBehaviour
                 else{
                     GameDataManager.instance.ScoreUp(1);
                     GameDataManager.instance.MoneyUp(1500);
+                    EnemySpawner.instance.canBass =true;
                 }
             }
         }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 477d98ea6efd49d4592a249808cd36f2, type: 3}
-  m_Name: Item
+  m_Name: Item 0
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: Joshin
+  itemName: Joshin11
   itemImage: {fileID: 21300000, guid: 4a3be7ab95581ff4a999830d9910d2b4, type: 3}
-  price: 0
-  effectText: 
+  price: 500
+  effectText: "\u30C0\u30E1\u30FC\u30B8\u30A2\u30C3\u30D7"
   itemEffect: {fileID: 11400000, guid: a234c8e8c9b1a70459a6d9cc551e8aaa, type: 2}

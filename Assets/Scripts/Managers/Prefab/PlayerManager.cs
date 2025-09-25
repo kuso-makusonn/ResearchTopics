@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     private bool isShooting;
     private float bulletTimer;
     private int playerIndex;
+    public static float bulletInterval;
 
     public Camera mainCamera;       // 照準に使うカメラ（通常はMain Camera）
     public LayerMask aimLayer;      // 照準を当てる対象のレイヤー（例：目に見えないPlane）
@@ -20,6 +21,7 @@ public class PlayerManager : MonoBehaviour
         playerIndex = GameDataManager.instance.CreateNewPlayerData();
         playerData = GameDataManager.instance.players[playerIndex];
         playerData.bulletPrefab = defaultBulletPrefab;
+        bulletInterval = playerData.bulletInterval;
     }
     void Update()
     {
@@ -79,7 +81,7 @@ public class PlayerManager : MonoBehaviour
         if (isShooting)
         {
             bulletTimer += Time.deltaTime;
-            if (bulletTimer >= playerData.bulletInterval)
+            if (bulletTimer >= bulletInterval)
             {
                 Shoot();
                 //GoShoot();

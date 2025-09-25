@@ -20,11 +20,12 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         itemNameText.text = itemModel.itemName;
         itemImage.sprite = itemModel.itemImage;
         priceText.text = "価格:" + Price() + "円";
+        itemEffectText.text = itemModel.effectText;
         highlight.SetActive(itemModel.isHighlight);
     }
     private int Price()
     {
-        return itemModel.price * (100 - itemModel.discount);
+        return itemModel.price;
     }
     public void HighlightItem(bool isHighlight)
     {

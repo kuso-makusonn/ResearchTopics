@@ -18,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
     public float maxX = 9f;
 
     public bool canSpawn;
+    public bool canBass = true;
     private float spawnTimer = 0f;
     private float nextSpawnTime;
     public List<EnemyEntity> enemies = new();
@@ -35,7 +36,6 @@ public class EnemySpawner : MonoBehaviour
         SetNextSpawnTime();
         allEnemyEntities = Resources.LoadAll<EnemyEntity>("Enemy/EnemyEntities");
         allBossEntities = Resources.LoadAll<EnemyEntity>("Enemy/BossEntities");
-        Debug.Log(allEnemyEntities.Length);
     }
 
     void Update()
@@ -46,7 +46,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (spawnTimer >= nextSpawnTime)
         {
-            if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0){
+            if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0 && canBass == true){
                 SpawnBoss(1);
             }
             else{
@@ -88,13 +88,12 @@ public class EnemySpawner : MonoBehaviour
     }
     void SpawnBoss(int id)
     {
-        float randomX = Random.Range(minX, maxX);
         if (id == 1)
         {
-            Vector3 spawnPosition = new Vector3(randomX, 0f, spawnZ);
+            Vector3 spawnPosition = new Vector3(0, 0f, spawnZ);
             Instantiate(bossPrefab1, spawnPosition, Quaternion.identity);
         }
-        
+        canBass = false;
     }
     public int CreateNewEnemyData(int id)
     {
