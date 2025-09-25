@@ -124,14 +124,6 @@ public class TitleManager : MonoBehaviour
     }
     IEnumerator SendUserData(string user_name, string age_group, string gender, bool initially_interested)
     {
-        var rank = Supabase.GetScoreRank();
-        yield return new WaitUntil(() => rank.IsCompleted);
-        Supabase.RankItem[] ranks = rank.Result;
-        foreach (Supabase.RankItem rankItem in ranks)
-        {
-            Debug.Log(rankItem.user_name + "-" + rankItem.score);
-        }
-
         var sendDataTask = Supabase.SendUserData(user_name, age_group, gender, initially_interested);
         yield return new WaitUntil(() => sendDataTask.IsCompleted);
         ToStartScreen();

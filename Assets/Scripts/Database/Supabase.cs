@@ -192,6 +192,7 @@ public static class Supabase
     public class RankItem
     {
         public string user_name;
+        public string game_id;
         public int score;
     }
 }

@@ -26,9 +26,9 @@ public class SimulationAttackManager : MonoBehaviour
     }
     private Dictionary<string, string> attack_id = new()
     {
-        {"phishing","ph_v1.0"},
-        {"bot","bo_v1.0"},
-        {"ransomware","ra_v1.0"}
+        {"phishing","ph_v1.0.0"},
+        {"bot","bo_v1.0.0"},
+        {"ransomware","ra_v1.0.0"}
     };
 
     [SerializeField] GameObject simulationAttacks, success, fail, countdown;
