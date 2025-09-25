@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931f353910e406c46a5b98c3f1b77cb8, type: 3}
   m_Name: AcceptDrinkingInvitation
   m_EditorClassIdentifier: 
-  duration: 10
+  duration: 0
+  pluspower: 1
+  plusspeed: 0
+  endress: 1
+  ispluspower: 1
+  isplusspeed: 0

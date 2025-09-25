@@ -4,7 +4,7 @@ public class BulletManager : MonoBehaviour
 {
     [Header("移動設定")]
     public float moveSpeed = 100f;
-    public float bulletPower = 1;
+    public static float bulletPower = 1;
     public int maxZ = 100;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
