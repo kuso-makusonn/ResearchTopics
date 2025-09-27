@@ -40,7 +40,15 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     private int Price()
     {
-        return itemModel.price;
+        if(itemModel.discount == 0)
+        {
+            return itemModel.price;
+        }
+        else
+        {
+            return itemModel.price * (100 - itemModel.discount) / 100;
+        }
+        
     }
     public void HighlightItem(bool isHighlight)
     {

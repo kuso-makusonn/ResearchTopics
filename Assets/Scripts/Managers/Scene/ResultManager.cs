@@ -59,7 +59,7 @@ public class ResultManager : MonoBehaviour
     {
         ClearScreen();
         result.SetActive(true);
-        if (GameManager.instance != null)
+        if (GameManager.instance.lastScore >= 0)
         {
             scoreText.text = "Score:" + GameManager.instance.lastScore.ToString();
         }

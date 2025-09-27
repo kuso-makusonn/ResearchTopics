@@ -62,13 +62,21 @@ public static class ItemEffectManager
 
     //効果時間があるもののテンプレート
     public static List<CancellationTokenSource> AcceptDrinkingInvitationCTS = new();
-    public static async void AcceptDrinkingInvitation(float duration)
+    public static async void AcceptDrinkingInvitation(float duration,float powerplus,float speedup,bool power,bool speed)
     {
         CancellationTokenSource cts = new();
         AcceptDrinkingInvitationCTS.Add(cts);
         try
         {
             Debug.Log("おぅ、飲み行こ飲み行こ");
+            if(power==true){
+                BulletManager.bulletPower += powerplus;
+                Debug.Log(BulletManager.bulletPower);
+            }
+            if(speed==true){
+                PlayerManager.bulletInterval -= speedup;
+                Debug.Log(PlayerManager.bulletInterval);
+            }
             await ItemUsingDelay(duration, cts);
             Debug.Log("楽しかったなぁ！");
         }

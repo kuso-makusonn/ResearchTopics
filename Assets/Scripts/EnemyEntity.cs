@@ -4,6 +4,6 @@ using UnityEngine;
 public class EnemyEntity : ScriptableObject
 {
     public float moveSpeed;
-    public int hp;
+    public float hp;
     public float minZ;
 }
