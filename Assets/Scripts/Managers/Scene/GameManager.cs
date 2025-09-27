@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         lastScore = GameDataManager.instance.score;
+        Debug.Log(lastScore);
         ItemEffectManager.CancelAllEffect();
         SceneManager.LoadScene("ResultScene");
     }

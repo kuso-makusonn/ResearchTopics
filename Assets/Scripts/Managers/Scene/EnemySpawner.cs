@@ -16,9 +16,10 @@ public class EnemySpawner : MonoBehaviour
     public float maxInterval = 3f;
     public float minX = -9f;
     public float maxX = 9f;
-
+    
     public bool canSpawn;
-    public bool canBass = true;
+    public bool canBass,canBassSporn;
+    public float bassCount;
     private float spawnTimer = 0f;
     private float nextSpawnTime;
     public List<EnemyEntity> enemies = new();
@@ -36,6 +37,8 @@ public class EnemySpawner : MonoBehaviour
         SetNextSpawnTime();
         allEnemyEntities = Resources.LoadAll<EnemyEntity>("Enemy/EnemyEntities");
         allBossEntities = Resources.LoadAll<EnemyEntity>("Enemy/BossEntities");
+        bassCount = 0;
+        canBassSporn = true;
     }
 
     void Update()
@@ -43,10 +46,13 @@ public class EnemySpawner : MonoBehaviour
         if (!canSpawn) return;
         if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         spawnTimer += Time.deltaTime;
-
+        if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0 && canBass == false && canBassSporn ==true){
+            canBass = true;
+            bassCount += 1;
+        }
         if (spawnTimer >= nextSpawnTime)
         {
-            if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0 && canBass == true){
+            if(canBass == true){
                 SpawnBoss(1);
             }
             else{
@@ -94,6 +100,7 @@ public class EnemySpawner : MonoBehaviour
             Instantiate(bossPrefab1, spawnPosition, Quaternion.identity);
         }
         canBass = false;
+        canBassSporn = false;
     }
     public int CreateNewEnemyData(int id)
     {

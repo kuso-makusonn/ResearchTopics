@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 931f353910e406c46a5b98c3f1b77cb8, type: 3}
-  m_Name: AcceptDrinkingInvitation
+  m_Name: AcceptDrinkingInvitation 1
   m_EditorClassIdentifier: 
   duration: 10
-  powerplus: 1
-  speedup: 0
-  power: 1
-  speed: 0
+  powerplus: 0
+  speedup: 0.01
+  power: 0
+  speed: 1

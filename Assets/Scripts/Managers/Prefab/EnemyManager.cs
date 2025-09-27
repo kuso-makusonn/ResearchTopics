@@ -9,8 +9,9 @@ public class EnemyManager : MonoBehaviour
     public EnemyEntity enemyData;
     [SerializeField] Animator animator;
     private int enemyIndex;
-    public int hp;
+    public float hp;
     public bool isBoss;
+    public float bigger;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,7 +23,8 @@ public class EnemyManager : MonoBehaviour
             enemyIndex = EnemySpawner.instance.CreateNewBossData(id);
         }
         enemyData = EnemySpawner.instance.enemies[enemyIndex];
-        hp = enemyData.hp;
+        bigger = EnemySpawner.instance.bassCount;
+        hp = enemyData.hp * bigger;
     }
 
     // Update is called once per frame
@@ -47,7 +49,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
-            hp--;
+            hp -= BulletManager.bulletPower;
             if (hp <= 0)
             {
                 Destroy(gameObject);
@@ -58,7 +60,7 @@ public class EnemyManager : MonoBehaviour
                 else{
                     GameDataManager.instance.ScoreUp(1);
                     GameDataManager.instance.MoneyUp(1500);
-                    EnemySpawner.instance.canBass =true;
+                    EnemySpawner.instance.canBassSporn = true;
                 }
             }
         }
