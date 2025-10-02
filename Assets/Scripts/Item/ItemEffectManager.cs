@@ -9,6 +9,9 @@ public static class ItemEffectManager
     private static List<List<CancellationTokenSource>> ctsLists = new()
     {
         AcceptDrinkingInvitationCTS,
+        temporaryBulletPowerUpCTS,
+        temporaryBulletIntervalCTS,
+        temporaryPlayerMoveSpeedUpCTS
     };
 
 
@@ -51,6 +54,11 @@ public static class ItemEffectManager
             }
         }
     }
+    public static bool CheckPlayerIndex(int playerIndex)
+    {
+        return playerIndex >= 0
+        || playerIndex <= GameDataManager.instance.players.Count - 1;
+    }
 
     //
     //これより下はアイテム効果のメソッド
@@ -62,21 +70,12 @@ public static class ItemEffectManager
 
     //効果時間があるもののテンプレート
     public static List<CancellationTokenSource> AcceptDrinkingInvitationCTS = new();
-    public static async void AcceptDrinkingInvitation(float duration,float powerplus,float speedup,bool power,bool speed)
+    public static async void AcceptDrinkingInvitation(float duration)
     {
         CancellationTokenSource cts = new();
         AcceptDrinkingInvitationCTS.Add(cts);
         try
         {
-            Debug.Log("おぅ、飲み行こ飲み行こ");
-            if(power==true){
-                BulletManager.bulletPower += powerplus;
-                Debug.Log(BulletManager.bulletPower);
-            }
-            if(speed==true){
-                PlayerManager.bulletInterval -= speedup;
-                Debug.Log(PlayerManager.bulletInterval);
-            }
             await ItemUsingDelay(duration, cts);
             Debug.Log("楽しかったなぁ！");
         }
@@ -88,6 +87,102 @@ public static class ItemEffectManager
         finally
         {
             AcceptDrinkingInvitationCTS.Remove(cts);
+            cts.Dispose();
+        }
+    }
+
+
+    //弾の威力アップ（永久的）
+    public static void BulletPowerUp(int playerIndex, int amount)
+    {
+        if (!CheckPlayerIndex(playerIndex)) return;
+        GameDataManager.instance.players[playerIndex].bulletPower += amount;
+    }
+
+    //弾の威力アップ（一時的）
+    public static List<CancellationTokenSource> temporaryBulletPowerUpCTS = new();
+    public static async void TemporaryBulletPowerUp(int playerIndex, int amount, float duration)
+    {
+        CancellationTokenSource cts = new();
+        temporaryBulletPowerUpCTS.Add(cts);
+        try
+        {
+            if (!CheckPlayerIndex(playerIndex)) return;
+            BulletPowerUp(playerIndex, amount);
+            await ItemUsingDelay(duration, cts);
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("temporaryBulletPowerUpCTSはキャンセルされました");
+        }
+        finally
+        {
+            BulletPowerUp(playerIndex, -amount);
+            temporaryBulletPowerUpCTS.Remove(cts);
+            cts.Dispose();
+        }
+    }
+
+
+    //弾の間隔短縮（永久的）
+    public static void BulletInterval(int playerIndex, float fact)
+    {
+        if (!CheckPlayerIndex(playerIndex)) return;
+        GameDataManager.instance.players[playerIndex].bulletInterval *= fact;
+    }
+
+    //弾の間隔短縮（一時的）
+    public static List<CancellationTokenSource> temporaryBulletIntervalCTS = new();
+    public static async void TemporaryBulletInterval(int playerIndex, float fact, float duration)
+    {
+        CancellationTokenSource cts = new();
+        temporaryBulletIntervalCTS.Add(cts);
+        try
+        {
+            if (!CheckPlayerIndex(playerIndex)) return;
+            BulletInterval(playerIndex, fact);
+            await ItemUsingDelay(duration, cts);
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("temporaryBulletIntervalCTSはキャンセルされました");
+        }
+        finally
+        {
+            BulletInterval(playerIndex, 1 / fact);
+            temporaryBulletIntervalCTS.Remove(cts);
+            cts.Dispose();
+        }
+    }
+
+
+    //移動速度アップ（永久的）
+    public static void PlayerMoveSpeedUp(int playerIndex, float fact)
+    {
+        if (!CheckPlayerIndex(playerIndex)) return;
+        GameDataManager.instance.players[playerIndex].moveSpeed *= fact;
+    }
+
+    //移動速度アップ（一時的）
+    public static List<CancellationTokenSource> temporaryPlayerMoveSpeedUpCTS = new();
+    public static async void TemporaryPlayerMoveSpeedUp(int playerIndex, float fact, float duration)
+    {
+        CancellationTokenSource cts = new();
+        temporaryPlayerMoveSpeedUpCTS.Add(cts);
+        try
+        {
+            if (!CheckPlayerIndex(playerIndex)) return;
+            PlayerMoveSpeedUp(playerIndex, fact);
+            await ItemUsingDelay(duration, cts);
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("temporaryPlayerMoveSpeedUpCTSはキャンセルされました");
+        }
+        finally
+        {
+            PlayerMoveSpeedUp(playerIndex, 1 / fact);
+            temporaryPlayerMoveSpeedUpCTS.Remove(cts);
             cts.Dispose();
         }
     }
