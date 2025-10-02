@@ -5,9 +5,9 @@ public class #SCRIPTNAME# : ItemEffect
 {
     // 必要な変数を追加
 
-    public override void ApplyEffect(ItemEffectManager itemEffectManager)
+    public override void ApplyEffect()
     {
         // 効果処理
-        itemEffectManager.#SCRIPTNAME#(/*変数を渡す*/);
+        ItemEffectManager.#SCRIPTNAME#(/*変数を渡す*/);
     }
 }
