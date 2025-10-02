@@ -12,18 +12,20 @@ public class EnemyManager : MonoBehaviour
     public float hp;
     public bool isBoss;
     public float bigger;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if(isBoss == false){
             enemyIndex = EnemySpawner.instance.CreateNewEnemyData(id);
+            bigger = EnemySpawner.instance.bassCount + 1;
         }
         else{
             enemyIndex = EnemySpawner.instance.CreateNewBossData(id);
+            bigger = EnemySpawner.instance.bassCount;
         }
         enemyData = EnemySpawner.instance.enemies[enemyIndex];
-        bigger = EnemySpawner.instance.bassCount;
         hp = enemyData.hp * bigger;
     }
 
@@ -49,6 +51,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
+            AudioManager.instance.DamageSound();
             hp -= BulletManager.bulletPower;
             if (hp <= 0)
             {

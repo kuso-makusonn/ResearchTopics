@@ -64,8 +64,13 @@ public class PlayerManager : MonoBehaviour
             onlyY = Quaternion.Euler(0, lookRot.eulerAngles.y, 0);
         }
 
+        if(Input.GetKeyDown(KeyCode.Space)
+        ||Input.GetKeyDown(KeyCode.W)
+        ||Input.GetMouseButtonDown(0)){
+            Shoot();
+        }
         // スペースキーが押されているかを確認
-        if (Input.GetKey(KeyCode.Space)
+        else if (Input.GetKey(KeyCode.Space)
         || Input.GetKey(KeyCode.W)
         || Input.GetMouseButton(0))
         {
@@ -82,7 +87,7 @@ public class PlayerManager : MonoBehaviour
         {
             bulletTimer += Time.deltaTime;
             if (bulletTimer >= bulletInterval)
-            {
+            {   
                 Shoot();
                 //GoShoot();
                 animator.SetTrigger("ShootTrigger");
@@ -93,6 +98,7 @@ public class PlayerManager : MonoBehaviour
 
     void Shoot()
     {
+        AudioManager.instance.AttackSound();
         // 弾をプレイヤーの位置に、回転ゼロで生成
         Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0, shootingHeight, 0), Quaternion.identity);
     }
