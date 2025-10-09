@@ -7,6 +7,7 @@ public abstract class ItemEffect : ScriptableObject
     {
         if (ItemEffectManager.CanPurchase(price)) {
             ApplyEffect();
+            AudioManager.instance.PaySound();
             GameDataManager.instance.MoneyUp(-1*price);
         }
         else Debug.Log("お前とは飲みに行かねぇよ");

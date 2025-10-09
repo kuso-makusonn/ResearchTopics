@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     [Header("効果音")]
     public AudioClip attack;
     public AudioClip damage;
+    public AudioClip pay;
 
     public AudioClip bgm;
     public AudioClip dangers;
@@ -42,6 +43,9 @@ public class AudioManager : MonoBehaviour
     }
     public void DamageSound(){
         audioSource.PlayOneShot(damage);
+    }
+    public void PaySound(){
+        audioSource.PlayOneShot(pay);
     }
     
 }

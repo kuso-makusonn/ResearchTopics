@@ -764,7 +764,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: {fileID: 8300000, guid: 8d1dd687d7416f5488e7c8bb1c85dc74, type: 3}
   damage: {fileID: 8300000, guid: 8423ae05a0d19e74e855d1a4115d185d, type: 3}
-  bgm: {fileID: 8300000, guid: 72fad041ac077d44aa86155b97332a7b, type: 3}
+  pay: {fileID: 8300000, guid: 5332b6e7a801d6444a4b447cb7a81d5f, type: 3}
+  bgm: {fileID: 8300000, guid: d7f9bbdd761d1a047878fff717f15195, type: 3}
   dangers: {fileID: 8300000, guid: 76d6b03a66490ee41bcc8587af8ad5fe, type: 3}
 --- !u!1 &84434735
 GameObject:
