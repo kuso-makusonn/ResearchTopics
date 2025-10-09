@@ -94,6 +94,7 @@ public class EnemySpawner : MonoBehaviour
     }
     void SpawnBoss(int id)
     {
+        AudioManager.instance.Danger();
         if (id == 1)
         {
             Vector3 spawnPosition = new Vector3(0, 0f, spawnZ);

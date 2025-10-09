@@ -97,6 +97,7 @@ public static class ItemEffectManager
     {
         if (!CheckPlayerIndex(playerIndex)) return;
         GameDataManager.instance.players[playerIndex].bulletPower += amount;
+        BulletManager.bulletPower += amount;
     }
 
     //弾の威力アップ（一時的）

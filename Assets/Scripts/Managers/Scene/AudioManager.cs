@@ -9,6 +9,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip attack;
     public AudioClip damage;
 
+    public AudioClip bgm;
+    public AudioClip dangers;
+
     AudioSource audioSource;
     private void Awake()
     {
@@ -20,6 +23,18 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        BGMPlay(bgm);
+    }
+    public void Danger(){
+        BGMPlay(dangers);
+    }
+    public void NotDanger(){
+        BGMPlay(bgm);
+    }
+    void BGMPlay(AudioClip newBGM){
+        audioSource.Stop();
+        audioSource.clip = newBGM;
+        audioSource.Play();
     }
 
     public void AttackSound(){
