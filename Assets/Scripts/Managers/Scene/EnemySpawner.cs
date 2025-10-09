@@ -46,7 +46,7 @@ public class EnemySpawner : MonoBehaviour
         if (!canSpawn) return;
         if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         spawnTimer += Time.deltaTime;
-        if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0 && canBass == false && canBassSporn ==true){
+        if((GameDataManager.instance.score - 4 * bassCount) % 15 == 0 && GameDataManager.instance.score > 0 && canBass == false && canBassSporn ==true){
             canBass = true;
             bassCount += 1;
         }
