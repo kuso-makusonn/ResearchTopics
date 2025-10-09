@@ -17,6 +17,6 @@ MonoBehaviour:
   main: "\u304A\u3045\u3001\u98F2\u307F\u884C\u3053\u98F2\u307F\u884C\u3053"
   link: https://www.Joshin.B
   discountItems:
-  - itemEntity: {fileID: 11400000, guid: e839dc3a5c3649540a76f50149cdb58d, type: 2}
+  - itemEntity: {fileID: 11400000, guid: df4c63881ca507b4d8d21c407d2e8b86, type: 2}
     discount: 10
     maxPurchaseCount: 1

@@ -205,7 +205,9 @@ public class SimulationAttackManager : MonoBehaviour
     private void BotEnd(bool isSuccess)
     {
         StopCoroutine(botEffectCoroutine);
-        GameDataManager.instance.players[0].bulletInterval *= 1 / 2f;
+        if(isSuccess == true){
+            GameDataManager.instance.players[0].bulletInterval *= 1 / 2f;
+        }
         lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
@@ -272,6 +274,7 @@ public class SimulationAttackManager : MonoBehaviour
     public void TurnOff()
     {
         Debug.Log("電源を落とします");
+        PlayerManager.StopMove = true;
         RansomwareEnd(false);
     }
     private IEnumerator TimerStart()

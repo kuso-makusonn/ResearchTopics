@@ -61,6 +61,7 @@ public class EnemyManager : MonoBehaviour
                     GameDataManager.instance.MoneyUp(100);
                 }
                 else{
+                    AudioManager.instance.NotDanger();
                     GameDataManager.instance.ScoreUp(1);
                     GameDataManager.instance.MoneyUp(1500);
                     EnemySpawner.instance.canBassSporn = true;

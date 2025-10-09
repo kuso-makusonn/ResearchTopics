@@ -1,4 +1,8 @@
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -11,6 +15,7 @@ public class PlayerManager : MonoBehaviour
     private float bulletTimer;
     private int playerIndex;
     public static float bulletInterval;
+    public static bool StopMove = false;
 
     public Camera mainCamera;       // 照準に使うカメラ（通常はMain Camera）
     public LayerMask aimLayer;      // 照準を当てる対象のレイヤー（例：目に見えないPlane）
@@ -26,6 +31,10 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
+        if(StopMove == true){
+            StartCoroutine(StopMotion());
+            return;
+        }
         // プレイヤーをX軸に移動
         if (Input.GetKey(KeyCode.A)
         || Input.GetKey(KeyCode.LeftArrow))
@@ -62,6 +71,9 @@ public class PlayerManager : MonoBehaviour
 
             // Y軸だけ残して、XとZを無視
             onlyY = Quaternion.Euler(0, lookRot.eulerAngles.y, 0);
+        }
+        if(Input.GetMouseButtonDown(1)){
+            EnemySpawner.instance.canBass = true;
         }
 
         if(Input.GetKeyDown(KeyCode.Space)
@@ -106,5 +118,10 @@ public class PlayerManager : MonoBehaviour
     {
         // 弾を生成（水平だけ向いた状態で発射）
         Instantiate(playerData.bulletPrefab, transform.position + new Vector3(0, shootingHeight, 0), onlyY);
+    }
+
+    IEnumerator StopMotion(){
+        yield return new WaitForSecondsRealtime(1);
+        StopMove = false;
     }
 }
