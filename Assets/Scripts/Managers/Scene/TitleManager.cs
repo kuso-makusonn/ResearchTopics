@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
@@ -41,6 +40,10 @@ public class TitleManager : MonoBehaviour
     void Update()
     {
     }
+    void Zoom(GameObject gameObject, bool toActive, float duration = 0.5f)
+    {
+        StartCoroutine(SetActiveExtension.Zoom(gameObject, toActive, duration));
+    }
     void ToTitle()
     {
         //タイトル用に画面を整理する
@@ -64,15 +67,21 @@ public class TitleManager : MonoBehaviour
     void ToQuestionnaireScreen()
     {
         PlayerPrefs.DeleteAll();
-        title.SetActive(false);
-        questionnaire.SetActive(true);
+        Zoom(title, false);
+        Zoom(questionnaire, true);
         PrepareQuestionnaire();
     }
     void ToStartScreen()
     {
-        title.SetActive(true);
         afterQuestionnaire.SetActive(true);
         questionnaire.SetActive(false);
+        nameText.text = PlayerPrefs.GetString("user_name");
+    }
+    void FinishQuestionnaire()
+    {
+        Zoom(title, true);
+        Zoom(afterQuestionnaire, true);
+        Zoom(questionnaire, false);
         nameText.text = PlayerPrefs.GetString("user_name");
     }
     public void StartButton()
@@ -126,6 +135,6 @@ public class TitleManager : MonoBehaviour
     {
         var sendDataTask = Supabase.SendUserData(user_name, age_group, gender, initially_interested);
         yield return new WaitUntil(() => sendDataTask.IsCompleted);
-        ToStartScreen();
+        FinishQuestionnaire();
     }
 }

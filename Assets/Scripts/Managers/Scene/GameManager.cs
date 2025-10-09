@@ -89,10 +89,10 @@ public class GameManager : MonoBehaviour
         for (int i = 3; i > 0; i--)
         {
             countdownText.text = i.ToString();
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSeconds(1f);
         }
         countdownText.text = "GO!";
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         countdown.SetActive(false);
         GameDataManager.instance.screen = GameDataManager.Screen.battle;

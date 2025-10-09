@@ -40,11 +40,12 @@ public class GameDataManager : MonoBehaviour
     public void ScoreUp(int amount)
     {
         score += amount;
+        ShowScore();
     }
 
     private void ShowScore()
     {
-        scoreText.text = "Score:" + score.ToString();
+        scoreText.text = "スコア:" + score.ToString();
     }
     public void MoneyUp(int amount)
     {

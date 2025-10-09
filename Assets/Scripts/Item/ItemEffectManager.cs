@@ -76,6 +76,7 @@ public static class ItemEffectManager
         AcceptDrinkingInvitationCTS.Add(cts);
         try
         {
+            Debug.Log("おぅ、飲み行こ飲み行こ！");
             await ItemUsingDelay(duration, cts);
             Debug.Log("楽しかったなぁ！");
         }
@@ -186,5 +187,12 @@ public static class ItemEffectManager
             temporaryPlayerMoveSpeedUpCTS.Remove(cts);
             cts.Dispose();
         }
+    }
+
+
+    //ウイルスバスター残り回数増加
+    public static void VirusBusterCountUp(int amount)
+    {
+        GameDataManager.instance.canVirusBusterCount += amount;
     }
 }
