@@ -208,8 +208,11 @@ public class MailManager : MonoBehaviour
                 ShopManager.instance.AddItem(itemModel);
             }
             nowMailDetailModel.isDark = true;
-            ShowMailList();
-            ReturnMenu();
+            mailDefaultZoom.SetActive(false);
+            mailListZoom.SetActive(false);
+            mailListNotZoom.SetActive(false);
+            mailDetailZoom.SetActive(false);
+            mailDetailNotZoom.SetActive(false);
             GameManager.instance.ToShopButton();
         }
     }
