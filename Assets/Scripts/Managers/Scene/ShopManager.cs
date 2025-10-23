@@ -17,7 +17,7 @@ public class ShopManager : MonoBehaviour
         ItemEffectManager.CancelAllEffect();
     }
 
-    [SerializeField] GameObject shop, itemArea, itemPrefab;
+    [SerializeField] GameObject shopZoom, shopNotZoom, itemArea, itemPrefab;
     [SerializeField] List<ItemModel> itemList = new();
     ItemEntity[] allItemEntities;
 
@@ -38,7 +38,8 @@ public class ShopManager : MonoBehaviour
     }
     public void EnterShop()
     {
-        shop.SetActive(true);
+        StartCoroutine(SetActiveExtension.Zoom(shopZoom, true));
+        shopNotZoom.SetActive(true);
         SetItems();
 
         void SetItems()
@@ -63,6 +64,7 @@ public class ShopManager : MonoBehaviour
     }
     public void ExitShop()
     {
-        shop.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(shopZoom, false));
+        shopNotZoom.SetActive(false);
     }
 }

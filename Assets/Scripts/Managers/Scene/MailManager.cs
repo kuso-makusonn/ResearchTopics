@@ -14,7 +14,7 @@ public class MailManager : MonoBehaviour
     }
 
 
-    [SerializeField] GameObject mail, mailListObj, mailArea, mailPrefab, sendedMail, mailDetail;
+    [SerializeField] GameObject mailDefaultZoom, mailListZoom, mailListNotZoom, mailArea, mailPrefab, sendedMail, mailDetailZoom, mailDetailNotZoom;
     [SerializeField] ScrollRect mailListScrollRect;
     [SerializeField] RectTransform mailDetailContent, mailDetailBackground, title, sender, main, linkButton, link;
     [SerializeField] TextMeshProUGUI titleText, senderText, mainText, linkText;
@@ -69,12 +69,14 @@ public class MailManager : MonoBehaviour
     }
     public void ShowMailList()
     {
-        sendedMail.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(sendedMail, false));
 
-        mailListObj.SetActive(true);
-        mailDetail.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(mailDefaultZoom, true));
+        StartCoroutine(SetActiveExtension.Zoom(mailListZoom, true));
+        mailListNotZoom.SetActive(true);
+        StartCoroutine(SetActiveExtension.Zoom(mailDetailZoom, false));
+        mailDetailNotZoom.SetActive(false);
         nowMailDetailModel = null;
-        mail.SetActive(true);
         SetMails();
 
         void SetMails()
@@ -92,7 +94,11 @@ public class MailManager : MonoBehaviour
     }
     public void ExitMail()
     {
-        mail.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(mailDefaultZoom, false));
+        StartCoroutine(SetActiveExtension.Zoom(mailListZoom, false));
+        mailListNotZoom.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(mailDetailZoom, false));
+        mailDetailNotZoom.SetActive(false);
     }
     private void NewMail(int index)
     {
@@ -149,8 +155,10 @@ public class MailManager : MonoBehaviour
             SimulationAttackManager.instance.StartResponseTime();
         }
         nowMailDetailModel = mailModel;
-        mailListObj.SetActive(false);
-        mailDetail.SetActive(true);
+        mailListNotZoom.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(mailListZoom, false));
+        mailDetailNotZoom.SetActive(true);
+        StartCoroutine(SetActiveExtension.Zoom(mailDetailZoom, true));
         titleText.text = mailModel.title;
         senderText.text = $"From:{mailModel.sender}";
         mainText.text = mailModel.main;
@@ -199,6 +207,7 @@ public class MailManager : MonoBehaviour
 
                 ShopManager.instance.AddItem(itemModel);
             }
+            nowMailDetailModel.isDark = true;
             ShowMailList();
             ReturnMenu();
             GameManager.instance.ToShopButton();

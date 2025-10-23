@@ -31,7 +31,7 @@ public class SimulationAttackManager : MonoBehaviour
         {"ransomware","ra_v1.0.0"}
     };
 
-    [SerializeField] GameObject simulationAttacks, success, fail, countdown;
+    [SerializeField] GameObject simulationAttacks, simulationAttacksZoom, simulationAttacksNotZoom, success, fail, countdown;
     [SerializeField] TextMeshProUGUI successDescription, failDescription, countdownText;
     public bool canAttack = false;
     private float attackTimer;
@@ -73,10 +73,14 @@ public class SimulationAttackManager : MonoBehaviour
         nowState = State.notAttacking;
         isResponseTime = false;
         // simulationAttacks.SetActive(false);
+        // StartCoroutine(SetActiveExtension.Zoom(simulationAttacksZoom, false));
+        // simulationAttacksNotZoom.SetActive(false);
     }
     private void RunRandomAttack()
     {
         // simulationAttacks.SetActive(true);
+        // StartCoroutine(SetActiveExtension.Zoom(simulationAttacksZoom, true));
+        // simulationAttacksNotZoom.SetActive(true);
         attacks[UnityEngine.Random.Range(0, attacks.Count)]();
     }
     private void ShowResult(bool isSuccess)
@@ -97,17 +101,17 @@ public class SimulationAttackManager : MonoBehaviour
 
         if (isSuccess)
         {
-            success.SetActive(true);
+            StartCoroutine(SetActiveExtension.Zoom(success, true));
         }
         else
         {
-            fail.SetActive(true);
+            StartCoroutine(SetActiveExtension.Zoom(fail, true));
         }
     }
     public void OKButton()
     {
-        success.SetActive(false);
-        fail.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(success, false));
+        StartCoroutine(SetActiveExtension.Zoom(fail, false));
         if (lastScreen == GameDataManager.Screen.battle)
         {
             countdownCoroutine = StartCoroutine(ReturnBattle());
@@ -187,7 +191,7 @@ public class SimulationAttackManager : MonoBehaviour
 
     //ボット
     [Header("ボット")]
-    [SerializeField] GameObject bot, virusBusterScreen;
+    [SerializeField] GameObject bot, virusBusterScreenZoom, virusBusterScreenNotZoom;
     private Coroutine botEffectCoroutine;
     [SerializeField] TextMeshProUGUI canVirusBusterCountText;
     private void Bot()
@@ -198,27 +202,27 @@ public class SimulationAttackManager : MonoBehaviour
     private IEnumerator BotEffect()
     {
         StartResponseTime();
-        GameDataManager.instance.players[0].bulletInterval *= 2f;
+        GameDataManager.instance.players[0].bulletInterval *= 10f;
         yield return WaitAttack(10);
         BotEnd(false);
     }
     private void BotEnd(bool isSuccess)
     {
         StopCoroutine(botEffectCoroutine);
-        if(isSuccess == true){
-            GameDataManager.instance.players[0].bulletInterval *= 1 / 2f;
-        }
+        GameDataManager.instance.players[0].bulletInterval *= 1 / 10f;
         lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
     public void EnterVirusBusterScreen()
     {
-        virusBusterScreen.SetActive(true);
+        StartCoroutine(SetActiveExtension.Zoom(virusBusterScreenZoom, true));
+        virusBusterScreenNotZoom.SetActive(true);
         canVirusBusterCountText.text = $"残り可能回数：{GameDataManager.instance.canVirusBusterCount}";
     }
     public void ExitVirusBusterScreen()
     {
-        virusBusterScreen.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(virusBusterScreenZoom, false));
+        virusBusterScreenNotZoom.SetActive(false);
     }
     public void VirusBuster()
     {
@@ -251,13 +255,13 @@ public class SimulationAttackManager : MonoBehaviour
         StartResponseTime();
         lastScreen = GameDataManager.instance.screen;
         GameDataManager.instance.screen = GameDataManager.Screen.other;
-        ransomware.SetActive(true);
+        StartCoroutine(SetActiveExtension.Zoom(ransomware, true));
         timerCoroutine = StartCoroutine(TimerStart());
     }
     private void RansomwareEnd(bool isSuccess)
     {
         StopCoroutine(timerCoroutine);
-        ransomware.SetActive(false);
+        StartCoroutine(SetActiveExtension.Zoom(ransomware, false));
         ShowResult(isSuccess);
     }
     public void Pay()

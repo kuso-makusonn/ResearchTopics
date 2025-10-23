@@ -73,8 +73,7 @@ public class TitleManager : MonoBehaviour
     }
     void ToStartScreen()
     {
-        afterQuestionnaire.SetActive(true);
-        questionnaire.SetActive(false);
+        Zoom(afterQuestionnaire,true);
         nameText.text = PlayerPrefs.GetString("user_name");
     }
     void FinishQuestionnaire()

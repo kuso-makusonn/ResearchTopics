@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    [SerializeField] GameObject battle, menu, countdown;
+    [SerializeField] GameObject battleZoom, battleNotZoom, menuZoom, menuNotZoom, countdown;
     [SerializeField] TextMeshProUGUI nameText, countdownText;
     public int lastScore;
     public float play_time;
@@ -30,6 +29,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         play_time += Time.deltaTime;
+    }
+    void Zoom(GameObject gameObject, bool toActive, float duration = 0.3f)
+    {
+        StartCoroutine(SetActiveExtension.Zoom(gameObject, toActive, duration));
     }
     IEnumerator GameStart()
     {
@@ -59,18 +62,21 @@ public class GameManager : MonoBehaviour
     public void ToShopButton()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.shop;
-        menu.SetActive(false);
+        Zoom(menuZoom, false);
+        menuNotZoom.SetActive(false);
         ShopManager.instance.EnterShop();
     }
     public void ToBattleButton()
     {
-        menu.SetActive(false);
+        Zoom(menuZoom, false);
+        menuNotZoom.SetActive(false);
         countdownCoroutine = StartCoroutine(CountDown());
     }
     public void MenuButton()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.menu;
-        menu.SetActive(true);
+        Zoom(menuZoom, true);
+        menuNotZoom.SetActive(true);
         if (countdownCoroutine == null) return;
         StopCoroutine(countdownCoroutine);
         countdown.SetActive(false);
@@ -78,7 +84,8 @@ public class GameManager : MonoBehaviour
     public void ReturnToMenu()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.menu;
-        menu.SetActive(true);
+        Zoom(menuZoom, true);
+        menuNotZoom.SetActive(true);
         MailManager.instance.ExitMail();
         ShopManager.instance.ExitShop();
         SimulationAttackManager.instance.ExitVirusBusterScreen();
@@ -96,18 +103,20 @@ public class GameManager : MonoBehaviour
 
         countdown.SetActive(false);
         GameDataManager.instance.screen = GameDataManager.Screen.battle;
-        battle.SetActive(true);
+        // battleZoom.SetActive(true);
     }
     public void MailButton()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.other;
-        menu.SetActive(false);
+        Zoom(menuZoom, false);
+        menuNotZoom.SetActive(false);
         MailManager.instance.ShowMailList();
     }
     public void ToVirusBusterScreen()
     {
         GameDataManager.instance.screen = GameDataManager.Screen.other;
-        menu.SetActive(false);
+        Zoom(menuZoom, false);
+        menuNotZoom.SetActive(false);
         SimulationAttackManager.instance.EnterVirusBusterScreen();
     }
 }
