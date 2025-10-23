@@ -20,6 +20,7 @@ public class EnemySpawner : MonoBehaviour
     public bool canSpawn;
     public bool canBass,canBassSporn;
     public float bassCount;
+    public float enemycount;
     private float spawnTimer = 0f;
     private float nextSpawnTime;
     public List<EnemyEntity> enemies = new();
@@ -38,6 +39,7 @@ public class EnemySpawner : MonoBehaviour
         allEnemyEntities = Resources.LoadAll<EnemyEntity>("Enemy/EnemyEntities");
         allBossEntities = Resources.LoadAll<EnemyEntity>("Enemy/BossEntities");
         bassCount = 0;
+        enemycount = 0;
         canBassSporn = true;
     }
 
@@ -46,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
         if (!canSpawn) return;
         if (!(GameDataManager.instance.screen == GameDataManager.Screen.battle)) return;
         spawnTimer += Time.deltaTime;
-        if(GameDataManager.instance.score % 15 == 0 && GameDataManager.instance.score > 0 && canBass == false && canBassSporn ==true){
+        if(enemycount % 15 == 0 && GameDataManager.instance.score > 0 && canBass == false && canBassSporn ==true){
             canBass = true;
             bassCount += 1;
         }
@@ -66,6 +68,17 @@ public class EnemySpawner : MonoBehaviour
 
     void SetNextSpawnTime()
     {
+        if(bassCount >= 10){
+            if(bassCount >= 20){
+                minInterval = 0.2f;
+                maxInterval = 1f;
+            }
+            else{
+                minInterval = 0.5f;
+                maxInterval = 2f;
+            }
+            
+        }
         nextSpawnTime = Random.Range(minInterval, maxInterval);
     }
 
