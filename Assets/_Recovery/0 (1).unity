@@ -534,6 +534,7 @@ MonoBehaviour:
   canBass: 0
   canBassSporn: 0
   bassCount: 0
+  bassScore: 0
   enemies: []
   allEnemyEntities: []
   allBossEntities: []

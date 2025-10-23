@@ -26,6 +26,9 @@ public class EnemyManager : MonoBehaviour
             bigger = EnemySpawner.instance.bassCount;
         }
         enemyData = EnemySpawner.instance.enemies[enemyIndex];
+        if(EnemySpawner.instance.bassCount > 10){
+            bigger = bigger * 5;
+        }
         hp = enemyData.hp * bigger;
     }
 
@@ -56,16 +59,31 @@ public class EnemyManager : MonoBehaviour
             if (hp <= 0)
             {
                 Destroy(gameObject);
-                if(isBoss == false){
-                    GameDataManager.instance.ScoreUp(1);
-                    GameDataManager.instance.MoneyUp(100);
+                if(EnemySpawner.instance.bassCount >= 10){
+                    if(isBoss == false){
+                        GameDataManager.instance.ScoreUp(5);
+                        GameDataManager.instance.MoneyUp(500);
+                    }
+                    else{
+                        AudioManager.instance.NotDanger();
+                        GameDataManager.instance.ScoreUp(10);
+                        GameDataManager.instance.MoneyUp(7500);
+                        EnemySpawner.instance.canBassSporn = true;
+                    }
                 }
                 else{
-                    AudioManager.instance.NotDanger();
-                    GameDataManager.instance.ScoreUp(5);
-                    GameDataManager.instance.MoneyUp(1500);
-                    EnemySpawner.instance.canBassSporn = true;
+                    if(isBoss == false){
+                        GameDataManager.instance.ScoreUp(1);
+                        GameDataManager.instance.MoneyUp(100);
+                    }
+                    else{
+                        AudioManager.instance.NotDanger();
+                        GameDataManager.instance.ScoreUp(5);
+                        GameDataManager.instance.MoneyUp(1500);
+                        EnemySpawner.instance.canBassSporn = true;
+                    }
                 }
+                EnemySpawner.instance.enemycount += 1;
             }
         }
     }
