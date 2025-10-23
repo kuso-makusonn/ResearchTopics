@@ -102,6 +102,7 @@ public class SimulationAttackManager : MonoBehaviour
         if (isSuccess)
         {
             StartCoroutine(SetActiveExtension.Zoom(success, true));
+            MailManager.instance.NewSuccessRewardMail();
         }
         else
         {
