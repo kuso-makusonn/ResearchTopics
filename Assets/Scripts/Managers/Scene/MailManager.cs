@@ -21,6 +21,7 @@ public class MailManager : MonoBehaviour
     public List<MailModel> mailList = new();
     public MailEntity[] allMailEntities;
     public MailEntity[] allPhishingMailEntities;
+    public MailEntity[] allSuccessRewardMailEntities;
     public bool canSendMail;
     private bool isSendingMail;
     private float sendMailTimer;
@@ -32,6 +33,7 @@ public class MailManager : MonoBehaviour
     {
         allMailEntities = Resources.LoadAll<MailEntity>("Mails/MailEntities");
         allPhishingMailEntities = Resources.LoadAll<MailEntity>("Mails/PhishingMailEntities");
+        allSuccessRewardMailEntities = Resources.LoadAll<MailEntity>("Mails/SuccessRewardMailEntities");
         SetNextSendMailTime();
         NewMail(0);
         isPhishingMailAttacking = true;
@@ -124,6 +126,14 @@ public class MailManager : MonoBehaviour
         MailEntity mailEntity = Instantiate(allPhishingMailEntities[index]);
         MailModel mailModel = new(mailEntity);
         mailModel.isPhishing = true;
+        mailList.Add(mailModel);
+    }
+    public void NewSuccessRewardMail()
+    {
+        int index = Random.Range(0, allSuccessRewardMailEntities.Length - 1);
+        MailEntity mailEntity = Instantiate(allSuccessRewardMailEntities[index]);
+        MailModel mailModel = new(mailEntity);
+        mailModel.isPhishing = false;
         mailList.Add(mailModel);
     }
     public void DeleteMail(int index)

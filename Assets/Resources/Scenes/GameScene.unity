@@ -534,6 +534,7 @@ MonoBehaviour:
   canBass: 0
   canBassSporn: 0
   bassCount: 0
+  enemycount: 0
   enemies: []
   allEnemyEntities: []
   allBossEntities: []
@@ -659,6 +660,7 @@ MonoBehaviour:
   mailList: []
   allMailEntities: []
   allPhishingMailEntities: []
+  allSuccessRewardMailEntities: []
   canSendMail: 0
   isPhishingMailAttacking: 0
 --- !u!82 &83592161
