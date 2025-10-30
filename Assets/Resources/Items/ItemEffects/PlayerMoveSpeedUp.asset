@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27f804a4578a3f4db951ef9f974982d, type: 3}
   m_Name: PlayerMoveSpeedUp
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveSpeedUp
-  fact: 1.2
+  fact: 1.5
