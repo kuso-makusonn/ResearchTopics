@@ -51,6 +51,7 @@ public class MailManager : MonoBehaviour
         if (sendMailTimer >= nextSendMailTime)
         {
             SendNewMail(isPhishingMailAttacking);
+            Debug.Log("新しいメールが届きました");
         }
     }
     private void SetNextSendMailTime()
@@ -157,6 +158,7 @@ public class MailManager : MonoBehaviour
         {
             NewMail(UnityEngine.Random.Range(0, allMailEntities.Length - 1));
         }
+        SetNextSendMailTime();
     }
     public void ShowMailDetail(MailModel mailModel)
     {

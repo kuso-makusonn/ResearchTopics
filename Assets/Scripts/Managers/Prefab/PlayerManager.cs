@@ -76,6 +76,10 @@ public class PlayerManager : MonoBehaviour
             EnemySpawner.instance.canBass = true;
         }
 
+        if(Input.GetKeyDown(KeyCode.M)){
+            GameManager.instance.MenuButton();
+        }
+
         if(Input.GetKeyDown(KeyCode.Space)
         ||Input.GetKeyDown(KeyCode.W)
         ||Input.GetMouseButtonDown(0)){
