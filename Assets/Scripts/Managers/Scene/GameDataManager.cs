@@ -45,7 +45,7 @@ public class GameDataManager : MonoBehaviour
 
     private void ShowScore()
     {
-        scoreText.text = "スコア:" + score.ToString();
+        scoreText.text = score.ToString();
     }
     public void MoneyUp(int amount)
     {
@@ -54,6 +54,6 @@ public class GameDataManager : MonoBehaviour
     }
     private void ShowMoney()
     {
-        moneyText.text = "所持金:" + money.ToString() + "円";
+        moneyText.text = money.ToString();
     }
 }
