@@ -54,6 +54,6 @@ public class GameDataManager : MonoBehaviour
     }
     private void ShowMoney()
     {
-        moneyText.text = money.ToString();
+        moneyText.text = money.ToString() + "円";
     }
 }
