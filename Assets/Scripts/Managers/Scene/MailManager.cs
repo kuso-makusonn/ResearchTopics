@@ -37,7 +37,7 @@ public class MailManager : MonoBehaviour
         SetNextSendMailTime();
         NewMail(0);
         isPhishingMailAttacking = true;
-        NewPhishingMail(0);
+        NewPhishingMail(3);
     }
     private void Update()
     {
