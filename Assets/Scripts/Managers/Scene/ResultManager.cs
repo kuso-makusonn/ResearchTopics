@@ -52,14 +52,15 @@ public class ResultManager : MonoBehaviour
     IEnumerator GameOver()
     {
         ClearScreen();
-        yield return SetActiveExtension.Zoom(gameOver,true);
+        yield return SetActiveExtension.Zoom(gameOver, true);
         yield return new WaitForSecondsRealtime(3f);//3000ミリ秒待つ
     }
     IEnumerator ShowResult()
     {
         ClearScreen();
-        yield return SetActiveExtension.Zoom(result,true);
-        if (GameManager.instance.lastScore >= 0)
+        yield return SetActiveExtension.Zoom(result, true);
+        if (GameManager.instance != null
+        && GameManager.instance.lastScore >= 0)
         {
             scoreText.text = "Score:" + GameManager.instance.lastScore.ToString();
         }

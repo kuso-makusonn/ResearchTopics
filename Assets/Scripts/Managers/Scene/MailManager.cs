@@ -21,6 +21,7 @@ public class MailManager : MonoBehaviour
     public List<MailModel> mailList = new();
     public MailEntity[] allMailEntities;
     public MailEntity[] allPhishingMailEntities;
+    public MailEntity[] allSuccessRewardMailEntities;
     public bool canSendMail;
     private bool isSendingMail;
     private float sendMailTimer;
@@ -32,10 +33,11 @@ public class MailManager : MonoBehaviour
     {
         allMailEntities = Resources.LoadAll<MailEntity>("Mails/MailEntities");
         allPhishingMailEntities = Resources.LoadAll<MailEntity>("Mails/PhishingMailEntities");
+        allSuccessRewardMailEntities = Resources.LoadAll<MailEntity>("Mails/SuccessRewardMailEntities");
         SetNextSendMailTime();
         NewMail(0);
         isPhishingMailAttacking = true;
-        NewPhishingMail(0);
+        NewPhishingMail(3);
     }
     private void Update()
     {
@@ -49,6 +51,7 @@ public class MailManager : MonoBehaviour
         if (sendMailTimer >= nextSendMailTime)
         {
             SendNewMail(isPhishingMailAttacking);
+            Debug.Log("新しいメールが届きました");
         }
     }
     private void SetNextSendMailTime()
@@ -126,6 +129,14 @@ public class MailManager : MonoBehaviour
         mailModel.isPhishing = true;
         mailList.Add(mailModel);
     }
+    public void NewSuccessRewardMail()
+    {
+        int index = Random.Range(0, allSuccessRewardMailEntities.Length - 1);
+        MailEntity mailEntity = Instantiate(allSuccessRewardMailEntities[index]);
+        MailModel mailModel = new(mailEntity);
+        mailModel.isPhishing = false;
+        mailList.Add(mailModel);
+    }
     public void DeleteMail(int index)
     {
         if (index < 0 || index > mailList.Count - 1)
@@ -147,6 +158,7 @@ public class MailManager : MonoBehaviour
         {
             NewMail(UnityEngine.Random.Range(0, allMailEntities.Length - 1));
         }
+        SetNextSendMailTime();
     }
     public void ShowMailDetail(MailModel mailModel)
     {
@@ -208,8 +220,11 @@ public class MailManager : MonoBehaviour
                 ShopManager.instance.AddItem(itemModel);
             }
             nowMailDetailModel.isDark = true;
-            ShowMailList();
-            ReturnMenu();
+            mailDefaultZoom.SetActive(false);
+            mailListZoom.SetActive(false);
+            mailListNotZoom.SetActive(false);
+            mailDetailZoom.SetActive(false);
+            mailDetailNotZoom.SetActive(false);
             GameManager.instance.ToShopButton();
         }
     }
