@@ -7,15 +7,27 @@ using UnityEngine;
 public class SimulationAttackManager : MonoBehaviour
 {
     public static SimulationAttackManager instance;
-    private List<Action> attacks = new();
+    private class SimulationAttack
+    {
+        public SimulationAttack(Action _action, string _successDescription, string _failDescription)
+        {
+            action = _action;
+            successDescription = _successDescription;
+            failDescription = _failDescription;
+        }
+        public Action action;
+        public string successDescription;
+        public string failDescription;
+    }
+    private List<SimulationAttack> attacks = new();
     private void Awake()
     {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
 
-        attacks.Add(Phishing);
-        attacks.Add(Bot);
-        attacks.Add(Ransomware);
+        attacks.Add(new(Phishing, phishingSuccessDescription, phishingFailDescription));
+        attacks.Add(new(Bot, botSuccessDescription, botFailDescription));
+        attacks.Add(new(Ransomware, ransomwareSuccessDescription, ransomwareFailDescription));
     }
     public enum State
     {
@@ -24,6 +36,7 @@ public class SimulationAttackManager : MonoBehaviour
         bot,
         ransomware
     }
+    public State nowState = State.notAttacking;
     private Dictionary<string, string> attack_id = new()
     {
         {"phishing","ph_v1.0.0"},
@@ -37,9 +50,9 @@ public class SimulationAttackManager : MonoBehaviour
     private float attackTimer;
     private float nextAttackTime;
     private GameDataManager.Screen lastScreen;
-    public State nowState = State.notAttacking;
     private bool isResponseTime = false;
     public float response_time;
+    private int nowAttackIndex;
 
     private void Start()
     {
@@ -81,7 +94,8 @@ public class SimulationAttackManager : MonoBehaviour
         // simulationAttacks.SetActive(true);
         // StartCoroutine(SetActiveExtension.Zoom(simulationAttacksZoom, true));
         // simulationAttacksNotZoom.SetActive(true);
-        attacks[UnityEngine.Random.Range(0, attacks.Count)]();
+        nowAttackIndex = UnityEngine.Random.Range(0, attacks.Count - 1);
+        attacks[nowAttackIndex].action();
     }
     private void ShowResult(bool isSuccess)
     {
@@ -101,10 +115,12 @@ public class SimulationAttackManager : MonoBehaviour
 
         if (isSuccess)
         {
+            successDescription.text = attacks[nowAttackIndex].successDescription;
             StartCoroutine(SetActiveExtension.Zoom(success, true));
         }
         else
         {
+            failDescription.text = attacks[nowAttackIndex].failDescription;
             StartCoroutine(SetActiveExtension.Zoom(fail, true));
         }
     }
@@ -186,7 +202,7 @@ public class SimulationAttackManager : MonoBehaviour
         while (timer < duration)
         {
             bool last = GameDataManager.instance.screen == GameDataManager.Screen.battle;
-            yield return null;
+            yield return "";
             bool now = GameDataManager.instance.screen == GameDataManager.Screen.battle;
             if (last && now)
             {
@@ -208,6 +224,11 @@ public class SimulationAttackManager : MonoBehaviour
     //フィッシング
     [Header("フィッシング")]
     [SerializeField] GameObject phishing;
+    //成功失敗時の文章変えるのはこういうとこにあるよ
+    private string phishingSuccessDescription =
+    "";
+    private string phishingFailDescription =
+    "";
     private void Phishing()
     {
         nowState = State.phishing;
@@ -225,6 +246,10 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject bot, virusBusterScreenZoom, virusBusterScreenNotZoom;
     private Coroutine botEffectCoroutine;
     [SerializeField] TextMeshProUGUI canVirusBusterCountText;
+    private string botSuccessDescription =
+    "";
+    private string botFailDescription =
+    "";
     private void Bot()
     {
         nowState = State.bot;
@@ -280,6 +305,10 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject ransomware;
     [SerializeField] TextMeshProUGUI timerText, money;
     private Coroutine timerCoroutine;
+    private string ransomwareSuccessDescription =
+    "";
+    private string ransomwareFailDescription =
+    "";
     private void Ransomware()
     {
         nowState = State.ransomware;
