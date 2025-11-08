@@ -11,15 +11,19 @@ public class ShopManager : MonoBehaviour
         else if (instance != this) Destroy(this);
 
         allItemEntities = Resources.LoadAll<ItemEntity>("Items/ItemEntities");
+        allRewardItemEntities = Resources.LoadAll<ItemEntity>("Items/ResultItemEntities/RewardItemEntities");
+        allPenaltyItemEntities = Resources.LoadAll<ItemEntity>("Items/ResultItemEntities/PenaltyItemEntities");
     }
     private void OnApplicationQuit()
     {
         ItemEffectManager.CancelAllEffect();
     }
 
-    [SerializeField] GameObject shopZoom, shopNotZoom, itemArea, itemPrefab;
+    [SerializeField] GameObject shopZoom, shopNotZoom, itemArea, itemPrefab, resultItemPrefab;
     [SerializeField] List<ItemModel> itemList = new();
     ItemEntity[] allItemEntities;
+    ItemEntity[] allRewardItemEntities;
+    ItemEntity[] allPenaltyItemEntities;
 
     private void Start()
     {
@@ -66,5 +70,34 @@ public class ShopManager : MonoBehaviour
     {
         StartCoroutine(SetActiveExtension.Zoom(shopZoom, false));
         shopNotZoom.SetActive(false);
+    }
+
+    public void CreateRewardItems(GameObject gameObject)
+    {
+        for (int i = gameObject.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(gameObject.transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            ResultItemController item = Instantiate(resultItemPrefab, gameObject.transform).GetComponent<ResultItemController>();
+            ItemModel itemModel = new(allRewardItemEntities[Random.Range(0, allRewardItemEntities.Length - 1)]);
+            item.isSuccessItem = true;
+            item.Init(itemModel);
+        }
+    }
+
+    public void CreatePenaltyItem(GameObject gameObject)
+    {
+        for (int i = gameObject.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(gameObject.transform.GetChild(i).gameObject);
+        }
+
+        ResultItemController item = Instantiate(resultItemPrefab, gameObject.transform).GetComponent<ResultItemController>();
+        ItemModel itemModel = new(allPenaltyItemEntities[Random.Range(0, allPenaltyItemEntities.Length - 1)]);
+        item.isSuccessItem = false;
+        item.Init(itemModel);
     }
 }

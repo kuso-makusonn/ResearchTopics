@@ -31,7 +31,7 @@ public class SimulationAttackManager : MonoBehaviour
         {"ransomware","ra_v1.0.0"}
     };
 
-    [SerializeField] GameObject simulationAttacks, simulationAttacksZoom, simulationAttacksNotZoom, success, fail, countdown;
+    [SerializeField] GameObject simulationAttacks, simulationAttacksZoom, simulationAttacksNotZoom, success, fail, countdown, reward, penalty, rewardItems, penaltyItem;
     [SerializeField] TextMeshProUGUI successDescription, failDescription, countdownText;
     public bool canAttack = false;
     private float attackTimer;
@@ -102,17 +102,47 @@ public class SimulationAttackManager : MonoBehaviour
         if (isSuccess)
         {
             StartCoroutine(SetActiveExtension.Zoom(success, true));
-            MailManager.instance.NewSuccessRewardMail();
         }
         else
         {
             StartCoroutine(SetActiveExtension.Zoom(fail, true));
         }
     }
-    public void OKButton()
+    public void SuccessOkButton()
     {
         StartCoroutine(SetActiveExtension.Zoom(success, false));
+        Reward();
+    }
+    void Reward()
+    {
+        StartCoroutine(SetActiveExtension.Zoom(reward, true));
+        ShopManager.instance.CreateRewardItems(rewardItems);
+    }
+    public void FailOkButton()
+    {
         StartCoroutine(SetActiveExtension.Zoom(fail, false));
+        Penalty();
+    }
+    void Penalty()
+    {
+        StartCoroutine(SetActiveExtension.Zoom(penalty, true));
+        ShopManager.instance.CreatePenaltyItem(penaltyItem);
+    }
+    public void ExitSimulationAttackResultScreen(bool isSuccess)
+    {
+        StartCoroutine(ExitSimulationAttackResultScreenIE(isSuccess));
+    }
+    IEnumerator ExitSimulationAttackResultScreenIE(bool isSuccess)
+    {
+        Debug.Log("gou");
+        if (isSuccess)
+        {
+            yield return SetActiveExtension.Zoom(reward, false);
+        }
+        else
+        {
+            yield return SetActiveExtension.Zoom(penalty, false);
+        }
         if (lastScreen == GameDataManager.Screen.battle)
         {
             countdownCoroutine = StartCoroutine(ReturnBattle());
