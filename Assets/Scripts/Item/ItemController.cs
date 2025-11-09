@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image itemImage;
-    [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText, discountPriceText, canPurchaseCountText, DiscountEffectText;
+    [SerializeField] TextMeshProUGUI itemNameText, priceText, itemEffectText, discountPriceText, canPurchaseCountText, discountEffectText;
     [SerializeField] GameObject highlight, discountPanel, textArea, discountTextArea;
     public ItemModel itemModel;
 
@@ -19,14 +19,13 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         itemNameText.text = itemModel.itemName;
         itemImage.sprite = itemModel.itemImage;
-        priceText.text = "価格:" + Price() + "円";
-        itemEffectText.text = itemModel.effectText;
         if (itemModel.discount == 0)
         {
             discountPanel.SetActive(false);
             discountTextArea.SetActive(false);
             textArea.SetActive(true);
             priceText.text = "価格:" + Price() + "円";
+            itemEffectText.text = itemModel.effectText;
         }
         else
         {
@@ -35,6 +34,7 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             textArea.SetActive(false);
             discountPriceText.text = $"価格:<s>{itemModel.price}円</s> {Price()}円";
             canPurchaseCountText.text = $"セール中!残り{itemModel.maxPurchaseCount - itemModel.purchaseCount}回";
+            discountEffectText.text = itemModel.effectText;
         }
         highlight.SetActive(itemModel.isHighlight);
     }
@@ -65,13 +65,17 @@ public class ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void ItemClickButton()
     {
-        itemModel.purchaseCount++;
+        bool canPurchase = itemModel.itemEffect.PurchaseItem(Price());
+        if (canPurchase)
+        {
+            itemModel.purchaseCount++;
+            Show();
+        }
         if (itemModel.maxPurchaseCount > 0
         && itemModel.purchaseCount >= itemModel.maxPurchaseCount)
         {
             ShopManager.instance.RemoveItem(itemModel);
             Destroy(gameObject);
         }
-        itemModel.itemEffect.PurchaseItem(Price());
     }
 }

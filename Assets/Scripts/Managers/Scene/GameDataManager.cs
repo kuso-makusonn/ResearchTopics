@@ -49,7 +49,14 @@ public class GameDataManager : MonoBehaviour
     }
     public void MoneyUp(int amount)
     {
-        money += amount;
+        if(money + amount <= 0)
+        {
+            money = 0;
+        }
+        else
+        {
+            money += amount;
+        }
         ShowMoney();
     }
     private void ShowMoney()

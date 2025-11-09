@@ -3,14 +3,19 @@ using UnityEngine;
 // アイテム効果の基底クラス
 public abstract class ItemEffect : ScriptableObject
 {
-    public void PurchaseItem(int price)
+    public bool PurchaseItem(int price)
     {
-        if (ItemEffectManager.CanPurchase(price)) {
+        bool canPurchase = ItemEffectManager.CanPurchase(price);
+        if (canPurchase)
+        {
             ApplyEffect();
             AudioManager.instance.PaySound();
-            GameDataManager.instance.MoneyUp(-1*price);
+            GameDataManager.instance.MoneyUp(-price);
         }
-        else Debug.Log("お前とは飲みに行かねぇよ");
+        else
+        {
+        }
+        return canPurchase;
     }
     public abstract void ApplyEffect();
 }

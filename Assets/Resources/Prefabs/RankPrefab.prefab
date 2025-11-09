@@ -65,9 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Score
-
-'
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 69bbe017c88a64c48ab4dd2a9a83b439, type: 2}
   m_sharedMaterial: {fileID: 4110351202066912323, guid: 69bbe017c88a64c48ab4dd2a9a83b439, type: 2}
@@ -94,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 172.45
+  m_fontSize: 200
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -171,7 +169,7 @@ RectTransform:
   m_Father: {fileID: 8559842831062637039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1.4}
+  m_AnchorMax: {x: 1, y: 1.3}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -240,9 +238,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'RankIn!!
-
-'
+  m_text: "\u30E9\u30F3\u30AF\u30A4\u30F3\uFF01\uFF01"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 69bbe017c88a64c48ab4dd2a9a83b439, type: 2}
   m_sharedMaterial: {fileID: 4110351202066912323, guid: 69bbe017c88a64c48ab4dd2a9a83b439, type: 2}
@@ -269,7 +265,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 99.4
+  m_fontSize: 80.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -371,7 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9959273, b: 0, a: 0.5882353}
+  m_Color: {r: 0.9137807, g: 1, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

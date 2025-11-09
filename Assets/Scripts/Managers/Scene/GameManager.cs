@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText, countdownText;
     public int lastScore;
     public float play_time;
+    public string now_game_id;
     private Coroutine countdownCoroutine;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,11 +38,21 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStart()
     {
         yield return null;
-        // if (PlayerPrefs.HasKey("user_id"))
-        // {
-        //     var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
-        //     yield return new WaitUntil(() => sendDataTask.IsCompleted);
-        // }
+        if (PlayerPrefs.HasKey("user_id"))
+        {
+            var sendDataTask = Supabase.SendGameStart(PlayerPrefs.GetString("user_id"));
+            yield return new WaitUntil(() => sendDataTask.IsCompleted);
+            now_game_id = PlayerPrefs.GetString("now_game_id");
+            PlayerPrefs.DeleteKey("now_game_id");
+        }
+        else
+        {
+            if (PlayerPrefs.HasKey("now_game_id"))
+            {
+                PlayerPrefs.DeleteKey("now_game_id");
+            }
+            now_game_id = null;
+        }
 
         GameDataManager.instance.ResetScore();
         play_time = 0f;
@@ -55,7 +66,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         lastScore = GameDataManager.instance.score;
-        Debug.Log(lastScore);
+        PlayerPrefs.SetString("now_game_id", now_game_id);
         ItemEffectManager.CancelAllEffect();
         SceneManager.LoadScene("ResultScene");
     }
