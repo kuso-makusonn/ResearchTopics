@@ -1,23 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
-    [SerializeField] GameObject title, afterQuestionnaire, questionnaire, exitTitlePanel;
+    [SerializeField] GameObject title, afterQuestionnaire, questionnaire, exitTitlePanel, surveyConsent, OiOiPanel;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TMP_InputField nameInputText;
     [SerializeField] TMP_Dropdown age_groupD, genderD, initially_interestedD;
     private Dictionary<string, string> age_groupList = new()
     {
-        {"19 歳未満","~19" },
-        {"20 歳以上 30 歳未満","20~29"},
-        {"30 歳以上 40 歳未満","30~39"},
-        {"40 歳以上 50 歳未満","40~49"},
-        {"50 歳以上 60 歳未満","50~59"},
-        {"60 歳以上","60~"}
+        {"19歳未満","~19" },
+        {"20歳以上 30歳未満","20~29"},
+        {"30歳以上 40歳未満","30~39"},
+        {"40歳以上 50歳未満","40~49"},
+        {"50歳以上 60歳未満","50~59"},
+        {"60歳以上","60~" },
+        {"無回答","none"}
     };
     private Dictionary<string, string> genderList = new()
     {
@@ -51,6 +53,7 @@ public class TitleManager : MonoBehaviour
         exitTitlePanel.SetActive(true);
         afterQuestionnaire.SetActive(false);
         questionnaire.SetActive(false);
+        surveyConsent.SetActive(false);
     }
     public void ExitTitle()
     {
@@ -67,20 +70,18 @@ public class TitleManager : MonoBehaviour
     void ToQuestionnaireScreen()
     {
         PlayerPrefs.DeleteAll();
-        Zoom(title, false);
-        Zoom(questionnaire, true);
         PrepareQuestionnaire();
+        // Zoom(questionnaire, true);
+        Zoom(surveyConsent, true);
     }
     void ToStartScreen()
     {
-        Zoom(afterQuestionnaire,true);
+        Zoom(afterQuestionnaire, true);
         nameText.text = PlayerPrefs.GetString("user_name");
     }
-    void FinishQuestionnaire()
+    void FinishSendingQuestionnaireData()
     {
-        Zoom(title, true);
         Zoom(afterQuestionnaire, true);
-        Zoom(questionnaire, false);
         nameText.text = PlayerPrefs.GetString("user_name");
     }
     public void StartButton()
@@ -105,6 +106,17 @@ public class TitleManager : MonoBehaviour
         dropdown.AddOptions(options);
         dropdown.value = 0;
     }
+    public void ConsentCanceled()
+    {
+        exitTitlePanel.SetActive(true);
+        Zoom(title, true);
+        Zoom(surveyConsent, false);
+    }
+    public void ConsentAccepted()
+    {
+        Zoom(surveyConsent, false);
+        Zoom(questionnaire, true);
+    }
     private bool IsAnswerEnough()
     {
         if (string.IsNullOrWhiteSpace(nameInputText.text)) return false;
@@ -117,14 +129,17 @@ public class TitleManager : MonoBehaviour
     {
         if (!IsAnswerEnough())
         {
-            Debug.Log("すべての項目に回答してください");
+            StartCoroutine(OiOi());
             return;
         }
-
         StartCoroutine(SendUserData(nameInputText.text,
         age_groupList[GetDropdownText(age_groupD)],
         genderList[GetDropdownText(genderD)],
         initially_interestedList[GetDropdownText(initially_interestedD)]));
+
+        exitTitlePanel.SetActive(false);
+        title.SetActive(true);
+        questionnaire.SetActive(false);
     }
     private string GetDropdownText(TMP_Dropdown dropdown)
     {
@@ -134,6 +149,12 @@ public class TitleManager : MonoBehaviour
     {
         var sendDataTask = Supabase.SendUserData(user_name, age_group, gender, initially_interested);
         yield return new WaitUntil(() => sendDataTask.IsCompleted);
-        FinishQuestionnaire();
+        FinishSendingQuestionnaireData();
+    }
+    private IEnumerator OiOi()
+    {
+        OiOiPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        OiOiPanel.SetActive(false);
     }
 }

@@ -195,4 +195,11 @@ public static class ItemEffectManager
     {
         GameDataManager.instance.canVirusBusterCount += amount;
     }
+
+
+    //所持金アップ
+    public static void MoneyUp(int amount)
+    {
+        GameDataManager.instance.MoneyUp(amount);
+    }
 }

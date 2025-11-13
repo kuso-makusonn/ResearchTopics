@@ -783,7 +783,7 @@ MonoBehaviour:
   itemEffectText: {fileID: 4187264473613520418}
   discountPriceText: {fileID: 2653934425951468736}
   canPurchaseCountText: {fileID: 2295383563009000703}
-  DiscountEffectText: {fileID: 7968142017184718723}
+  discountEffectText: {fileID: 7968142017184718723}
   highlight: {fileID: 6483888715354306065}
   discountPanel: {fileID: 3473539170477490971}
   textArea: {fileID: 6320263880892587007}

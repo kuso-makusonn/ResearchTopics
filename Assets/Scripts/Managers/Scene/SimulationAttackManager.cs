@@ -96,32 +96,50 @@ public class SimulationAttackManager : MonoBehaviour
         // simulationAttacksNotZoom.SetActive(true);
         nowAttackIndex = UnityEngine.Random.Range(0, attacks.Count - 1);
         attacks[nowAttackIndex].action();
+        Debug.Log(attacks[nowAttackIndex].successDescription);
     }
-    private void ShowResult(bool isSuccess)
+    public void ShowResult(bool isSuccess, int descriptionIndex = -1)
     {
         GameDataManager.instance.screen = GameDataManager.Screen.other;
 
-        //擬似攻撃ログデータ送信
-        // if (PlayerPrefs.HasKey("now_game_id")
-        // && nowState != State.notAttacking
-        // && isResponseTime
-        // && canAttack)
-        // {
-        //     _ = Supabase.SendAttackLog(PlayerPrefs.GetString("now_game_id"),
-        //     attack_id[nowState.ToString()],
-        //     isSuccess,
-        //     response_time);
-        // }
-
-        if (isSuccess)
+        // 擬似攻撃ログデータ送信
+        if (!(descriptionIndex >= 0 && descriptionIndex < attacks.Count)
+        && GameManager.instance.now_game_id != null
+        && nowState != State.notAttacking
+        && isResponseTime
+        && canAttack)
         {
-            successDescription.text = attacks[nowAttackIndex].successDescription;
-            StartCoroutine(SetActiveExtension.Zoom(success, true));
+            _ = Supabase.SendAttackLog(GameManager.instance.now_game_id,
+            attack_id[nowState.ToString()],
+            isSuccess,
+            response_time);
+        }
+
+        if (!(descriptionIndex >= 0 && descriptionIndex < attacks.Count))
+        {
+            if (isSuccess)
+            {
+                successDescription.text = attacks[nowAttackIndex].successDescription;
+                StartCoroutine(SetActiveExtension.Zoom(success, true));
+            }
+            else
+            {
+                failDescription.text = attacks[nowAttackIndex].failDescription;
+                StartCoroutine(SetActiveExtension.Zoom(fail, true));
+            }
         }
         else
         {
-            failDescription.text = attacks[nowAttackIndex].failDescription;
-            StartCoroutine(SetActiveExtension.Zoom(fail, true));
+            if (isSuccess)
+            {
+                successDescription.text = attacks[descriptionIndex].successDescription;
+                StartCoroutine(SetActiveExtension.Zoom(success, true));
+            }
+            else
+            {
+                failDescription.text = attacks[descriptionIndex].failDescription;
+                StartCoroutine(SetActiveExtension.Zoom(fail, true));
+            }
         }
     }
     public void SuccessOkButton()
@@ -150,7 +168,6 @@ public class SimulationAttackManager : MonoBehaviour
     }
     IEnumerator ExitSimulationAttackResultScreenIE(bool isSuccess)
     {
-        Debug.Log("gou");
         if (isSuccess)
         {
             yield return SetActiveExtension.Zoom(reward, false);
@@ -159,14 +176,20 @@ public class SimulationAttackManager : MonoBehaviour
         {
             yield return SetActiveExtension.Zoom(penalty, false);
         }
-        if (lastScreen == GameDataManager.Screen.battle)
+        if (nowState == State.notAttacking)
         {
-            countdownCoroutine = StartCoroutine(ReturnBattle());
         }
         else
         {
-            GameDataManager.instance.screen = lastScreen;
-            SetNextAttackTime();
+            if (lastScreen == GameDataManager.Screen.battle)
+            {
+                countdownCoroutine = StartCoroutine(ReturnBattle());
+            }
+            else
+            {
+                GameDataManager.instance.screen = lastScreen;
+                SetNextAttackTime();
+            }
         }
     }
     private Coroutine countdownCoroutine;
@@ -202,7 +225,7 @@ public class SimulationAttackManager : MonoBehaviour
         while (timer < duration)
         {
             bool last = GameDataManager.instance.screen == GameDataManager.Screen.battle;
-            yield return "";
+            yield return null;
             bool now = GameDataManager.instance.screen == GameDataManager.Screen.battle;
             if (last && now)
             {
@@ -226,7 +249,7 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject phishing;
     //成功失敗時の文章変えるのはこういうとこにあるよ
     private string phishingSuccessDescription =
-    "";
+    "フィッシング";
     private string phishingFailDescription =
     "";
     private void Phishing()
@@ -243,11 +266,11 @@ public class SimulationAttackManager : MonoBehaviour
 
     //ボット
     [Header("ボット")]
-    [SerializeField] GameObject bot, virusBusterScreenZoom, virusBusterScreenNotZoom;
+    [SerializeField] GameObject bot, virusBusterScreenZoom, virusBusterScreenNotZoom, OiOiOiPanel;
     private Coroutine botEffectCoroutine;
     [SerializeField] TextMeshProUGUI canVirusBusterCountText;
     private string botSuccessDescription =
-    "";
+    "ボット";
     private string botFailDescription =
     "";
     private void Bot()
@@ -284,20 +307,25 @@ public class SimulationAttackManager : MonoBehaviour
     {
         if (GameDataManager.instance.canVirusBusterCount < 1)
         {
-            Debug.Log("もうできないよ！");
+            StartCoroutine(ShowOiOiOiPanel());
             return;
         }
         if (botEffectCoroutine != null)
         {
-            Debug.Log("Virus Buster!");
             BotEnd(true);
         }
         else
         {
-            Debug.Log("ウイルスを検出できませんでした");
+            ShowResult(false, 1);
         }
         GameDataManager.instance.canVirusBusterCount--;
         canVirusBusterCountText.text = $"残り可能回数：{GameDataManager.instance.canVirusBusterCount}";
+    }
+    IEnumerator ShowOiOiOiPanel()
+    {
+        OiOiOiPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        OiOiOiPanel.SetActive(false);
     }
 
     //ランサムウェア
@@ -307,7 +335,7 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject checkPanel, payButton, shutDownButton, wifiButton;
     private Coroutine timerCoroutine;
     private string ransomwareSuccessDescription =
-    "";
+    "ランサムウェア";
     private string ransomwareFailDescription =
     "";
     private void Ransomware()

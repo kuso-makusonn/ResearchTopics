@@ -10,9 +10,10 @@ public class ResultManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI nameText;
     List<RankManager> rankManagers = new();
-    string game_id;
+    string now_game_id;
     bool rankIn;
     int index;
+    public bool __name__is__main__;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,18 +27,23 @@ public class ResultManager : MonoBehaviour
     }
     IEnumerator YMD()
     {
-        if (PlayerPrefs.HasKey("now_game_id")
-        && GameManager.instance != null)
+        if (PlayerPrefs.HasKey("now_game_id"))
         {
-            game_id = PlayerPrefs.GetString("now_game_id");
-
-            var sendDataTask = Supabase.SendGameResult(PlayerPrefs.GetString("now_game_id"),
+            __name__is__main__ = false;
+            now_game_id = PlayerPrefs.GetString("now_game_id");
+            PlayerPrefs.DeleteKey("now_game_id");
+        }
+        else
+        {
+            __name__is__main__ = true;
+        }
+        if (!__name__is__main__)
+        {
+            var sendDataTask = Supabase.SendGameResult(GameManager.instance.now_game_id,
             GameManager.instance.lastScore,
             GameManager.instance.play_time);
             yield return new WaitUntil(() => sendDataTask.IsCompleted);
         }
-
-        PlayerPrefs.DeleteKey("now_game_id");
         yield return GameOver();
         yield return ShowResult();
         yield return ShowRank();
@@ -53,24 +59,25 @@ public class ResultManager : MonoBehaviour
     {
         ClearScreen();
         yield return SetActiveExtension.Zoom(gameOver, true);
-        yield return new WaitForSecondsRealtime(3f);//3000ミリ秒待つ
+        yield return new WaitForSeconds(3f);//3000ミリ秒待つ
     }
     IEnumerator ShowResult()
     {
         ClearScreen();
-        yield return SetActiveExtension.Zoom(result, true);
-        if (GameManager.instance != null
+        if (!__name__is__main__
         && GameManager.instance.lastScore >= 0)
         {
-            scoreText.text = "Score:" + GameManager.instance.lastScore.ToString();
+            scoreText.text = "スコア：" + GameManager.instance.lastScore.ToString();
         }
-        yield return new WaitForSecondsRealtime(3f); ;//3000ミリ秒待つ
+        yield return SetActiveExtension.Zoom(result, true);
+        yield return new WaitForSeconds(3f); ;//3000ミリ秒待つ
     }
     IEnumerator ShowRank()
     {
         var rankRes = Supabase.GetScoreRank();
         yield return new WaitUntil(() => rankRes.IsCompleted);
         Supabase.RankItem[] ranks = rankRes.Result;
+        Debug.Log(ranks);
 
         ClearScreen();
         rankRootObject.SetActive(true);
@@ -98,8 +105,9 @@ public class ResultManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             if (i + 1 <= ranks.Length
-            && ranks[i].game_id == game_id)
+            && ranks[i].game_id == now_game_id)
             {
+                Debug.Log("ランクインおめでとう！");
                 rankIn = true;
                 index = i;
             }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 477d98ea6efd49d4592a249808cd36f2, type: 3}
-  m_Name: Item
-  m_EditorClassIdentifier: Assembly-CSharp::ItemEntity
-  itemName: "\u304C\u3081\u3064\u3044\u60AA\u9B54"
+  m_Name: GoingFreeDringkingItem
+  m_EditorClassIdentifier: 
+  itemName: Joshin
   itemImage: {fileID: 21300000, guid: 4a3be7ab95581ff4a999830d9910d2b4, type: 3}
   price: 0
-  effectText: "\u30B8\u30E3\u30F3\u30D7\u3057\u3066\u307F\u308D\uFF01\\n\u2026\u97F3\u9CF4\u3063\u305F\u306A\uFF01\\n\u91D1\u51FA\u305B\uFF01\\n\u6240\u6301\u91D1-1000\u5186"
-  itemEffect: {fileID: 11400000, guid: 60ccab007ebee4046a819279383dae3e, type: 2}
+  effectText: "\u98F2\u307F\u306B\u884C\u304F"
+  itemEffect: {fileID: 11400000, guid: a234c8e8c9b1a70459a6d9cc551e8aaa, type: 2}

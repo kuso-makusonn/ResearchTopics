@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +16,7 @@ public class MailManager : MonoBehaviour
     }
 
 
-    [SerializeField] GameObject mailDefaultZoom, mailListZoom, mailListNotZoom, mailArea, mailPrefab, sendedMail, mailDetailZoom, mailDetailNotZoom;
+    [SerializeField] GameObject mailDefaultZoom, mailListZoom, mailListNotZoom, mailArea, mailPrefab, sendedMail, mailDetailZoom, mailDetailNotZoom, OiOiPanel;
     [SerializeField] ScrollRect mailListScrollRect;
     [SerializeField] RectTransform mailDetailContent, mailDetailBackground, title, sender, main, linkButton, link;
     [SerializeField] TextMeshProUGUI titleText, senderText, mainText, linkText;
@@ -36,7 +38,6 @@ public class MailManager : MonoBehaviour
         allSuccessRewardMailEntities = Resources.LoadAll<MailEntity>("Mails/SuccessRewardMailEntities");
         SetNextSendMailTime();
         NewMail(0);
-        isPhishingMailAttacking = true;
         NewPhishingMail(3);
     }
     private void Update()
@@ -63,8 +64,8 @@ public class MailManager : MonoBehaviour
     }
     public void CheckSendedMailButton()
     {
-        GameManager.instance.MenuButton();
-        GameManager.instance.MailButton();
+        GameDataManager.instance.screen = GameDataManager.Screen.other;
+        StartCoroutine(SetActiveExtension.Zoom(mailDefaultZoom, true));
         mailListScrollRect.verticalNormalizedPosition = 1f;
         ShowMailDetail(mailList[mailList.Count - 1]);
 
@@ -72,8 +73,6 @@ public class MailManager : MonoBehaviour
     }
     public void ShowMailList()
     {
-        StartCoroutine(SetActiveExtension.Zoom(sendedMail, false));
-
         StartCoroutine(SetActiveExtension.Zoom(mailDefaultZoom, true));
         StartCoroutine(SetActiveExtension.Zoom(mailListZoom, true));
         mailListNotZoom.SetActive(true);
@@ -117,7 +116,6 @@ public class MailManager : MonoBehaviour
     }
     private void NewPhishingMail(int index)
     {
-        if (!isPhishingMailAttacking) return;
         if (index < 0 || index > allPhishingMailEntities.Length - 1)
         {
             Debug.Log("そんなメールは無えょ！");
@@ -158,10 +156,13 @@ public class MailManager : MonoBehaviour
         {
             NewMail(UnityEngine.Random.Range(0, allMailEntities.Length - 1));
         }
-        SetNextSendMailTime();
     }
     public void ShowMailDetail(MailModel mailModel)
     {
+        if (mailModel == mailList[mailList.Count - 1])
+        {
+            SetNextSendMailTime();
+        }
         if (mailModel.isPhishing)
         {
             SimulationAttackManager.instance.StartResponseTime();
@@ -240,11 +241,19 @@ public class MailManager : MonoBehaviour
         else if (!nowMailDetailModel.isPhishing)
         {
             Debug.Log("これは正当なメールです");
+            StartCoroutine(WarningFail());
         }
         else
         {
             Debug.Log("メールが見つかりません");
         }
+    }
+    IEnumerator WarningFail()
+    {
+        OiOiPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        OiOiPanel.SetActive(false);
+        SimulationAttackManager.instance.ShowResult(false, 0);
     }
     public void ReturnMenu()
     {
