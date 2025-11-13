@@ -303,7 +303,8 @@ public class SimulationAttackManager : MonoBehaviour
     //ランサムウェア
     [Header("ランサムウェア")]
     [SerializeField] GameObject ransomware;
-    [SerializeField] TextMeshProUGUI timerText, money;
+    [SerializeField] TextMeshProUGUI timerText, money,checkText;
+    [SerializeField] GameObject checkPanel, payButton, shutDownButton, wifiButton;
     private Coroutine timerCoroutine;
     private string ransomwareSuccessDescription =
     "";
@@ -320,9 +321,38 @@ public class SimulationAttackManager : MonoBehaviour
     }
     private void RansomwareEnd(bool isSuccess)
     {
+        checkPanel.SetActive(false);
         StopCoroutine(timerCoroutine);
         StartCoroutine(SetActiveExtension.Zoom(ransomware, false));
         ShowResult(isSuccess);
+    }
+    public void CheckP()
+    {
+        checkPanel.SetActive(true);
+        payButton.SetActive(true);
+        wifiButton.SetActive(false);
+        shutDownButton.SetActive(false);
+        checkText.text = "本当に支払いますか？";
+    }
+    public void CheckW()
+    {
+        checkPanel.SetActive(true);
+        payButton.SetActive(false);
+        wifiButton.SetActive(true);
+        shutDownButton.SetActive(false);
+        checkText.text = "ネット接続を切りますか？";
+    }
+    public void CheckT()
+    {
+        checkPanel.SetActive(true);
+        payButton.SetActive(false);
+        wifiButton.SetActive(false);
+        shutDownButton.SetActive(true);
+        checkText.text = "電源を落としますか？";
+    }
+    public void CloseCheckPanel()
+    {
+        checkPanel.SetActive(false);
     }
     public void Pay()
     {

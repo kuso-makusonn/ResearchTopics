@@ -80,9 +80,10 @@ public class PlayerManager : MonoBehaviour
             GameManager.instance.MenuButton();
         }
 
-        if(Input.GetKeyDown(KeyCode.Space)
-        ||Input.GetKeyDown(KeyCode.W)
-        ||Input.GetMouseButtonDown(0)){
+        if (Input.GetKeyDown(KeyCode.Space)
+        || Input.GetKeyDown(KeyCode.W)
+        || Input.GetMouseButtonDown(0))
+        {
             Shoot();
         }
         // スペースキーが押されているかを確認
