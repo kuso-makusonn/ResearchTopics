@@ -288,7 +288,8 @@ public class SimulationAttackManager : MonoBehaviour
     private void BotEnd(bool isSuccess)
     {
         StopCoroutine(botEffectCoroutine);
-        GameDataManager.instance.players[0].bulletInterval *= 1 / 10f;
+        botEffectCoroutine = null;
+        GameDataManager.instance.players[0].bulletInterval /= 10f;
         lastScreen = GameDataManager.instance.screen;
         ShowResult(isSuccess);
     }
@@ -331,7 +332,7 @@ public class SimulationAttackManager : MonoBehaviour
     //ランサムウェア
     [Header("ランサムウェア")]
     [SerializeField] GameObject ransomware;
-    [SerializeField] TextMeshProUGUI timerText, money,checkText;
+    [SerializeField] TextMeshProUGUI timerText, money, checkText;
     [SerializeField] GameObject checkPanel, payButton, shutDownButton, wifiButton;
     private Coroutine timerCoroutine;
     private string ransomwareSuccessDescription =
