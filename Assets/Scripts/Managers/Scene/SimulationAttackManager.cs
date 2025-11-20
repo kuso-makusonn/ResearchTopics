@@ -249,9 +249,9 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject phishing;
     //成功失敗時の文章変えるのはこういうとこにあるよ
     private string phishingSuccessDescription =
-    "フィッシング";
+    "フィッシング詐欺はSNSからも狙ってきます。メールだけでなくSNSの利用時も警戒心を持ち、情報が正しいか確認する習慣をつけましょう。";
     private string phishingFailDescription =
-    "";
+    "フィッシング詐欺はなりすましで情報を盗みます。急かすメールのリンクはクリックせず、情報を入力する前に本物のサイトか必ず確認しましょう。";
     private void Phishing()
     {
         nowState = State.phishing;
@@ -335,9 +335,9 @@ public class SimulationAttackManager : MonoBehaviour
     [SerializeField] GameObject checkPanel, payButton, shutDownButton, wifiButton;
     private Coroutine timerCoroutine;
     private string ransomwareSuccessDescription =
-    "ランサムウェア";
+    "ランサムウェアは、USB接続からも感染する可能性があります。簡単に復旧できるバック  アップを常に行い、日々の利用で警戒を怠らないようにしましょう。";
     private string ransomwareFailDescription =
-    "";
+    "ランサムウェアはファイルを人質にとってお金を要求する攻撃です。データのバックアップと怪しいファイルを開かないことが最大の防御になります。";
     private void Ransomware()
     {
         nowState = State.ransomware;
