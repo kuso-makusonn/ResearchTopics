@@ -37,8 +37,6 @@ public class MailManager : MonoBehaviour
         allPhishingMailEntities = Resources.LoadAll<MailEntity>("Mails/PhishingMailEntities");
         allSuccessRewardMailEntities = Resources.LoadAll<MailEntity>("Mails/SuccessRewardMailEntities");
         SetNextSendMailTime();
-        NewMail(0);
-        NewPhishingMail(3);
     }
     private void Update()
     {
