@@ -270,9 +270,9 @@ public class SimulationAttackManager : MonoBehaviour
     private Coroutine botEffectCoroutine;
     [SerializeField] TextMeshProUGUI canVirusBusterCountText;
     private string botSuccessDescription =
-    "ボット";
+    "動作が遅い以外にもボット攻撃のサインはありますが、それに頼るだけでなく、常に多様な方法で本人確認を行い、アカウントを強固に守りましょう。";
     private string botFailDescription =
-    "";
+    "動作が遅いのはボット攻撃のサインかもしれません。アカウントを守るために、いくつかの方法で本人確認をしましょう。";
     private void Bot()
     {
         nowState = State.bot;
