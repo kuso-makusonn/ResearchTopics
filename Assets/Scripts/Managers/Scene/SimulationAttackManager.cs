@@ -94,8 +94,10 @@ public class SimulationAttackManager : MonoBehaviour
         // simulationAttacks.SetActive(true);
         // StartCoroutine(SetActiveExtension.Zoom(simulationAttacksZoom, true));
         // simulationAttacksNotZoom.SetActive(true);
-        nowAttackIndex = UnityEngine.Random.Range(0, attacks.Count - 1);
+
+        nowAttackIndex = UnityEngine.Random.Range(0, attacks.Count);
         attacks[nowAttackIndex].action();
+        Debug.Log(nowAttackIndex);
         Debug.Log(attacks[nowAttackIndex].successDescription);
     }
     public void ShowResult(bool isSuccess, int descriptionIndex = -1)
